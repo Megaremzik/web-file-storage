@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using WS.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WS.Data;
+using WS.Interfaces;
+using WS.Business;
 
 namespace WS.Web
 {
@@ -33,6 +36,14 @@ namespace WS.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            
+            services.AddDbContext<StorageContext>(options =>
+                options.UseSqlServer(connection));
+            services.AddScoped<IRepository<Document>, DocumentRepository>();
+            services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
+            services.AddScoped<I2Repository<UserDocument>, UserDocumentRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

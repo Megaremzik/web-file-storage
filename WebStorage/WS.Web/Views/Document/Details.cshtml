@@ -1,0 +1,27 @@
+﻿@model WS.Data.Document
+@{
+    ViewBag.Title = Model.Name;
+}
+<h2>Id @Model.Id</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>User_id</dt>
+        <dd>@Model.User_id</dd>
+
+        <dt>Name</dt>
+        <dd>@Model.Name</dd>
+
+        <dt>Date_change</dt>
+        <dd>@Model.Date_change</dd>
+
+        <dt>Size</dt>
+        <dd>@Model.Size</dd>
+
+        <dt>ParentId</dt>
+        <dd>@Model.ParentId</dd>
+
+        <dt>IsFile</dt>
+        <dd>@Model.IsFile</dd>
+
+    </dl>
+</div>

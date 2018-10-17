@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WS.Data.Document>
+@{
+    ViewBag.Title = "Все смартфоны";
+}
+<a asp-action="Create">add</a>
+<table class="table">
+    <tr><td>User_id</td><td>Name</td><td>Date_change</td><td>Size</td><td>ParentId</td><td>IsFile</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <a asp-action="Details" asp-controller="Document" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Edit" asp-controller="Document" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Delete" asp-controller="Document" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>

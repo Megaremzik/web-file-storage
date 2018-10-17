@@ -1,0 +1,29 @@
+﻿@model WS.Data.Document
+@{
+    ViewBag.Title = "Редактирование";
+}
+<form asp-action="edit" asp-controller="document" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="User_id" class="control-label">User_id</label>
+        <input type="text" asp-for="User_id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Size" class="control-label">Size</label>
+        <input type="number" asp-for="Size" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ParentId" class="control-label">ParentId</label>
+        <input type="number" asp-for="ParentId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsFile" class="control-label">IsFile</label>
+        <input type="number" asp-for="IsFile" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Send" class="btn btn-default" />
+    </div>
+</form>

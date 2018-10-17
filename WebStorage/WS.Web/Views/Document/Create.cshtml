@@ -1,0 +1,35 @@
+﻿@model WS.Data.Document
+@{
+    ViewBag.Title = "Add";
+}
+
+<form asp-action="create" asp-controller="document">
+    <div class="form-group">
+        <label asp-for="User_id" class="control-label">User_id</label>
+        <input type="number" asp-for="User_id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Name</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Date_change" class="control-label">Date_change</label>
+        <input type="date" asp-for="Date_change" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Size" class="control-label">Цена</label>
+        <input type="number" asp-for="Size" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ParentId" class="control-label">ParentId</label>
+        <input type="number" asp-for="ParentId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsFile" class="control-label">IsFile</label>
+        <input type="checkbox" asp-for="IsFile" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Send" class="btn btn-default" />
+    </div>
+</form>
