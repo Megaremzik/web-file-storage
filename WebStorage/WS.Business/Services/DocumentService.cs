@@ -13,32 +13,35 @@ namespace WS.Business.Services
     public class DocumentService
     {
         private IRepository<Document> repo;
-        public DocumentService(IRepository<Document> r)
+        private readonly IMapper mapper;
+
+        public DocumentService(IMapper map,IRepository<Document> r)
         {
+            mapper = map;
             repo = r;
         }
 
         public IEnumerable<DocumentView> GetAll()
         {
             IEnumerable<Document> documents = repo.GetAll();
-            return Mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); ;
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); ;
         }
 
         public DocumentView Get(int? id)
         {
             Document document = repo.Get(id);
-            return Mapper.Map<Document, DocumentView>(document);
+            return mapper.Map<Document, DocumentView>(document);
         }
 
         public void Create(DocumentView documentView)
         {
-            Document document = Mapper.Map<DocumentView, Document>(documentView);
+            Document document = mapper.Map<DocumentView, Document>(documentView);
             repo.Create(document);
         }
    
         public void Update(DocumentView documentView)
         {
-            Document document = Mapper.Map<DocumentView, Document>(documentView);
+            Document document = mapper.Map<DocumentView, Document>(documentView);
             repo.Update(document);
         }
 

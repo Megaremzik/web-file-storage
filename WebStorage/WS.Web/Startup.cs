@@ -11,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using WS.Data;
 using WS.Web.Services;
 using WS.Interfaces;
-using WS.Business;
+using WS.Business.Services;
+using AutoMapper;
 
 namespace WS.Web
 {
@@ -23,7 +24,6 @@ namespace WS.Web
         }
 
         public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -34,13 +34,19 @@ namespace WS.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddDbContext<StorageContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IRepository<Document>, DocumentRepository>();
             services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
             services.AddScoped<IRepository<UserDocument>, UserDocumentRepository>();
+            services.AddTransient<DocumentService>();
+
+            services.AddAutoMapper();
 
             services.AddMvc();
         }
