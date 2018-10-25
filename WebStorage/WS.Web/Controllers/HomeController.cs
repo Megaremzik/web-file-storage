@@ -8,38 +8,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WS.Business.ViewModels;
 using WS.Data;
 
 namespace WS.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         private IHostingEnvironment _hostingEnvironment;
 
         public HomeController(IHostingEnvironment environment)
         {
             _hostingEnvironment = environment;
         }
-
-        [HttpPost]
-        public async Task<IActionResult> UploadFiles(IFormFile file)
+        public IActionResult Index()
         {
-            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-
-            if (file.Length > 0)
-            {
-                using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-            }
-            return RedirectToAction("Index");
+            return View();
         }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

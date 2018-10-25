@@ -1,19 +1,91 @@
 ﻿@model IEnumerable<WS.Business.ViewModels.DocumentView>
 @{
-    ViewBag.Title = "Все смартфоны";
+    ViewData["Title"] = "Home Page";
 }
-<a asp-action="Create">add</a>
-<table class="table">
-    <tr><td>User_id</td><td>Name</td><td>Date_change</td><td>Size</td><td>ParentId</td><td>IsFile</td></tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>
-                <a asp-action="Details" asp-controller="Document" asp-route-id="@item.Id">Подробнее</a> |
-                <a asp-action="Edit" asp-controller="Document" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-action="Delete" asp-controller="Document" asp-route-id="@item.Id">Удалить</a>
-            </td>
-        </tr>
+<script src="~/js/dropzone.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<style>
+    .dropzone-container {
+        width: 100%;
     }
-</table>
+
+    .dropzone-drop-area {
+        background-color: lightgray;
+        border: dashed 3px grey;
+        width: 750px;
+        min-height: 350px;
+        box-sizing: border-box;
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .dropzone-drop-area:hover {
+            background-color: darkorange;
+            border: dashed 3px black;
+        }
+</style>
+
+<script>
+    $(document).ready(function () {
+        Dropzone.options.uploader = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            maxFiles: 3,
+            clickable: true,
+            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+            uploadMultiple: false,
+            createImageThumbnails: true,
+            accept: function (file, done) {
+                if (file.name == "badfile.jpg") {
+                    done("This is a bad file!");
+                }
+                else {
+                    //Show a confirm alert and display the image on the page.
+                }
+            }
+        };
+    });
+</script>
+<div class="row">
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadFiles">
+        <div class="form-group">
+            <div class="col-md-2">
+                <p>Upload one or more files using this form:</p>
+                <input type="file" name="file" multiple />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-primary" value="Upload" />
+            </div>
+        </div>
+    </form>
+    <div class="col-md-5">
+        <table class="table">
+            <tr><td>Name</td><td>Date_change</td><td>Size</td><td>IsFile</td></tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<div class="col-md-2">
+    <h2>File Drag & Drop Upload</h2>
+
+    <div class="dropzone-container" id="dropzone">
+        <form action="/Home/UploadFiles" id="uploader" class="dropzone">
+            <div id="dropzone-drop-area" class="dropzone-drop-area">
+            </div>
+        </form>
+    </div>
+</div>

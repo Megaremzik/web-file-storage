@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WS.Business.Services;
@@ -12,14 +15,32 @@ namespace WS.Web.Controllers
     public class DocumentController : Controller
     {
         private DocumentService service;
-        public DocumentController(DocumentService s)
+        private IHostingEnvironment _hostingEnvironment;
+
+        public DocumentController(IHostingEnvironment environment,DocumentService s)
         {
             service = s;
+            _hostingEnvironment = environment;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(List<DocumentView> documents)
         {
-            return View(service.GetAll());
+            return View(documents);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFiles(IFormFile file)
+        {
+            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+
+            if (file.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+            }
+            return RedirectToAction("Index");
         }
         public IActionResult Create()
         {
