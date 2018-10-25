@@ -14,12 +14,12 @@ namespace WS.Web.Controllers
 {
     public class DocumentController : Controller
     {
-        private DocumentService service;
+        private DocumentService _service;
         private IHostingEnvironment _hostingEnvironment;
 
-        public DocumentController(IHostingEnvironment environment,DocumentService s)
+        public DocumentController(IHostingEnvironment environment,DocumentService service)
         {
-            service = s;
+            _service = service;
             _hostingEnvironment = environment;
         }
 
@@ -38,6 +38,7 @@ namespace WS.Web.Controllers
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
+                    //_service.Create()
                 }
             }
             return RedirectToAction("Index");
@@ -49,7 +50,7 @@ namespace WS.Web.Controllers
         [HttpPost]
         public IActionResult Create(DocumentView document)
         {
-            service.Create(document);
+            _service.Create(document);
             return RedirectToAction("Index");
         }
 
@@ -57,7 +58,7 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                DocumentView document = service.Get(id);
+                DocumentView document = _service.Get(id);
                 if (document != null)
                     return View(document);
             }
@@ -68,7 +69,7 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                DocumentView document = service.Get(id);
+                DocumentView document = _service.Get(id);
                 if (document != null)
                     return View(document);
             }
@@ -77,7 +78,7 @@ namespace WS.Web.Controllers
         [HttpPost]
         public IActionResult Edit(DocumentView document)
         {
-            service.Update(document);
+            _service.Update(document);
             return RedirectToAction("Index");
         }
 
@@ -87,7 +88,7 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                DocumentView document = service.Get(id);
+                DocumentView document = _service.Get(id);
                 if (document != null)
                     return View(document);
             }
@@ -99,10 +100,10 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                DocumentView document = service.Get(id);
+                DocumentView document = _service.Get(id);
                 if (document != null)
                 {
-                    service.Delete(id);
+                    _service.Delete(id);
                     return RedirectToAction("Index");
                 }
             }
