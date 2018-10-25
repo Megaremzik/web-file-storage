@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+@Html.Hidden("documents", @Model)
+@Html.Hidden("user", "");
 <script src="~/js/dropzone.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <style>
@@ -52,8 +54,9 @@
         };
     });
 </script>
+<script>document.querySelector('input[name=user]').value = sessionStorage.getItem("user");</script>
 <div class="row">
-    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadFiles">
+    <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
         <div class="form-group">
             <div class="col-md-1">
                 <p>Upload one or more files using this form:</p>
@@ -68,12 +71,15 @@
     </form>
     <div class="col-md-5">
         <table class="table">
-            <tr><td>Name</td><td>Date_change</td><td>Size</td><td>IsFile</td></tr>
+            <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Name</td>
-                </tr>
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Extention</td>
+                <td>@item.Size</td>
+                <td>@item.IsFile</td>
+            </tr>
             }
         </table>
     </div>
@@ -83,7 +89,7 @@
     <h2>File Drag & Drop Upload</h2>
 
     <div class="dropzone-container" id="dropzone">
-        <form action="/Home/UploadFiles" id="uploader" class="dropzone">
+        <form action="/Document/UploadFiles" id="uploader" class="dropzone">
             <div id="dropzone-drop-area" class="dropzone-drop-area">
             </div>
         </form>
