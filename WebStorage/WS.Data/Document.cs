@@ -6,7 +6,7 @@ namespace WS.Data
     public class Document
     {
         public int Id { get; set; }
-        public int User_id { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
         public DateTime Date_change { get; set; }
         public int Size { get; set; }
@@ -15,7 +15,7 @@ namespace WS.Data
 
         public virtual DocumentLink DocumentLink { get; set; }
         public virtual ICollection<UserDocument> UserDocuments { get; set; }
-        //User
+        public virtual User User { get; set; }
 
         public Document()
         {

@@ -4,31 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WS.Data;
-using WS.Interfaces;
+using WS.Business.Services;
+using WS.Business.ViewModels;
 
 namespace WS.Web.Controllers
 {
     public class DocumentController : Controller
     {
-        private IRepository<Document>  repo;
-        public DocumentController(IRepository<Document> r)
+        private DocumentService service;
+        public DocumentController(DocumentService s)
         {
-            repo = r;
+            service = s;
         }
 
         public IActionResult Index()
         {
-            return View(repo.GetAll());
+            return View(service.GetAll());
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Document document)
+        public IActionResult Create(DocumentView document)
         {
-            repo.Create(document);
+            service.Create(document);
             return RedirectToAction("Index");
         }
 
@@ -36,7 +36,7 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                Document document = repo.Get(id);
+                DocumentView document = service.Get(id);
                 if (document != null)
                     return View(document);
             }
@@ -47,16 +47,16 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                Document document = repo.Get(id);
+                DocumentView document = service.Get(id);
                 if (document != null)
                     return View(document);
             }
             return NotFound();
         }
         [HttpPost]
-        public IActionResult Edit(Document document)
+        public IActionResult Edit(DocumentView document)
         {
-            repo.Update(document);
+            service.Update(document);
             return RedirectToAction("Index");
         }
 
@@ -66,7 +66,7 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                Document document = repo.Get(id);
+                DocumentView document = service.Get(id);
                 if (document != null)
                     return View(document);
             }
@@ -74,14 +74,14 @@ namespace WS.Web.Controllers
         }
 
         [HttpPost]
-        public  IActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id != null)
             {
-                Document document = repo.Get(id);
+                DocumentView document = service.Get(id);
                 if (document != null)
                 {
-                    repo.Delete(id);
+                    service.Delete(id);
                     return RedirectToAction("Index");
                 }
             }

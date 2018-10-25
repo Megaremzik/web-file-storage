@@ -14,7 +14,10 @@ namespace WS.Interfaces
         //T Find(Expression<Func<T, bool>> predicate);
         void Create(T item);
         T Get(int? id);
+        T Get(string id1, int? id2);
         void Update(T item);
         void Delete(int? id);
+        void Delete(string id1, int? id2);
+
     }
 }
