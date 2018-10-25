@@ -1,0 +1,22 @@
+﻿@model WS.Data.DocumentLink
+@{
+    ViewBag.Title = "Редактирование";
+}
+<form asp-action="edit" asp-controller="DocumentLink" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="Id" class="control-label">User_id</label>
+        <input type="text" asp-for="Id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Link" class="control-label">Link</label>
+        <input type="text" asp-for="Link" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsEditable" class="control-label">IsEditable</label>
+        <input type="number" asp-for="IsEditable" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <input type="submit" value="Send" class="btn btn-default" />
+    </div>
+</form>

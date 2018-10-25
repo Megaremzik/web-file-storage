@@ -1,0 +1,22 @@
+﻿@model WS.Data.DocumentLink
+@{
+    ViewBag.Title = "Add";
+}
+
+<form asp-action="create" asp-controller="DocumentLink">
+    <div class="form-group">
+        <label asp-for="Id" class="control-label">Id</label>
+        <input type="number" asp-for="Id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Link" class="control-label">Link</label>
+        <input type="text" asp-for="Link" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsEditable" class="control-label">IsEditable</label>
+        <input type="checkbox" asp-for="IsEditable" class="form-control" />
+   
+    <div class="form-group">
+        <input type="submit" value="Send" class="btn btn-default" />
+    </div>
+</form>

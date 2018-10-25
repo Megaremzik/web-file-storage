@@ -10,11 +10,14 @@ namespace WS.Interfaces
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
-        IEnumerable<T> Filter(Expression<Func<T, bool>> predicate);
-        T Get(int id);
-        T Find(Expression<Func<T, bool>> predicate);
+        //IEnumerable<T> Filter(Expression<Func<T, bool>> predicate);
+        //T Find(Expression<Func<T, bool>> predicate);
         void Create(T item);
+        T Get(int? id);
+        T Get(string id1, int? id2);
         void Update(T item);
-        void Delete(int id);
+        void Delete(int? id);
+        void Delete(string id1, int? id2);
+
     }
 }
