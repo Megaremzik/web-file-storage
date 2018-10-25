@@ -16,7 +16,7 @@ namespace WS.Data
         {
             db = context;
         }
-        public IEnumerable<UserDocument> GetAll()
+        public IEnumerable<UserDocument> GetAll(string s = null)
         {
             return db.UserDocument.ToList();
         }

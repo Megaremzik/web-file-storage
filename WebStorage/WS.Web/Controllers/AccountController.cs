@@ -72,7 +72,7 @@ namespace WS.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index","Document", _service.GetAll());
+                    return RedirectToAction("Index","Document", _service.GetAll(model.Email));
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -254,7 +254,7 @@ namespace WS.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]

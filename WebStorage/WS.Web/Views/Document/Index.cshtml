@@ -26,8 +26,8 @@
     }
 
         .dropzone-drop-area:hover {
-            background-color: darkorange;
-            border: dashed 3px black;
+            background-color: white;
+            border: dashed 3px silver;
         }
 </style>
 
@@ -55,7 +55,7 @@
 <div class="row">
     <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UploadFiles">
         <div class="form-group">
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <p>Upload one or more files using this form:</p>
                 <input type="file" name="file" multiple />
             </div>
@@ -79,7 +79,7 @@
     </div>
 </div>
 
-<div class="col-md-2">
+<div class="col-md-1">
     <h2>File Drag & Drop Upload</h2>
 
     <div class="dropzone-container" id="dropzone">

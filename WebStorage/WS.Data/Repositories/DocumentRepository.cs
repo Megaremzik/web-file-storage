@@ -8,6 +8,7 @@ using WS.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace WS.Data
 {
@@ -21,6 +22,10 @@ namespace WS.Data
         public IEnumerable<Document> GetAll()
         {
             return db.Document.ToList();
+        }
+        public IEnumerable<Document> GetAll(string id)
+        {
+            return db.Document.Where(d=>d.UserId==id).ToList();
         }
         public void Create(Document document)
         {

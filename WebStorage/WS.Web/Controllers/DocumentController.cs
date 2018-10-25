@@ -48,7 +48,7 @@ namespace WS.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(DocumentView document)
+        public IActionResult Create(IFormFile document)
         {
             _service.Create(document);
             return RedirectToAction("Index");

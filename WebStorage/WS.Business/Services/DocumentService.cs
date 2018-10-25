@@ -7,6 +7,7 @@ using WS.Data;
 using WS.Interfaces;
 using AutoMapper;
 using WS.Business.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace WS.Business.Services
 {
@@ -15,15 +16,15 @@ namespace WS.Business.Services
         private IRepository<Document> repo;
         private readonly IMapper mapper;
 
-        public DocumentService(IMapper map,IRepository<Document> r)
+        public DocumentService(IMapper map, IRepository<Document> r)
         {
             mapper = map;
             repo = r;
         }
 
-        public IEnumerable<DocumentView> GetAll()
+        public IEnumerable<DocumentView> GetAll(string id)
         {
-            IEnumerable<Document> documents = repo.GetAll();
+            IEnumerable<Document> documents = repo.GetAll(id);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); ;
         }
 
@@ -32,13 +33,12 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
-
-        public void Create(DocumentView documentView)
+        public void Create(IFormFile file)
         {
-            Document document = mapper.Map<DocumentView, Document>(documentView);
-            repo.Create(document);
+            Document doc = new Document();
+            repo.Create(doc);
         }
-   
+
         public void Update(DocumentView documentView)
         {
             Document document = mapper.Map<DocumentView, Document>(documentView);
