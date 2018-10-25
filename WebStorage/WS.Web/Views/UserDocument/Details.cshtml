@@ -1,18 +1,18 @@
-﻿@model WS.Data.UserDocument
+﻿@model WS.Business.ViewModels.UserDocumentView
 @{
-    ViewBag.Title = Model.IdUser;
+    ViewBag.Title = Model.UserId;
 }
-<h2>Id @Model.IdDocument</h2>
+<h2>Id @Model.DocumentId</h2>
 <div>
     <dl class="dl-horizontal">
         <dt>User_id</dt>
-        <dd>@Model.IdUser</dd>
+        <dd>@Model.UserId</dd>
 
         <dt>Name</dt>
         <dd>@Model.Link</dd>
 
         <dt>Date_change</dt>
-        <dd>@Model.IdDocument</dd>
+        <dd>@Model.DocumentId</dd>
 
        
     </dl>

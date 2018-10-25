@@ -27,11 +27,11 @@ namespace WS.Data
         }
         public UserDocument Get(string id1, int? id2)
         {
-            return db.UserDocument.Where(e => e.IdUser == id1).Where(e => e.IdDocument == id2).SingleOrDefault();
+            return db.UserDocument.Where(e => e.UserId == id1).Where(e => e.DocumentId == id2).SingleOrDefault();
         }
         public UserDocument Get(int? id)
         {
-            return db.UserDocument.Where(e => e.IdDocument == id).SingleOrDefault();
+            return db.UserDocument.Where(e => e.DocumentId == id).SingleOrDefault();
         }
 
             public void Update(UserDocument userDocument)

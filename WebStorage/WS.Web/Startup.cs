@@ -39,12 +39,13 @@ namespace WS.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddDbContext<StorageContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+           
             services.AddScoped<IRepository<Document>, DocumentRepository>();
             services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
             services.AddScoped<IRepository<UserDocument>, UserDocumentRepository>();
             services.AddTransient<DocumentService>();
+            services.AddTransient<DocumentLinkService>();
+            services.AddTransient<UserDocumentService>();
 
             services.AddAutoMapper();
 

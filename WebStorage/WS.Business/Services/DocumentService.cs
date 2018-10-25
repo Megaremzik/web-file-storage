@@ -24,7 +24,7 @@ namespace WS.Business.Services
         public IEnumerable<DocumentView> GetAll()
         {
             IEnumerable<Document> documents = repo.GetAll();
-            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); ;
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
 
         public DocumentView Get(int? id)

@@ -534,7 +534,6 @@
     <Compile Include="Repositories\DocumentLinkRepository.cs" />
     <Compile Include="Repositories\DocumentRepository.cs" />
     <Compile Include="Repositories\UserDocumentRepository.cs" />
-    <Compile Include="StorageContext.cs" />
     <Compile Include="UserDocument.cs" />
   </ItemGroup>
   <ItemGroup>
