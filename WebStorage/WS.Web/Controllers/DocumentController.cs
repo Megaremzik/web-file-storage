@@ -22,14 +22,13 @@ namespace WS.Web.Controllers
             _service = service;
             _hostingEnvironment = environment;
         }
-
-        public IActionResult Index(List<DocumentView> documents)
+        public IActionResult Index(IEnumerable<DocumentView> documents)
         {
             return View(documents);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFiles(IFormFile file)
+        public async Task<IActionResult> UploadFiles(IFormFile file, IEnumerable<DocumentView> documents, string user)
         {
             var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
 
@@ -38,10 +37,11 @@ namespace WS.Web.Controllers
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
-                    //_service.Create()
+                    _service.Create(file);
                 }
             }
-            return RedirectToAction("Index");
+            documents = _service.GetAll(user);
+            return RedirectToAction("Index",documents);
         }
         public IActionResult Create()
         {

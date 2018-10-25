@@ -25,7 +25,7 @@ namespace WS.Data
         }
         public IEnumerable<Document> GetAll(string id)
         {
-            return db.Document.Where(d=>d.UserId==id).ToList();
+            return db.Document.Where(d=>d.User.Email==id).ToList();
         }
         public void Create(Document document)
         {

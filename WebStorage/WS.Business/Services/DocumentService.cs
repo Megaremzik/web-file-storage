@@ -35,7 +35,7 @@ namespace WS.Business.Services
         }
         public void Create(IFormFile file)
         {
-            Document doc = new Document();
+            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType };
             repo.Create(doc);
         }
 
