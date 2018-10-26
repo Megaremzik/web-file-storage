@@ -33,9 +33,9 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
-        public void Create(IFormFile file)
+        public void Create(IFormFile file, string userId)
         {
-            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType };
+            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId};
             repo.Create(doc);
         }
 
