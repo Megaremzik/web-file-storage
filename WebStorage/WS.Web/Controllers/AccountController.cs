@@ -72,7 +72,7 @@ namespace WS.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Index","Document", _service.GetAll(model.Email));
+                    return RedirectToAction("Index","Document", new {user= model.Email });
                 }
                 if (result.RequiresTwoFactor)
                 {
