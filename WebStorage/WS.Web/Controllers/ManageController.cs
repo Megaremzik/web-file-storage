@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WS.Business.ViewModels.ManageViewModels;
 using WS.Data;
-using WS.Data.ManageViewModels;
 using WS.Web.Extensions;
 using WS.Web.Services;
 

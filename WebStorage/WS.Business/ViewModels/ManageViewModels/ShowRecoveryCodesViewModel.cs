@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WS.Data.AccountViewModels
+namespace WS.Business.ViewModels.ManageViewModels
 {
-    public class ForgotPasswordViewModel
+    public class ShowRecoveryCodesViewModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string[] RecoveryCodes { get; set; }
     }
 }

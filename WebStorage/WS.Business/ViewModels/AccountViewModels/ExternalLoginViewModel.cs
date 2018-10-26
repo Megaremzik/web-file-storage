@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WS.Data.AccountViewModels
+namespace WS.Business.ViewModels.AccountViewModels
 {
     public class ExternalLoginViewModel
     {

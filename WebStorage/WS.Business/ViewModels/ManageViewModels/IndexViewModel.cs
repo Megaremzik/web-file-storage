@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WS.Data.ManageViewModels
+namespace WS.Business.ViewModels.ManageViewModels
 {
     public class IndexViewModel
     {

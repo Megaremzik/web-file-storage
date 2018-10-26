@@ -505,26 +505,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountViewModels\ExternalLoginViewModel.cs" />
-    <Compile Include="AccountViewModels\ForgotPasswordViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginWith2faViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginWithRecoveryCodeViewModel.cs" />
-    <Compile Include="AccountViewModels\RegisterViewModel.cs" />
-    <Compile Include="AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentLink.cs" />
     <Compile Include="ErrorViewModel.cs" />
-    <Compile Include="ManageViewModels\ChangePasswordViewModel.cs" />
-    <Compile Include="ManageViewModels\EnableAuthenticatorViewModel.cs" />
-    <Compile Include="ManageViewModels\ExternalLoginsViewModel.cs" />
-    <Compile Include="ManageViewModels\IndexViewModel.cs" />
-    <Compile Include="ManageViewModels\RemoveLoginViewModel.cs" />
-    <Compile Include="ManageViewModels\SetPasswordViewModel.cs" />
-    <Compile Include="ManageViewModels\ShowRecoveryCodesViewModel.cs" />
-    <Compile Include="ManageViewModels\TwoFactorAuthenticationViewModel.cs" />
     <Compile Include="Migrations\00000000000000_CreateIdentitySchema.cs" />
     <Compile Include="Migrations\00000000000000_CreateIdentitySchema.Designer.cs">
       <DependentUpon>00000000000000_CreateIdentitySchema.cs</DependentUpon>
