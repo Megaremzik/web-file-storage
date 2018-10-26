@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WS.Business.Services;
 using WS.Data;
 using WS.Data.AccountViewModels;
 using WS.Web;
@@ -22,17 +23,20 @@ namespace WS.Web.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
+        private DocumentService _service;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
+            DocumentService service,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
+            _service = service;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -64,10 +68,11 @@ namespace WS.Web.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index","Document");
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -249,7 +254,7 @@ namespace WS.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         [HttpPost]
