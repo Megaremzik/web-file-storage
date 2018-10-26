@@ -7,24 +7,23 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using WS.Interfaces;
 using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
-
 namespace WS.Web.Controllers
 {
     public class DocumentController : Controller
     {
         private DocumentService _service;
-        private IHostingEnvironment _hostingEnvironment;
+        private IPathProvider _pathProvider;
         private readonly UserManager<User> _userManager;
 
 
-        public DocumentController(IHostingEnvironment environment,DocumentService service, UserManager<User> userManager)
+        public DocumentController(IPathProvider pathProvider,DocumentService service, UserManager<User> userManager)
         {
             _service = service;
-            _hostingEnvironment = environment;
+            _pathProvider = pathProvider;
             _userManager = userManager;
         }
         [HttpGet]
@@ -39,7 +38,7 @@ namespace WS.Web.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile file)
         {
             string userId = _userManager.GetUserId(User);
-            var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            var uploads = _pathProvider.MapPath("uploads");
 
             if (file.Length > 0)
             {
