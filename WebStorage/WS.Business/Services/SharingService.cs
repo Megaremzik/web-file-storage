@@ -5,20 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using WS.Business.ViewModels;
 
 namespace WS.Business.Services
 {
     class SharingService
     {
-        User user = new User();
-        public SharingService()
+        DocumentService _documentService;
+        DocumentLinkService _linkService;
+        UserDocumentService _userDocument;
+        UserManager<User> _userManager;
+
+        public SharingService(
+            DocumentService documentService,
+            DocumentLinkService documentLinkService,
+            UserDocumentService userDocumentService,
+            UserManager<User> manager
+            )
+        {
+            _documentService = documentService;
+            _linkService = documentLinkService;
+            _userDocument = userDocumentService;
+            _userManager = manager;
+        }
+
+        public string OpenPublicAccesToFile(int fileId, User user)
         {
             
-        }
-        public Guid OpenPublicAccesToFile(int? fileid)
-        {
-            HttpContext context. 
-            return Guid.NewGuid();
+            return null;
         }
     }
 }

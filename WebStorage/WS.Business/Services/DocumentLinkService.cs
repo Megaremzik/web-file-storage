@@ -12,10 +12,10 @@ namespace WS.Business.Services
 {
     public class DocumentLinkService
     {
-        private IRepository<DocumentLink> repo;
+        private DocumentLinkRepository repo;
         private readonly IMapper mapper;
 
-        public DocumentLinkService(IMapper map, IRepository<DocumentLink> r)
+        public DocumentLinkService(IMapper map, DocumentLinkRepository r)
         {
             mapper = map;
             repo = r;

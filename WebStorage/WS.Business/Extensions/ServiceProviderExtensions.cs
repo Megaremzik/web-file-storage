@@ -7,7 +7,7 @@ namespace WS.Business.Extensions
 {
     public static class ServiceProviderExtensions
     {
-        public static void AddShare(this IServiceCollection services)
+        public static void AddSharing(this IServiceCollection services)
         {
             services.AddTransient<SharingService>();
         }

@@ -12,10 +12,10 @@ namespace WS.Business.Services
 {
     public class DocumentService
     {
-        private IRepository<Document> repo;
+        private DocumentRepository repo;
         private readonly IMapper mapper;
 
-        public DocumentService(IMapper map,IRepository<Document> r)
+        public DocumentService(IMapper map, DocumentRepository r)
         {
             mapper = map;
             repo = r;
@@ -49,5 +49,7 @@ namespace WS.Business.Services
         {
             repo.Delete(id);
         }
+
+       
     }
 }

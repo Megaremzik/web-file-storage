@@ -34,15 +34,14 @@ namespace WS.Data
             return db.UserDocument.Where(e => e.DocumentId == id).SingleOrDefault();
         }
 
-            public void Update(UserDocument userDocument)
+        public void Update(UserDocument userDocument)
         {
             db.UserDocument.Update(userDocument);
             db.SaveChanges();
         }
-
         public void Delete(string id1, int? id2)
         {
-            db.UserDocument.Remove(Get(id1,id2));
+            db.UserDocument.Remove(Get(id1, id2));
             db.SaveChanges();
         }
         public void Delete(int? id)

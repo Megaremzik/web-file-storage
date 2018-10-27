@@ -12,10 +12,10 @@ namespace WS.Business.Services
 {
     public class UserDocumentService
     {
-        private IRepository<UserDocument> repo;
+        private UserDocumentRepository repo;
         private readonly IMapper mapper;
 
-        public UserDocumentService(IMapper map, IRepository<UserDocument> r)
+        public UserDocumentService(IMapper map, UserDocumentRepository r)
         {
             mapper = map;
             repo = r;

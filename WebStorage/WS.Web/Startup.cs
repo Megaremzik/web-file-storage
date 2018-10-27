@@ -14,6 +14,7 @@ using WS.Web.Services;
 using WS.Interfaces;
 using WS.Business.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace WS.Web
 {
@@ -48,8 +49,9 @@ namespace WS.Web
             services.AddTransient<DocumentLinkService>();
             services.AddTransient<UserDocumentService>();
 
-            services.AddShare();
+            
             services.AddAutoMapper();
+            services.AddSharing();
             services.AddMvc();
         }
 
@@ -70,7 +72,7 @@ namespace WS.Web
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
