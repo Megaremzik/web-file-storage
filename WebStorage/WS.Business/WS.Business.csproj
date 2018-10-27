@@ -198,9 +198,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DocumentLinkService.cs" />
     <Compile Include="Services\DocumentService.cs" />
+    <Compile Include="Services\SharingService.cs" />
     <Compile Include="Services\UserDocumentService.cs" />
     <Compile Include="ViewModels\DocumentLinkView.cs" />
     <Compile Include="ViewModels\DocumentView.cs" />

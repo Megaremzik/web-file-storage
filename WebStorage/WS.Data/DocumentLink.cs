@@ -13,7 +13,7 @@ namespace WS.Data
         [Key]
         [ForeignKey("Document")]
         public int Id { get; set; }
-        public string Link { get; set; }
+        public Guid Link { get; set; }
         public bool IsEditable { get; set; }
 
         public virtual Document Document { get; set; }
