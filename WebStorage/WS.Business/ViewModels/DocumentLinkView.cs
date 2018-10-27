@@ -12,7 +12,6 @@ namespace WS.Business.ViewModels
         public int Id { get; set; }
         public string Link { get; set; }
         public bool IsEditable { get; set; }
-
         public virtual Document Document { get; set; }
     }
 }

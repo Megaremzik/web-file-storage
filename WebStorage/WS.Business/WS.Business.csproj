@@ -209,6 +209,7 @@
     <Compile Include="ViewModels\DocumentLinkView.cs" />
     <Compile Include="ViewModels\DocumentView.cs" />
     <Compile Include="ViewModels\UserDocumentView.cs" />
+    <Compile Include="ViewModels\UserView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WS.Data\WS.Data.csproj">
