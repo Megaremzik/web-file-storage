@@ -15,7 +15,11 @@ namespace WS.Data.Repositories
         }
         public string GetUserIdByDocumentId(int documentId)
         {
-            return db.Document.SingleOrDefault(n => n.Id == documentId)?.UserId;
+            return db.Document.FirstOrDefault(n => n.Id == documentId)?.UserId;
+        }
+        public string GetUserIdByName(string name)
+        {
+            return db.Users.FirstOrDefault(n => n.UserName == name)?.Id;
         }
     }
 }

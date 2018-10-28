@@ -7,7 +7,7 @@ using WS.Data.Repositories;
 
 namespace WS.Business.Services
 {
-    class UserService
+    public class UserService
     {
         private UserRepository repo;
         public UserService(UserRepository r)
@@ -17,6 +17,10 @@ namespace WS.Business.Services
         public string GetUserIdByDocumentId(int documentId)
         {
             return repo.GetUserIdByDocumentId(documentId);
+        }
+        public string GetUserIdByName(string name)
+        {
+            return repo.GetUserIdByName(name);
         }
     }
 }
