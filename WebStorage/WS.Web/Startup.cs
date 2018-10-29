@@ -13,6 +13,7 @@ using WS.Web.Services;
 using WS.Interfaces;
 using WS.Business.Services;
 using AutoMapper;
+using WS.Business;
 
 namespace WS.Web
 {
@@ -43,7 +44,7 @@ namespace WS.Web
             services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
             services.AddScoped<IRepository<UserDocument>, UserDocumentRepository>();
             services.AddTransient<DocumentService>();
-
+            services.AddSingleton<IPathProvider, PathProvider>();
             services.AddAutoMapper();
 
             services.AddMvc();

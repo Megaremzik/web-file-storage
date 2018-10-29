@@ -38,7 +38,7 @@ namespace WS.Web.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile file)
         {
             string userId = _userManager.GetUserId(User);
-            var uploads = _pathProvider.MapPath("uploads");
+            var uploads = _pathProvider.MapPath(userId);
 
             if (file.Length > 0)
             {
@@ -54,12 +54,6 @@ namespace WS.Web.Controllers
         {
             return View();
         }
-        [HttpPost]
-        //public IActionResult Create(IFormFile document)
-        //{
-        //    _service.Create(document);
-        //    return RedirectToAction("Index");
-        //}
 
         public IActionResult Details(int? id)
         {
