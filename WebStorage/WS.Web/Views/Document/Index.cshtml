@@ -51,6 +51,16 @@
             }
         };
     });
+    Dropzone.options.uploader = {
+        init: function () {
+            this.on("sending", function (file, xhr, data) {
+                if (file.fullPath) {
+                    data.append("fullPath", file.fullPath);
+                    console.log(file.fullPath);
+                }
+            });
+        }
+    };
 </script>
 <div class="row">
     <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
