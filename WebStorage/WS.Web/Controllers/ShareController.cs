@@ -25,11 +25,20 @@ namespace WS.Web.Controllers
             //_sharingService.Createdocuments();
             return View();
         }
-        public IActionResult Get()
+        public IActionResult Get(string id)
         {
-            DocumentView doc = _sharingService.GetSharedDocument("p3a3ee20a-06da-4d24-b752-ad5e70333fac", HttpContext.User.Identity.Name);
-            return View(doc);
+            // p3a3ee20a-06da-4d24-b752-ad5e70333fac
+            
+            DocumentView doc = _sharingService.GetSharedDocument(id, HttpContext.User.Identity.Name, out bool isEditable);
+            if (doc.IsFile)
+            {
+                return View(doc);
+            }
+            else
+            {
+                return null; //TODO
+            }
+            
         }
-        
     }
 }

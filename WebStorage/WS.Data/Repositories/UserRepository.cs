@@ -17,9 +17,10 @@ namespace WS.Data.Repositories
         {
             return db.Document.FirstOrDefault(n => n.Id == documentId)?.UserId;
         }
-        public string GetUserIdByName(string name)
+
+        public User GetUserByName(string userName)
         {
-            return db.Users.FirstOrDefault(n => n.UserName == name)?.Id;
+            return db.Users.FirstOrDefault(n => n.UserName == userName);
         }
     }
 }

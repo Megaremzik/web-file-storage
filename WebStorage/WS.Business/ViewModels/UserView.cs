@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace WS.Business.ViewModels
 {
-    class UserView
+    public class UserView
     {
         public string Id;
+        public string UserName;
         public string Email { get; set; }
         public virtual ICollection<UserDocumentView> UserDocuments { get; set; }
         public virtual ICollection<DocumentView> Documents { get; set; }

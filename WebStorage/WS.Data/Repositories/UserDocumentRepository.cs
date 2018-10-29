@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WS.Data
 {
-    public class UserDocumentRepository : IRepository<UserDocument>
+    public class UserDocumentRepository
     {
         private ApplicationDbContext db;
         public UserDocumentRepository(ApplicationDbContext context)
@@ -25,15 +25,18 @@ namespace WS.Data
             db.UserDocument.Add(userDocument);
             db.SaveChanges();
         }
-        public UserDocument Get(string id1, int? id2)
+        public UserDocument Get(string guestEmail, int? documentId)
         {
-            return db.UserDocument.Where(e => e.UserId == id1).Where(e => e.DocumentId == id2).SingleOrDefault();
+            return db.UserDocument.Where(e => e.UserId == guestEmail).Where(e => e.DocumentId == documentId).SingleOrDefault();
         }
-        public UserDocument Get(int? id)
+        public IEnumerable<UserDocument> GetUserDocumentsByDocumentId(int? documentId)
         {
-            return db.UserDocument.Where(e => e.DocumentId == id).SingleOrDefault();
+            return db.UserDocument.Where(e => e.DocumentId == documentId);
         }
-
+        public IEnumerable<UserDocument> GetUserDocumentsByGuestId(string guestId)
+        {
+            return db.UserDocument.Where(e => e.UserId == guestId);
+        }
         public void Update(UserDocument userDocument)
         {
             db.UserDocument.Update(userDocument);
@@ -44,11 +47,5 @@ namespace WS.Data
             db.UserDocument.Remove(Get(id1, id2));
             db.SaveChanges();
         }
-        public void Delete(int? id)
-        {
-            db.UserDocument.Remove(Get(id));
-            db.SaveChanges();
-        }
-
     }
 }

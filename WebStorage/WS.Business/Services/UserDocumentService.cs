@@ -26,12 +26,22 @@ namespace WS.Business.Services
             IEnumerable<UserDocument> userDocuments = repo.GetAll();
             return mapper.Map<IEnumerable<UserDocument>, IEnumerable<UserDocumentView>>(userDocuments);
         }
-        public UserDocumentView Get(string id1, int? id2)
+        public UserDocumentView Get(string guestEmail, int? documentId)
         {
-            UserDocument userDocument = repo.Get(id1,id2);
+            UserDocument userDocument = repo.Get(guestEmail, documentId);
             return mapper.Map<UserDocument, UserDocumentView>(userDocument);
         }
+        public IEnumerable<UserDocumentView> GetUserDocumentsByDocumentId(int? documentId)
+        {
+            IEnumerable<UserDocument> userDocuments = repo.GetUserDocumentsByDocumentId(documentId);
+            return mapper.Map<IEnumerable<UserDocument>, IEnumerable<UserDocumentView>>(userDocuments);
+        }
+        public IEnumerable<UserDocumentView> GetUserDocumentsByGuestId(string guestId)
+        {
+            IEnumerable<UserDocument> userDocuments = repo.GetUserDocumentsByGuestId(guestId);
+            return mapper.Map<IEnumerable<UserDocument>, IEnumerable<UserDocumentView>>(userDocuments);
 
+        }
         public void Create(UserDocumentView userDocumentView)
         {
             UserDocument userDocument = mapper.Map<UserDocumentView, UserDocument>(userDocumentView);

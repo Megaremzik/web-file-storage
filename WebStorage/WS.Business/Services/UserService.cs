@@ -1,8 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WS.Business.ViewModels;
+using WS.Data;
 using WS.Data.Repositories;
 
 namespace WS.Business.Services
@@ -10,17 +12,20 @@ namespace WS.Business.Services
     public class UserService
     {
         private UserRepository repo;
-        public UserService(UserRepository r)
+        IMapper mapper;
+        public UserService(IMapper map, UserRepository r)
         {
+            mapper = map;
             repo = r;
         }
         public string GetUserIdByDocumentId(int documentId)
         {
             return repo.GetUserIdByDocumentId(documentId);
         }
-        public string GetUserIdByName(string name)
+        public UserView GetUserByName(string userName)
         {
-            return repo.GetUserIdByName(name);
+            User user = repo.GetUserByName(userName);
+            return mapper.Map<User, UserView>(user);
         }
     }
 }

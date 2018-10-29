@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WS.Data
 {
-    public class DocumentLinkRepository : IRepository<DocumentLink>
+    public class DocumentLinkRepository
     {
         private ApplicationDbContext db;
         public DocumentLinkRepository(ApplicationDbContext context)
@@ -29,12 +29,6 @@ namespace WS.Data
         {
             return db.DocumentLink.FirstOrDefault(p => p.Id == id);
         }
-        public DocumentLink Get(string id1, int? id2)
-        {
-            return Get(id2);
-        }
-
-
         public void Update(DocumentLink documentLink)
         {
             db.DocumentLink.Update(documentLink);
@@ -45,10 +39,6 @@ namespace WS.Data
         {
             db.DocumentLink.Remove(Get(id));
             db.SaveChanges();
-        }
-        public void Delete(string id1, int? id2)
-        {
-            Delete(id2);
         }
     }
 }

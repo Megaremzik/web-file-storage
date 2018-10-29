@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WS.Data
 {
-    public class DocumentRepository : IRepository<Document>
+    public class DocumentRepository
     {
         private ApplicationDbContext db;
         public DocumentRepository(ApplicationDbContext context)
@@ -31,11 +31,6 @@ namespace WS.Data
         {
             return db.Document.FirstOrDefault(p => p.Id == id);
         }
-        public Document Get(string id1, int? id2)
-        {
-            return Get(id2);
-        }
-
         public void Update(Document document)
         {
             db.Document.Update(document);
@@ -46,10 +41,6 @@ namespace WS.Data
         {
             db.Document.Remove(Get(id));
             db.SaveChanges();
-        }
-        public void Delete(string id1, int? id2)
-        {
-            Delete(id2);
         }
     }
 }
