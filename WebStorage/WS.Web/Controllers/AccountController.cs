@@ -8,23 +8,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WS.Business.Services;
 using WS.Business.ViewModels.AccountViewModels;
 using WS.Data;
-using WS.Web;
+using WS.Interfaces;
 using WS.Web.Extensions;
-using WS.Web.Services;
-
 namespace WS.Web.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private DocumentService _service;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -37,7 +33,6 @@ namespace WS.Web.Controllers
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
-            _service = service;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -51,7 +46,6 @@ namespace WS.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;

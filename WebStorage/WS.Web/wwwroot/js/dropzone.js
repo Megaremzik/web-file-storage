@@ -211,7 +211,7 @@ var Dropzone = function (_Emitter) {
         parallelChunkUploads: false,
 
         /**
-         * Whether a chunk should be retried if it fails.
+         * Whether a chunk should be retried if it .
          */
         retryChunks: false,
 
