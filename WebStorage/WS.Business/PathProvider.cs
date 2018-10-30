@@ -22,14 +22,23 @@ namespace WS.Business
 
         public string MapPath(string path)
         {
-            var filePath = Path.Combine(rootpath, path);
-            CreateFolder(filePath);
-            return filePath;
+            rootpath = Path.Combine(rootpath, path);
+            CreateFolder(rootpath);
+            return rootpath;
         }
 
         public void CreateFolder(string path)
         {
             Directory.CreateDirectory(path);
+        }
+        public string[] SplitPath(string path)
+        {
+            var str = path.Split('/');
+            for(int i = 0; i < str.Length - 1; i++)
+            {
+                MapPath(str[i]);
+            }
+            return str;
         }
     }
 }

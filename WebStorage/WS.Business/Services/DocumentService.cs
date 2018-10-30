@@ -33,12 +33,16 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
-        public void Create(IFormFile file, string userId)
+        public void Create(IFormFile file, string userId, int parentId=0)
         {
-            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId};
+            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId, ParentId = parentId };
             repo.Create(doc);
         }
-
+        public void Create(string folder, string userId, int parentId=0)
+        {
+            Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId=parentId };
+            repo.Create(doc);
+        }
         public void Update(DocumentView documentView)
         {
             Document document = mapper.Map<DocumentView, Document>(documentView);
@@ -48,6 +52,17 @@ namespace WS.Business.Services
         public void Delete(int? id)
         {
             repo.Delete(id);
+        }
+
+        public int CreateFolders(string[] folder,string userId)
+        {
+            int parentId = 0;
+            for(int i=0; i < folder.Length - 1; i++)
+            {
+                Create(folder[i], userId, parentId);
+                parentId=Get(folder[i]);
+            }
+            return parentId;
         }
     }
 }

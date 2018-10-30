@@ -9,5 +9,6 @@ namespace WS.Interfaces
     public interface IPathProvider
     {
         string MapPath(string path);
+        string[] SplitPath(string fullpath);
     }
 }

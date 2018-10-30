@@ -35,17 +35,17 @@ namespace WS.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFiles(IFormFile file)
+        public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
         {
             string userId = _userManager.GetUserId(User);
             var uploads = _pathProvider.MapPath(userId);
-
+            var parentId=_service.CreateFolders(_pathProvider.SplitPath(fullpath),userId);
             if (file.Length > 0)
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
-                    _service.Create(file,userId);
+                    _service.Create(file,userId,parentId);
                 }
             }
             return RedirectToAction("Index");
