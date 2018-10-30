@@ -50,34 +50,25 @@
             </form>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-6">
         <section>
             <h4>Use another service to log in.</h4>
             <hr />
             @{
                 var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-                if (loginProviders.Count == 0)
-                {
+                <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
+                        <button type="submit" class="btn btn-facebook btn-social" name="provider" value="@loginProviders[1].Name" title="Log in using your @loginProviders[1].DisplayName account"><i class="fab fa-facebook-f"></i>@loginProviders[1].Name</button>
+                        <button type="submit" class="btn btn-google btn-social" name="provider" value="@loginProviders[0].Name" title="Log in using your @loginProviders[0].DisplayName account"><i class="fab fa-google"></i>@loginProviders[0].Name</button>
+
+                        @*<p>
+                            @foreach (var provider in loginProviders)
+                            {
+                                <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                            }
+                        </p>*@
                     </div>
-                }
-                else
-                {
-                    <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
+                </form>
             }
         </section>
     </div>
