@@ -26,4 +26,8 @@
     <ProjectReference Include="..\WS.Interfaces\WS.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

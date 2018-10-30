@@ -60,7 +60,7 @@ namespace WS.Business.Services
             for(int i=0; i < folder.Length - 1; i++)
             {
                 Create(folder[i], userId, parentId);
-                parentId=Get(folder[i]);
+                parentId= repo.GetIdByName(folder[i],parentId);
             }
             return parentId;
         }

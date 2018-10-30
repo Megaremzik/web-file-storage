@@ -50,6 +50,6 @@ namespace WS.Data
             db.UserDocument.Remove(Get(id));
             db.SaveChanges();
         }
-
+        public int GetIdByName(string name, int parentId) { return 0; }
     }
 }

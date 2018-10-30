@@ -36,7 +36,7 @@ namespace WS.Data
         {
             return db.Document.FirstOrDefault(p => p.Id == id);
         }
-        public int Get(string name)
+        public int GetIdByName(string name, int parentId)
         {
             return db.Document.FirstOrDefault(p => p.Name == name).Id;
         }

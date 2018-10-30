@@ -50,5 +50,6 @@ namespace WS.Data
         {
             Delete(id2);
         }
+        public int GetIdByName(string name, int parentId) { return 0; }
     }
 }

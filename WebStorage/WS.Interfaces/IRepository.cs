@@ -15,6 +15,7 @@ namespace WS.Interfaces
         void Create(T item);
         T Get(int? id);
         T Get(string id1, int? id2);
+        int GetIdByName(string name, int parentId);
         void Update(T item);
         void Delete(int? id);
         void Delete(string id1, int? id2);
