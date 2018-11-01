@@ -34,14 +34,13 @@ namespace WS.Business.Services
 
         public string OpenPublicAccesToFile(int documentId, bool isEditable, string userName)
         {
-            DocumentView document = _documentService.Get(documentId);
-            if (document == null)
+            
+            if (!IsDocumentExist(documentId))
             {
                 throw new Exception("Document is not exist");
             }
-            string userId = _userService.GetUserIdByDocumentId(documentId);
-            string userId2 = _userService.GetUserByName(userName).Id;
-            if (userId != userId2)
+
+            if (!IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
@@ -55,17 +54,18 @@ namespace WS.Business.Services
 
             return DocumentLinkIdentifier + guid;
         }
-        public void ClosePublicAccesToFile(int documentId, string ownerName)
+
+  
+        public void ClosePublicAccesToFile(int documentId, string userName)
         {
-            string userId = _userService.GetUserIdByDocumentId(documentId);
-            string userId2 = _userService.GetUserByName(ownerName).Id;
-            if (userId != userId2)
+
+            if (!IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-
-            DocumentView document = _documentService.Get(documentId);
-            if (document != null)
+            //--------------------------------------------------------
+            DocumentLinkView documentLink = _documentLinkService.Get(documentId);
+            if (documentLink != null)
             {
                 _documentLinkService.Delete(documentId);
             }
@@ -97,14 +97,13 @@ namespace WS.Business.Services
         }
         public string OpenLimitedAccesToFile(int documentId, bool isEditable, string ownerName, string guestEmail)
         {
-            DocumentView document = _documentService.Get(documentId);
-            if (document == null)
+            
+            if (!IsDocumentExist(documentId))
             {
                 throw new Exception("Document is not exist");
             }
-            string userId = _userService.GetUserIdByDocumentId(documentId);
-            string ownerUserId = _userService.GetUserByName(ownerName).Id;
-            if (userId != ownerUserId)
+            
+            if (!IsUserTheOwnerOfTheDocument(ownerName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
@@ -127,11 +126,10 @@ namespace WS.Business.Services
             return UserDocumentIdentifier + guid;
         }
 
-        public void CloseLimitedAccesToFileEntire(int documentId, string ownerName)
+        public void CloseLimitedAccesToFileEntire(int documentId, string userName)
         {
-            string userId = _userService.GetUserIdByDocumentId(documentId);
-            string ownerUserId = _userService.GetUserByName(ownerName).Id;
-            if (userId != ownerUserId)
+            
+            if (IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
@@ -141,6 +139,17 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.UserId, p.DocumentId);
             }
+        }
+        private bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
+        {
+            string userId = _userService.GetUserIdByDocumentId(documentId);
+            string userId2 = _userService.GetUserByName(userName).Id;
+            return userId == userId2;
+        }
+        private bool IsDocumentExist(int documentId)
+        {
+            DocumentView document = _documentService.Get(documentId);
+            return document != null ? true : false;
         }
         private string GenerateUniqueGuid()
         {
