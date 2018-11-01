@@ -33,6 +33,7 @@ namespace WS.Business
         }
         public string[] SplitPath(string path)
         {
+            if (path == null) return null;
             var str = path.Split('/');
             for(int i = 0; i < str.Length - 1; i++)
             {

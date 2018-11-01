@@ -29,8 +29,12 @@ namespace WS.Data
         }
         public void Create(Document document)
         {
-            db.Document.Add(document);
-            db.SaveChanges();
+            var doc=db.Document.Where(d => d.Name == document.Name && d.ParentId==document.ParentId);
+            if (doc.Count() == 0)
+            {
+                db.Document.Add(document);
+                db.SaveChanges();
+            }   
         }
         public Document Get(int? id)
         {

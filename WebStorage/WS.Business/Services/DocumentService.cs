@@ -56,6 +56,7 @@ namespace WS.Business.Services
 
         public int CreateFolders(string[] folder,string userId)
         {
+            if (folder == null) return 0;
             int parentId = 0;
             for(int i=0; i < folder.Length - 1; i++)
             {
