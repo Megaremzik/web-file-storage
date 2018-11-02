@@ -81,18 +81,7 @@
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">
-                    <table class="table">
-                        <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.Name</td>
-                                <td>@item.Extention</td>
-                                <td>@item.Size</td>
-                                <td>@item.IsFile</td>
-                            </tr>
-                        }
-                    </table>
+                    @{await Html.RenderPartialAsync("_GetDocuments",Model);}
                 </div>
             </form>
         </div>
