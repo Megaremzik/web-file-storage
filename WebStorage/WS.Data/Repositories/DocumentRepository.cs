@@ -29,7 +29,7 @@ namespace WS.Data
         }
         public void Create(Document document)
         {
-            var doc=db.Document.Where(d => d.Name == document.Name && d.ParentId==document.ParentId);
+            var doc=db.Document.Where(d => d.Name == document.Name && d.ParentId==document.ParentId && d.UserId == document.UserId);
             if (doc.Count() == 0)
             {
                 db.Document.Add(document);

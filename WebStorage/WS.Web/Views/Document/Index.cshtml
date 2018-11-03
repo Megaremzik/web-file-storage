@@ -59,20 +59,8 @@
                 }
             });
             this.on("queuecomplete", function (file) {
-                @*$.ajax({
-                    url: @Url.Action("Index", "Document"),
-                    data: @Model,
-                    type: "POST",
-                    cache: false,
-                    success: function (data) {
-                         $("#dropzone-drop-area").innerHTML = data;
-            }
-        });*@
                  $('#dropzone-drop-area').load('@Url.Action("ReturnPartial", "Document")');
             });
-            @*this.on("complete", function (file) {
-                $('#dropzone-drop-area').load('@Url.Action("_GetDocuments", "Document",Model)');
-            });*@
         }
     };
 </script>
@@ -90,7 +78,7 @@
         </div>
     </form>
     <div class="col-md-8">
-        <h2>File Drag & Drop Upload</h2>
+        <h2>Your files</h2>
 
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
@@ -101,18 +89,4 @@
         </div>
     </div>
 </div>
-<script>
-    @*var t = setTimeout(function () { $("#dropzone-drop-area").load("_GetDocuments",@Model); }, 600);*@
-    @*var t = setTimeout(function () {
-        $.ajax({
-            url: "_GetDocuments",
-            data: @Model,
-            type: "POST",
-            cache: false,
-            success: function (data) {
-                $("#dropzone-drop-area").innerHTML = data;
-            }
-        });
-    }, 100);*@
-</script>
 
