@@ -58,6 +58,21 @@
                     console.log(file.fullPath);
                 }
             });
+            this.on("queuecomplete", function (file) {
+                @*$.ajax({
+                    url: @Url.Action("Index", "Document"),
+                    data: @Model,
+                    type: "POST",
+                    cache: false,
+                    success: function (data) {
+                         $("#dropzone-drop-area").innerHTML = data;
+            }
+        });*@
+                 $('#dropzone-drop-area').load('@Url.Action("ReturnPartial", "Document")');
+            });
+            @*this.on("complete", function (file) {
+                $('#dropzone-drop-area').load('@Url.Action("_GetDocuments", "Document",Model)');
+            });*@
         }
     };
 </script>
@@ -65,7 +80,6 @@
     <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
         <div class="form-group">
             <div class="col-md-1">
-                <p>Upload one or more files using this form:</p>
                 <input type="file" name="file" multiple />
             </div>
         </div>
@@ -87,4 +101,18 @@
         </div>
     </div>
 </div>
+<script>
+    @*var t = setTimeout(function () { $("#dropzone-drop-area").load("_GetDocuments",@Model); }, 600);*@
+    @*var t = setTimeout(function () {
+        $.ajax({
+            url: "_GetDocuments",
+            data: @Model,
+            type: "POST",
+            cache: false,
+            success: function (data) {
+                $("#dropzone-drop-area").innerHTML = data;
+            }
+        });
+    }, 100);*@
+</script>
 

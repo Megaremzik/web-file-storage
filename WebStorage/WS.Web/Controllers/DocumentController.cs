@@ -33,7 +33,12 @@ namespace WS.Web.Controllers
                 var documents = _service.GetAll(userId);
             return View(documents);
         }
-
+        public IActionResult ReturnPartial()
+        {
+            string userId = _userManager.GetUserId(User);
+            var documents = _service.GetAll(userId);
+            return PartialView("_GetDocuments",documents);
+        }
         [HttpPost]
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
         {
@@ -48,7 +53,9 @@ namespace WS.Web.Controllers
                     _service.Create(file,userId,parentId);
                 }
             }
-            return RedirectToAction("Index");
+            var documents = _service.GetAll(userId);
+            return PartialView("_GetDocuments", documents);
+            //return RedirectToAction("Index");
         }
         public IActionResult Create()
         {
