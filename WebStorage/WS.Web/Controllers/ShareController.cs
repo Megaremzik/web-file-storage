@@ -25,6 +25,29 @@ namespace WS.Web.Controllers
             //_sharingService.Createdocuments();
             return View();
         }
+        
+        public IActionResult AddAccessForUser(int documentId, string guestEmail, bool IsEditable)
+        {
+            string link =_sharingService.OpenLimitedAccesToFile(documentId, IsEditable, User.Identity.Name, guestEmail);
+            return Content(link);
+        }
+
+        public IActionResult OpenPublicAccess(int documentId, bool IsEditable)
+        {
+            string link = _sharingService.OpenPublicAccesToFile(documentId, IsEditable, User.Identity.Name);
+            return Content(link);
+        }
+        public IActionResult ClosePublicAccess(int documentId)
+        {
+            _sharingService.ClosePublicAccesToFile(documentId, User.Identity.Name);
+            return Content("Ok");
+        }
+        public IActionResult CloseLimitedAccess(int documentId)
+        {
+            _sharingService.CloseLimitedAccesToFileEntire(documentId, User.Identity.Name);
+            return Content("Ok");
+        }
+
         public IActionResult Get(string id)
         {
             // p3a3ee20a-06da-4d24-b752-ad5e70333fac

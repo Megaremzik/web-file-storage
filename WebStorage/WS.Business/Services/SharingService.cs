@@ -96,17 +96,16 @@ namespace WS.Business.Services
             return null;
         }
         public string OpenLimitedAccesToFile(int documentId, bool isEditable, string ownerName, string guestEmail)
-        {
-            
+        {            
             if (!IsDocumentExist(documentId))
             {
                 throw new Exception("Document is not exist");
             }
-            
             if (!IsUserTheOwnerOfTheDocument(ownerName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
+
             //If we have already had guid for this document, we use it
             UserDocumentView userDocForSampleGuid = _userDocumentService.GetUserDocumentsByDocumentId(documentId).FirstOrDefault();
             string guid;
@@ -140,6 +139,7 @@ namespace WS.Business.Services
                 _userDocumentService.Delete(p.UserId, p.DocumentId);
             }
         }
+ 
         private bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
         {
             string userId = _userService.GetUserIdByDocumentId(documentId);
