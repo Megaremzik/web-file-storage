@@ -3,6 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 <script src="~/js/dropzone.js"></script>
+<script src="~/js/Functions.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <style>
     .dropzone-container {
@@ -59,7 +60,7 @@
                 }
             });
             this.on("queuecomplete", function (file) {
-                 $('#dropzone-drop-area').load('@Url.Action("ReturnPartial", "Document")');
+                 $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
             });
         }
     };
@@ -83,9 +84,13 @@
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">
-                    @{await Html.RenderPartialAsync("_GetDocuments",Model);}
+                    @{await Html.RenderPartialAsync("_GetDocuments", Model);}
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div id="file-options">
         </div>
     </div>
 </div>

@@ -33,11 +33,15 @@ namespace WS.Web.Controllers
                 var documents = _service.GetAll(userId);
             return View(documents);
         }
-        public IActionResult ReturnPartial()
+        public IActionResult ReturnDocumentList()
         {
             string userId = _userManager.GetUserId(User);
             var documents = _service.GetAll(userId);
             return PartialView("_GetDocuments",documents);
+        }
+        public IActionResult FileOptions(DocumentView doc)
+        {
+            return PartialView("_FileOptions", doc);
         }
         [HttpPost]
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
