@@ -19,16 +19,19 @@ namespace WS.Business
             rootpath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             CreateFolder(rootpath);
         }
-         
-        public string MapId(string id)
+        public string GetRootPath()
+        {
+            return rootpath;
+        }
+        public void MapId(string id)
         {
             rootpath = Path.Combine(rootpath, id);
             CreateFolder(rootpath);
-            return rootpath;
         }
         public string MapPath(string name, string path = null)
         {
             if (path == null) path = rootpath;
+            path = rootpath + "/" + path;
             var filepath = Path.Combine(path, name);
             CreateFolder(filepath);
             return filepath;
@@ -38,18 +41,18 @@ namespace WS.Business
         {
             Directory.CreateDirectory(path);
         }
-        public string[] SplitPath(string path)
+        public string SplitPath(string path)
         {
             if (path == null) return null;
             var str = path.Split('/');
-            string s=rootpath+"/";
+            string folders="";
             for(int i = 0; i < str.Length - 1; i++)
             {
-                MapPath(str[i],s);
-                s += str[i] + "/";
+                MapPath(str[i],folders);
+                folders += str[i] + "/";
             }
 
-            return str;
+            return folders;
         }
     }
 }

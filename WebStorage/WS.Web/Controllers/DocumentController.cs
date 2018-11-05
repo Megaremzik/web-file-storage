@@ -30,7 +30,8 @@ namespace WS.Web.Controllers
         public IActionResult Index()
         {
             string userId = _userManager.GetUserId(User);
-                var documents = _service.GetAll(userId);
+            _pathProvider.MapId(userId);
+            var documents = _service.GetAll(userId);
             return View(documents);
         }
         public IActionResult ReturnDocumentList()
@@ -47,8 +48,9 @@ namespace WS.Web.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
         {
             string userId = _userManager.GetUserId(User);
-            var uploads = _pathProvider.MapId(userId);
-            var parentId=_service.CreateFolders(_pathProvider.SplitPath(fullpath),userId);
+            var folders = _pathProvider.SplitPath(fullpath);
+            var uploads = Path.Combine(_pathProvider.GetRootPath(), folders);
+            var parentId=_service.CreateFolders(folders,userId);
             if (file.Length > 0)
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))

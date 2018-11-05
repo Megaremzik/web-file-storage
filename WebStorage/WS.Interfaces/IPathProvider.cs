@@ -10,6 +10,7 @@ namespace WS.Interfaces
     {
         string MapPath(string name, string path = null);
         string MapId(string id);
-        string[] SplitPath(string fullpath);
+        string SplitPath(string fullpath);
+        string GetRootPath();
     }
 }

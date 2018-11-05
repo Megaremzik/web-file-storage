@@ -54,9 +54,10 @@ namespace WS.Business.Services
             repo.Delete(id);
         }
 
-        public int CreateFolders(string[] folder,string userId)
+        public int CreateFolders(string folders,string userId)
         {
-            if (folder == null) return 0;
+            if (folders == null) return 0;
+            var folder = folders.Split('/');
             int parentId = 0;
             for(int i=0; i < folder.Length - 1; i++)
             {
