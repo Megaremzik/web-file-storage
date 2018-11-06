@@ -8,12 +8,10 @@ namespace WS.Data
 {
     public class UserDocument
     {
-        public string UserId { get; set; }
+        public string GuestEmail { get; set; }
         public int DocumentId { get; set; }
         public string Link { get; set; }
         public bool IsEditable { get; set; }
-
         public virtual Document Document { get; set; }
-        public virtual User User { get; set; }
     }
 }

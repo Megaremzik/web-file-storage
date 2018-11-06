@@ -22,7 +22,7 @@ namespace WS.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<UserDocument>().HasKey(u => new { u.UserId, u.DocumentId });
+            builder.Entity<UserDocument>().HasKey(u => new { u.GuestEmail, u.DocumentId });
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);

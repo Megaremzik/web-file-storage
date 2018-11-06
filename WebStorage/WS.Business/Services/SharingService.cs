@@ -34,7 +34,7 @@ namespace WS.Business.Services
 
         public string OpenPublicAccesToFile(int documentId, bool isEditable, string userName)
         {
-            
+
             if (!IsDocumentExist(documentId))
             {
                 throw new Exception("Document is not exist");
@@ -44,18 +44,18 @@ namespace WS.Business.Services
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-            string guid = GenerateUniqueGuid();
-
+            
             DocumentLinkView docLink = _documentLinkService.Get(documentId);
-            if (docLink == null)
+            if (docLink != null)
             {
-                _documentLinkService.Create(new DocumentLinkView { Id = documentId, IsEditable = isEditable, Link = guid });
+                return docLink.Link;
             }
-
+            string guid = GenerateUniqueGuid();
+            _documentLinkService.Create(new DocumentLinkView { Id = documentId, IsEditable = isEditable, Link = guid });
             return DocumentLinkIdentifier + guid;
         }
 
-  
+
         public void ClosePublicAccesToFile(int documentId, string userName)
         {
 
@@ -96,7 +96,7 @@ namespace WS.Business.Services
             return null;
         }
         public string OpenLimitedAccesToFile(int documentId, bool isEditable, string ownerName, string guestEmail)
-        {            
+        {
             if (!IsDocumentExist(documentId))
             {
                 throw new Exception("Document is not exist");
@@ -104,6 +104,11 @@ namespace WS.Business.Services
             if (!IsUserTheOwnerOfTheDocument(ownerName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
+            }
+            var userDoc = _userDocumentService.Get(guestEmail, documentId);
+            if (userDoc != null)
+            {
+                return userDoc.Link;
             }
 
             //If we have already had guid for this document, we use it
@@ -117,17 +122,34 @@ namespace WS.Business.Services
             {
                 guid = GenerateUniqueGuid();
             }
-            UserDocumentView userDoc = _userDocumentService.Get(guestEmail, documentId);
-            if (userDoc == null)
+            UserDocumentView userDocum = _userDocumentService.Get(guestEmail, documentId);
+            if (userDocum == null)
             {
-                _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = guid, UserId = guestEmail, IsEditable = isEditable });
+                _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = guid, GuestEmail = guestEmail, IsEditable = isEditable });
             }
             return UserDocumentIdentifier + guid;
+        }
+        public void RemoveAccessForUser(int documentId, string ownerName, string guestName)
+        {
+            if (!IsDocumentExist(documentId))
+            {
+                throw new Exception("Document is not exist");
+            }
+            if (!IsUserTheOwnerOfTheDocument(ownerName, documentId))
+            {
+                throw new UnauthorizedAccessException("User is not the owner of the file");
+            }
+            var userDoc = _userDocumentService.Get(guestName, documentId);
+            if (userDoc != null)
+            {
+                _userDocumentService.Delete(guestName, documentId);
+            }
+
         }
 
         public void CloseLimitedAccesToFileEntire(int documentId, string userName)
         {
-            
+
             if (IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
@@ -136,10 +158,10 @@ namespace WS.Business.Services
             IEnumerable<UserDocumentView> documents = _userDocumentService.GetUserDocumentsByDocumentId(documentId);
             foreach (var p in documents)
             {
-                _userDocumentService.Delete(p.UserId, p.DocumentId);
+                _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
         }
- 
+
         private bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
         {
             string userId = _userService.GetUserIdByDocumentId(documentId);
@@ -161,11 +183,14 @@ namespace WS.Business.Services
             } while (links.Contains(guid));
             return guid;
         }
-
-        //public void Createdocuments()
+        //public void Createuserdoc()
         //{
-        //    _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = true, Name = "333", ParentId = 0, Size = 545, UserId = "7a85225a-0682-43e7-847d-cb11a641ede3" });
-        //    _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = false, Name = "444", ParentId = 0, Size = 0, UserId = "3f0ff592-f8a8-4937-9421-12082599f890" });
+        //    _userDocumentService.Create(new UserDocumentView { GuestEmail = "3f0ff592-f8a8-4937-9421-12082599f890", DocumentId = 2, Link = GenerateUniqueGuid(), IsEditable = false });
         //}
+        public void Createdocuments()
+        {
+            _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = true, Name = "333", ParentId = 0, Size = 545, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
+            _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = false, Name = "444", ParentId = 0, Size = 0, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
+        }
     }
 }

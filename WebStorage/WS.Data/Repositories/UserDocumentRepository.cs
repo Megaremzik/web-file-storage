@@ -27,15 +27,15 @@ namespace WS.Data
         }
         public UserDocument Get(string guestEmail, int? documentId)
         {
-            return db.UserDocument.Where(e => e.UserId == guestEmail).Where(e => e.DocumentId == documentId).SingleOrDefault();
+            return db.UserDocument.Where(e => e.GuestEmail == guestEmail).Where(e => e.DocumentId == documentId).SingleOrDefault();
         }
         public IEnumerable<UserDocument> GetUserDocumentsByDocumentId(int? documentId)
         {
             return db.UserDocument.Where(e => e.DocumentId == documentId);
         }
-        public IEnumerable<UserDocument> GetUserDocumentsByGuestId(string guestId)
+        public IEnumerable<UserDocument> GetUserDocumentsByGuestId(string guestEmail)
         {
-            return db.UserDocument.Where(e => e.UserId == guestId);
+            return db.UserDocument.Where(e => e.GuestEmail == guestEmail);
         }
         public void Update(UserDocument userDocument)
         {

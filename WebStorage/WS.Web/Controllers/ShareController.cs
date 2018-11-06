@@ -21,6 +21,7 @@ namespace WS.Web.Controllers
         }
         public IActionResult Index()
         {
+            //_sharingService.Createuserdoc();
             //_sharingService.OpenPublicAccesToFile(2,false, HttpContext.User.Identity.Name);
             //_sharingService.Createdocuments();
             return View();
@@ -31,7 +32,11 @@ namespace WS.Web.Controllers
             string link =_sharingService.OpenLimitedAccesToFile(documentId, IsEditable, User.Identity.Name, guestEmail);
             return Content(link);
         }
-
+        public IActionResult DeleteAccessForUser(int documentId, string guestEmail)
+        {
+             _sharingService.RemoveAccessForUser(documentId, User.Identity.Name, guestEmail);
+            return Content("Ok");
+        }
         public IActionResult OpenPublicAccess(int documentId, bool IsEditable)
         {
             string link = _sharingService.OpenPublicAccesToFile(documentId, IsEditable, User.Identity.Name);
@@ -50,7 +55,7 @@ namespace WS.Web.Controllers
 
         public IActionResult Get(string id)
         {
-            // p3a3ee20a-06da-4d24-b752-ad5e70333fac
+            
             
             DocumentView doc = _sharingService.GetSharedDocument(id, HttpContext.User.Identity.Name, out bool isEditable);
             if (doc.IsFile)
