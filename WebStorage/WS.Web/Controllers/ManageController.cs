@@ -277,7 +277,7 @@ namespace WS.Web.Controllers
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                StatusMessage = "LoginAlreadyAssociated.";
+                StatusMessage = "Error: The external login was already associated with other account.";
                 return RedirectToAction(nameof(ExternalLogins));
                 //Failed : LoginAlreadyAssociated
                 throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");

@@ -8,7 +8,7 @@
   text-align: center; }
 
 .hr-label {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 5px; }
 
 .hr-label::before, .hr-label::after {
