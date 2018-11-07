@@ -189,8 +189,8 @@ namespace WS.Business.Services
         //}
         public void Createdocuments()
         {
-            _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = true, Name = "333", ParentId = 0, Size = 545, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
-            _documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = false, Name = "444", ParentId = 0, Size = 0, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
+            //_documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = true, Name = "333", ParentId = 0, Size = 545, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
+            //_documentService.Create(new DocumentView { Date_change = DateTime.Now, IsFile = false, Name = "444", ParentId = 0, Size = 0, UserId = "af796c27-404b-42cb-9065-9278204aac55" });
         }
     }
 }

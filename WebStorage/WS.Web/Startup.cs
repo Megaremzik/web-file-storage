@@ -16,6 +16,7 @@ using WS.Business.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using WS.Data.Repositories;
+using WS.Business;
 
 namespace WS.Web
 {
@@ -43,8 +44,6 @@ namespace WS.Web
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped<IRepository<Document>, DocumentRepository>();
-            services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
-            services.AddScoped<IRepository<UserDocument>, UserDocumentRepository>();
             services.AddScoped<DocumentRepository>();
             services.AddScoped<DocumentLinkRepository>();
             services.AddScoped<UserDocumentRepository>();
