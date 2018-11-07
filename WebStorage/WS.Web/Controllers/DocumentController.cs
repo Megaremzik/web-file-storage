@@ -40,8 +40,9 @@ namespace WS.Web.Controllers
             var documents = _service.GetAll(userId);
             return PartialView("_GetDocuments",documents);
         }
-        public IActionResult FileOptions(DocumentView doc)
+        public IActionResult FileOptions(int id)
         {
+            var doc = _service.Get(id);
             return PartialView("_FileOptions", doc);
         }
         [HttpPost]
