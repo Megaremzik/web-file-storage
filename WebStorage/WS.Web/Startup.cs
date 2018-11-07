@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WS.Business.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,8 @@ using WS.Web.Services;
 using WS.Interfaces;
 using WS.Business.Services;
 using AutoMapper;
-using WS.Business;
+using Microsoft.AspNetCore.Http;
+using WS.Data.Repositories;
 
 namespace WS.Web
 {
@@ -43,9 +45,18 @@ namespace WS.Web
             services.AddScoped<IRepository<Document>, DocumentRepository>();
             services.AddScoped<IRepository<DocumentLink>, DocumentLinkRepository>();
             services.AddScoped<IRepository<UserDocument>, UserDocumentRepository>();
+            services.AddScoped<DocumentRepository>();
+            services.AddScoped<DocumentLinkRepository>();
+            services.AddScoped<UserDocumentRepository>();
+            services.AddScoped<UserRepository>();
+
             services.AddTransient<DocumentService>();
+            services.AddTransient<DocumentLinkService>();
+            services.AddTransient<UserDocumentService>();
+            services.AddTransient<UserService>();
             services.AddSingleton<IPathProvider, PathProvider>();
             services.AddAutoMapper();
+            services.AddSharing();
 
             services.AddMvc();
         }
@@ -67,7 +78,7 @@ namespace WS.Web
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

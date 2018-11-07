@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Business", "WS.Business\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Interfaces", "WS.Interfaces\WS.Interfaces.csproj", "{D5FA7EDE-69E4-474D-BE19-CB67D38E228E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WS.Web", "WS.Web\WS.Web.csproj", "{442066FB-5743-4752-A65E-DE54B50E369C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Web", "WS.Web\WS.Web.csproj", "{442066FB-5743-4752-A65E-DE54B50E369C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

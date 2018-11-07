@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WS.Data
 {
-    public class UserDocumentRepository : IRepository<UserDocument>
+    public class UserDocumentRepository
     {
         private ApplicationDbContext db;
         public UserDocumentRepository(ApplicationDbContext context)
         {
             db = context;
         }
-        public IEnumerable<UserDocument> GetAll(string s = null)
+        public IEnumerable<UserDocument> GetAll()
         {
             return db.UserDocument.ToList();
         }
@@ -25,31 +25,27 @@ namespace WS.Data
             db.UserDocument.Add(userDocument);
             db.SaveChanges();
         }
-        public UserDocument Get(string id1, int? id2)
+        public UserDocument Get(string guestEmail, int? documentId)
         {
-            return db.UserDocument.Where(e => e.IdUser == id1).Where(e => e.IdDocument == id2).SingleOrDefault();
+            return db.UserDocument.Where(e => e.GuestEmail == guestEmail).Where(e => e.DocumentId == documentId).SingleOrDefault();
         }
-        public UserDocument Get(int? id)
+        public IEnumerable<UserDocument> GetUserDocumentsByDocumentId(int? documentId)
         {
-            return db.UserDocument.Where(e => e.IdDocument == id).SingleOrDefault();
+            return db.UserDocument.Where(e => e.DocumentId == documentId);
         }
-
-            public void Update(UserDocument userDocument)
+        public IEnumerable<UserDocument> GetUserDocumentsByGuestId(string guestEmail)
+        {
+            return db.UserDocument.Where(e => e.GuestEmail == guestEmail);
+        }
+        public void Update(UserDocument userDocument)
         {
             db.UserDocument.Update(userDocument);
             db.SaveChanges();
         }
-
         public void Delete(string id1, int? id2)
         {
-            db.UserDocument.Remove(Get(id1,id2));
+            db.UserDocument.Remove(Get(id1, id2));
             db.SaveChanges();
         }
-        public void Delete(int? id)
-        {
-            db.UserDocument.Remove(Get(id));
-            db.SaveChanges();
-        }
-        public int GetIdByName(string name, int parentId) { return 0; }
     }
 }

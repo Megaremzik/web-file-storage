@@ -1,16 +1,16 @@
-﻿@model WS.Data.UserDocument
+﻿@model WS.Business.ViewModels.UserDocumentView
 @{
     ViewBag.Title = "Add";
 }
 
 <form asp-action="create" asp-controller="UserDocument">
     <div class="form-group">
-        <label asp-for="IdUser" class="control-label">User_id</label>
-        <input type="number" asp-for="IdUser" class="form-control" />
+        <label asp-for="GuestEmail" class="control-label">UserId</label>
+        <input type="text" asp-for="GuestEmail" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="IdDocument" class="control-label">Document_id</label>
-        <input type="text" asp-for="IdDocument" class="form-control" />
+        <label asp-for="DocumentId" class="control-label">Document_id</label>
+        <input type="text" asp-for="DocumentId" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="Link" class="control-label">Link</label>

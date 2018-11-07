@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WS.Data.UserDocument>
+﻿@model IEnumerable<WS.Business.ViewModels.UserDocumentView>
 @{
     ViewBag.Title = "Все смартфоны";
 }
@@ -7,12 +7,12 @@
     @foreach (var item in Model)
     {
     <tr>
-        <td>@item.IdUser</td>
-        <td>@item.IdDocument</td>
+        <td>@item.GuestEmail</td>
+        <td>@item.DocumentId</td>
         <td>
-            <a asp-action="Details" asp-controller="UserDocument" asp-route-id1="@item.IdUser" asp-route-id2="@item.IdDocument">Подробнее</a> |
-            <a asp-action="Edit" asp-controller="UserDocument" asp-route-id1="@item.IdUser" asp-route-id2="@item.IdDocument">Изменить</a> |
-            <a asp-action="Delete" asp-controller="UserDocument" asp-route-id1="@item.IdUser" asp-route-id2="@item.IdDocument">Удалить</a>
+            <a asp-action="Details" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Подробнее</a> |
+            <a asp-action="Edit" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Изменить</a> |
+            <a asp-action="Delete" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Удалить</a>
         </td>
     </tr>
     }
