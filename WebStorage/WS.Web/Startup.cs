@@ -39,12 +39,12 @@ namespace WS.Web
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                googleOptions.ClientId = "691453484585-kimp14ckahpch031mjo02jr7ae97fv2q.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "NVBnviP-03riVYEuihjaqt7P";
             }).AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppId = "281006039204288";
+                facebookOptions.AppSecret = "e9fa86f0142053dcf03b19a39a353077";
             });
 
             // Add application services.

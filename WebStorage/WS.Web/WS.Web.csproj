@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-WS.Web-6AA63F6B-1F9A-4FEC-A7F4-F95CEC1246DA</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>2</WarningLevel>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
