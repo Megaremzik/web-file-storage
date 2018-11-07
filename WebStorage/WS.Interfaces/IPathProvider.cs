@@ -9,7 +9,7 @@ namespace WS.Interfaces
     public interface IPathProvider
     {
         string MapPath(string name, string path = null);
-        string MapId(string id);
+        void MapId(string id);
         string SplitPath(string fullpath);
         string GetRootPath();
     }

@@ -49,7 +49,8 @@ namespace WS.Web.Controllers
         {
             string userId = _userManager.GetUserId(User);
             var folders = _pathProvider.SplitPath(fullpath);
-            var uploads = Path.Combine(_pathProvider.GetRootPath(), folders);
+            var uploads = _pathProvider.GetRootPath();
+            if (folders != null) uploads = Path.Combine(uploads, folders);
             var parentId=_service.CreateFolders(folders,userId);
             if (file.Length > 0)
             {
