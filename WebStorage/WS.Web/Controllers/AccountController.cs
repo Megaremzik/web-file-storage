@@ -11,12 +11,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WS.Business.Services;
+using WS.Business.ViewModels.AccountViewModels;
 using WS.Data;
-using WS.Data.AccountViewModels;
-using WS.Web;
+using WS.Interfaces;
 using WS.Web.Extensions;
-using WS.Web.Services;
-
 namespace WS.Web.Controllers
 {
     [Authorize]
@@ -29,6 +27,7 @@ namespace WS.Web.Controllers
         private readonly ILogger _logger;
 
         public AccountController(
+            DocumentService service,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
@@ -47,7 +46,6 @@ namespace WS.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;

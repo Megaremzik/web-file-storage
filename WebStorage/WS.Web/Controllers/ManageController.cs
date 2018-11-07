@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WS.Business.ViewModels.ManageViewModels;
 using WS.Data;
-using WS.Data.ManageViewModels;
+using WS.Interfaces;
 using WS.Web.Extensions;
-using WS.Web.Services;
 
 namespace WS.Web.Controllers
 {
@@ -277,6 +277,9 @@ namespace WS.Web.Controllers
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
+                StatusMessage = "Error: The external login was already associated with other account.";
+                return RedirectToAction(nameof(ExternalLogins));
+                //Failed : LoginAlreadyAssociated
                 throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
             }
 

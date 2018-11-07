@@ -36,6 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.2.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.2\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="MailKit, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.2.0.0\lib\net45\MailKit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore, Version=2.0.4.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.2.0.4\lib\netstandard2.0\Microsoft.AspNetCore.dll</HintPath>
     </Reference>
@@ -330,6 +336,9 @@
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
+    <Reference Include="MimeKit, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.2.0.0\lib\net45\MimeKit.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -505,27 +514,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountViewModels\ExternalLoginViewModel.cs" />
-    <Compile Include="AccountViewModels\ForgotPasswordViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginWith2faViewModel.cs" />
-    <Compile Include="AccountViewModels\LoginWithRecoveryCodeViewModel.cs" />
-    <Compile Include="AccountViewModels\RegisterViewModel.cs" />
-    <Compile Include="AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentLink.cs" />
     <Compile Include="ErrorViewModel.cs" />
-    <Compile Include="ManageViewModels\ChangePasswordViewModel.cs" />
-    <Compile Include="ManageViewModels\EnableAuthenticatorViewModel.cs" />
-    <Compile Include="ManageViewModels\ExternalLoginsViewModel.cs" />
-    <Compile Include="ManageViewModels\IndexViewModel.cs" />
-    <Compile Include="ManageViewModels\RemoveLoginViewModel.cs" />
-    <Compile Include="ManageViewModels\SetPasswordViewModel.cs" />
-    <Compile Include="ManageViewModels\ShowRecoveryCodesViewModel.cs" />
-    <Compile Include="ManageViewModels\TwoFactorAuthenticationViewModel.cs" />
     <Compile Include="Migrations\00000000000000_CreateIdentitySchema.cs" />
     <Compile Include="Migrations\00000000000000_CreateIdentitySchema.Designer.cs">
       <DependentUpon>00000000000000_CreateIdentitySchema.cs</DependentUpon>
