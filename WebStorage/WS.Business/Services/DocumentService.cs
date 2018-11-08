@@ -35,12 +35,12 @@ namespace WS.Business.Services
         }
         public void Create(IFormFile file, string userId, int parentId=0)
         {
-            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId, ParentId = parentId };
+            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId, ParentId = parentId, Date_change=DateTime.Now };
             repo.Create(doc);
         }
         public void Create(string folder, string userId, int parentId=0)
         {
-            Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId=parentId };
+            Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId=parentId,Date_change=DateTime.Now };
             repo.Create(doc);
         }
         public void Update(DocumentView documentView)
