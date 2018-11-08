@@ -100,13 +100,11 @@ namespace WS.Web.Controllers
 
         [HttpGet]
         [ActionName("Delete")]
-        public IActionResult ConfirmDelete(int? id)
+        public IActionResult ConfirmDelete(DocumentView document)
         {
-            if (id != null)
+            if (document != null)
             {
-                DocumentView document = _service.Get(id);
-                if (document != null)
-                    return View(document);
+                return View(document);
             }
             return NotFound();
         }
@@ -116,14 +114,28 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                DocumentView document = _service.Get(id);
+                var document = _service.Get(id);
                 if (document != null)
                 {
-                    _service.Delete(id);
-                    return RedirectToAction("Index");
+                    if (document.IsFile == true)
+                    {
+                        _service.Delete(document.Id);
+                        return RedirectToAction("Index");
+                    }
                 }
             }
+            
             return NotFound();
+        }
+        [HttpPost]
+        public IActionResult ViewFile(DocumentView document)
+        {
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult Share(DocumentView document)
+        {
+            return RedirectToAction("Index");
         }
     }
 }

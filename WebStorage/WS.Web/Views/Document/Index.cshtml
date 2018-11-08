@@ -15,7 +15,7 @@
 
     .dropzone-drop-area {
         background-color: white;
-        width: 100%;
+        width: 85%;
         min-height: 350px;
         box-sizing: border-box;
         padding: 6px;
@@ -38,10 +38,7 @@
     $(document).ready(function () {
         Dropzone.options.uploader = {
             paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            maxFiles: 3,
             clickable: true,
-            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
             uploadMultiple: false,
             createImageThumbnails: true,
             accept: function (file, done) {
@@ -76,7 +73,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <input type="submit" class="btn btn-primary" value="Upload" />
             </div>
         </div>

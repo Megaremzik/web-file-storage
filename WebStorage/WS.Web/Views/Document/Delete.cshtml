@@ -2,7 +2,7 @@
     @{
         ViewBag.Title = "Удаление";
     }
-
+@Html.Hidden("id", Model.Id)
     <div>
         <dl class="dl-horizontal">
             <dt>Название</dt>
@@ -10,12 +10,12 @@
                 @Html.DisplayFor(model => model.Name)
             </dd>
 
-            <dt>Производитель</dt>
+            <dt>Расширение</dt>
             <dd>
-                @Html.DisplayFor(model => model.Date_change)
+                @Html.DisplayFor(model => model.Extention)
             </dd>
 
-            <dt>Цена</dt>
+            <dt>Размер</dt>
             <dd>
                 @Html.DisplayFor(model => model.Size)
             </dd>
