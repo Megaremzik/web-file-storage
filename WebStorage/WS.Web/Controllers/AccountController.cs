@@ -234,7 +234,7 @@ namespace WS.Web.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return View("Index","Document");
+                    return RedirectToAction("Index","Document");
                 }
                 AddErrors(result);
             }

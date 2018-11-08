@@ -11,16 +11,18 @@ using WS.Interfaces;
 using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
+using WS.Business;
+
 namespace WS.Web.Controllers
 {
     public class DocumentController : Controller
     {
         private DocumentService _service;
-        private IPathProvider _pathProvider;
+        private PathProvider _pathProvider;
         private readonly UserManager<User> _userManager;
 
 
-        public DocumentController(IPathProvider pathProvider,DocumentService service, UserManager<User> userManager)
+        public DocumentController(PathProvider pathProvider,DocumentService service, UserManager<User> userManager)
         {
             _service = service;
             _pathProvider = pathProvider;
@@ -121,6 +123,10 @@ namespace WS.Web.Controllers
                     {
                         _service.Delete(document.Id);
                         return RedirectToAction("Index");
+                    }
+                    else
+                    {
+
                     }
                 }
             }

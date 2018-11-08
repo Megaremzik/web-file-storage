@@ -60,7 +60,7 @@ namespace WS.Web
             services.AddTransient<DocumentLinkService>();
             services.AddTransient<UserDocumentService>();
             services.AddTransient<UserService>();
-            services.AddSingleton<IPathProvider, PathProvider>();
+            services.AddTransient<PathProvider>();
             services.AddAutoMapper();
             services.AddSharing();
 

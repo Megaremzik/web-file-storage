@@ -9,7 +9,7 @@ using WS.Interfaces;
 
 namespace WS.Business
 {
-    public class PathProvider : IPathProvider
+    public class PathProvider
     {
         private IHostingEnvironment _hostingEnvironment;
         private string rootpath;
