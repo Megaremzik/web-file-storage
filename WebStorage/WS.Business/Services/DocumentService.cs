@@ -51,6 +51,24 @@ namespace WS.Business.Services
 
         public void Delete(int? id)
         {
+            var document = Get(id);
+            if (document.IsFile == true)
+            {
+                repo.Delete(id);
+            }
+            else
+            {
+                DeleteFolder(id);
+            }
+        }
+
+        public void DeleteFolder(int? id)
+        {
+            var documents=repo.GetAllChildren(id);
+            foreach(var doc in documents)
+            {
+                Delete(doc.Id);
+            }
             repo.Delete(id);
         }
 
@@ -62,7 +80,7 @@ namespace WS.Business.Services
             for(int i=0; i < folder.Length - 1; i++)
             {
                 Create(folder[i], userId, parentId);
-                parentId= repo.GetIdByName(folder[i],parentId);
+                parentId= repo.GetIdByName(userId,folder[i],parentId);
             }
             return parentId;
         }

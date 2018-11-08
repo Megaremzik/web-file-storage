@@ -116,21 +116,9 @@ namespace WS.Web.Controllers
         {
             if (id != null)
             {
-                var document = _service.Get(id);
-                if (document != null)
-                {
-                    if (document.IsFile == true)
-                    {
-                        _service.Delete(document.Id);
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-
-                    }
-                }
+                _service.Delete(id);
+                return RedirectToAction("Index");
             }
-            
             return NotFound();
         }
         [HttpPost]

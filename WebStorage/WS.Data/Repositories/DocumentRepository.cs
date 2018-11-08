@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace WS.Data
 {
-    public class DocumentRepository : IRepository<Document>
+    public class DocumentRepository
     {
         private ApplicationDbContext db;
         public DocumentRepository(ApplicationDbContext context)
@@ -40,9 +40,9 @@ namespace WS.Data
         {
             return db.Document.FirstOrDefault(p => p.Id == id);
         }
-        public int GetIdByName(string name, int parentId)
+        public int GetIdByName(string userId,string name, int parentId)
         {
-            return db.Document.FirstOrDefault(p => p.Name == name).Id;
+            return db.Document.FirstOrDefault(d => d.Name == name && d.ParentId == parentId && d.UserId == userId).Id;
         }
         public Document Get(string id1, int? id2)
         {
@@ -60,9 +60,10 @@ namespace WS.Data
             db.Document.Remove(Get(id));
             db.SaveChanges();
         }
-        public void Delete(string id1, int? id2)
+        public IEnumerable<Document> GetAllChildren(int? id)
         {
-            Delete(id2);
+            var documents= db.Document.Where(d => d.ParentId == id).ToList();
+            return documents;
         }
     }
 }

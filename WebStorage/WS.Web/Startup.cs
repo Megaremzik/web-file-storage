@@ -50,7 +50,7 @@ namespace WS.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddScoped<IRepository<Document>, DocumentRepository>();
+            services.AddScoped<DocumentRepository>();
             services.AddScoped<DocumentRepository>();
             services.AddScoped<DocumentLinkRepository>();
             services.AddScoped<UserDocumentRepository>();
@@ -89,7 +89,8 @@ namespace WS.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}/{action}/{id?}");
+
             });
         }
     }
