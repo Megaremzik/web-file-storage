@@ -65,5 +65,10 @@ namespace WS.Data
             var documents= db.Document.Where(d => d.ParentId == id).ToList();
             return documents;
         }
+        public IEnumerable<Document> GetAllRootElements(string userId)
+        {
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId).ToList();
+            return documents;
+        }
     }
 }

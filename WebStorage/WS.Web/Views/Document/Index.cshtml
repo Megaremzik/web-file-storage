@@ -36,6 +36,7 @@
 @Html.Hidden("fullpath", "");
 <script>
     $(document).ready(function () {
+        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
         Dropzone.options.uploader = {
             paramName: "file", // The name that will be used to transfer the file
             clickable: true,
@@ -84,7 +85,6 @@
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">
-                    @{await Html.RenderPartialAsync("_GetDocuments", Model);}
                 </div>
             </form>
         </div>

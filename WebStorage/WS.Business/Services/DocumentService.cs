@@ -25,7 +25,7 @@ namespace WS.Business.Services
         public IEnumerable<DocumentView> GetAll(string id)
         {
             IEnumerable<Document> documents = repo.GetAll(id);
-            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); ;
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); 
         }
 
         public DocumentView Get(int? id)
@@ -71,7 +71,16 @@ namespace WS.Business.Services
             }
             repo.Delete(id);
         }
-
+        public IEnumerable<DocumentView> GetAllChildren(int? id)
+        {
+            var documents = repo.GetAllChildren(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public IEnumerable<DocumentView> GetAllRootElements(string userId)
+        {
+            var documents = repo.GetAllRootElements(userId);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
         public int CreateFolders(string folders,string userId)
         {
             if (folders == null) return 0;

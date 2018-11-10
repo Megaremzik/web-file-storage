@@ -36,10 +36,12 @@ namespace WS.Web.Controllers
             var documents = _service.GetAll(userId);
             return View(documents);
         }
-        public IActionResult ReturnDocumentList()
+        public IActionResult ReturnDocumentList(int parentId=0)
         {
             string userId = _userManager.GetUserId(User);
-            var documents = _service.GetAll(userId);
+            IEnumerable<DocumentView> documents;
+            if (parentId != 0) documents = _service.GetAllChildren(parentId);
+            else documents = _service.GetAllRootElements(userId);
             return PartialView("_GetDocuments",documents);
         }
         public IActionResult FileOptions(int id)

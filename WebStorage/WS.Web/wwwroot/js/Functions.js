@@ -14,3 +14,22 @@ function ShowFileOptions(doc) {
     });
     //$('#file-options').load('@Url.Action("FileOptions", "Document",new { id = doc})');
 }
+function DoubleClickAction(isFile, id) {
+    if (isFile === 0) {
+        $.ajax({
+            type: "Post",
+            url: '/Document/ReturnDocumentList',
+            data: {
+                parentId: id
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        });
+        //$('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
+       
+    }
+    else {
+        //Просмотр файла
+    }
+}
