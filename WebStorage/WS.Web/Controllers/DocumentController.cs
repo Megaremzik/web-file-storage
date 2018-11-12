@@ -12,6 +12,7 @@ using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
 using WS.Business;
+using Microsoft.AspNetCore.Routing;
 
 namespace WS.Web.Controllers
 {
@@ -43,6 +44,11 @@ namespace WS.Web.Controllers
             if (parentId != 0) documents = _service.GetAllChildren(parentId);
             else documents = _service.GetAllRootElements(userId);
             return PartialView("_GetDocuments",documents);
+        }
+        public IActionResult ReturnParent(int id)
+        {
+            var parent = _service.Get(id).ParentId;
+            return RedirectToAction("ReturnDocumentList", new { parentId = parent } );
         }
         public IActionResult FileOptions(int id)
         {

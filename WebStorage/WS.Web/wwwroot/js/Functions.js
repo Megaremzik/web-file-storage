@@ -33,3 +33,15 @@ function DoubleClickAction(isFile, id) {
 function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
+function GoBack(parentId) {
+    $.ajax({
+        type: "Post",
+        url: '/Document/ReturnParent',
+        data: {
+            id: parentId
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#dropzone-drop-area').html(data);
+        }
+    }); 
+}
