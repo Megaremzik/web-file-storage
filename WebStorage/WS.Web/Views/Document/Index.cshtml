@@ -15,10 +15,10 @@
 
     .dropzone-drop-area {
         background-color: white;
-        width: 85%;
+        width: 90%;
         min-height: 350px;
         box-sizing: border-box;
-        padding: 6px;
+        padding: 2px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -37,24 +37,21 @@
 <script>
     $(document).ready(function () {
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
-        Dropzone.options.uploader = {
-            paramName: "file", // The name that will be used to transfer the file
-            clickable: true,
-            uploadMultiple: false,
-            createImageThumbnails: true,
-            accept: function (file, done) {
-                if (file.name == "badfile.jpg") {
-                    done("This is a bad file!");
-                }
-                else {
-                    //Show a confirm alert and display the image on the page.
-                }
-            }
-        };
     });
     Dropzone.options.uploader = {
+        paramName: "file", // The name that will be used to transfer the file
+        clickable: true,
+        uploadMultiple: false,
+        parallelUploads: 1,
+        autoProcessQueue: true,
         init: function () {
             this.on("sending", function (file, xhr, data) {
+                if (file.fullPath) {
+                    data.append("fullPath", file.fullPath);
+                    console.log(file.fullPath);
+                }
+            });
+            this.on("dropfile", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
                     console.log(file.fullPath);

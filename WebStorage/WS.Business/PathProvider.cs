@@ -25,8 +25,12 @@ namespace WS.Business
         }
         public void MapId(string id)
         {
-            rootpath = Path.Combine(rootpath, id);
-            CreateFolder(rootpath);
+            if (id != null)
+            {
+                rootpath = Path.Combine(rootpath, id);
+                CreateFolder(rootpath);
+            }
+            
         }
         public string MapPath(string name, string path = null)
         {
