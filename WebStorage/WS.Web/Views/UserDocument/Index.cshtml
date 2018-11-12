@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WS.Business.ViewModels.UserDocumentView>
+@{
+    ViewBag.Title = "Все смартфоны";
+}
+<a asp-action="Create">add</a>
+<table class="table">
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.GuestEmail</td>
+        <td>@item.DocumentId</td>
+        <td>
+            <a asp-action="Details" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Подробнее</a> |
+            <a asp-action="Edit" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Изменить</a> |
+            <a asp-action="Delete" asp-controller="UserDocument" asp-route-id1="@item.GuestEmail" asp-route-id2="@item.DocumentId">Удалить</a>
+        </td>
+    </tr>
+    }
+</table>

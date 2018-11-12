@@ -1,0 +1,9 @@
+﻿@using WS.Business.ViewModels
+@model DocumentView
+<p>Возможные действия с файлом</p>
+@if (Model.IsFile == true)
+{
+    <p>@Html.ActionLink("Просмотр файла", "ViewFile", "Document", Model)</p>
+}
+<p>@Html.ActionLink("Дать доступ", "Share", "Document", Model)</p>
+<p>@Html.ActionLink("Удалить", "Delete", "Document", Model)</p>

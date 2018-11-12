@@ -1,0 +1,26 @@
+﻿@model WS.Business.ViewModels.UserDocumentView
+@{
+    ViewBag.Title = "Add";
+}
+
+<form asp-action="create" asp-controller="UserDocument">
+    <div class="form-group">
+        <label asp-for="GuestEmail" class="control-label">UserId</label>
+        <input type="text" asp-for="GuestEmail" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DocumentId" class="control-label">Document_id</label>
+        <input type="text" asp-for="DocumentId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Link" class="control-label">Link</label>
+        <input type="text" asp-for="Link" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsEditable" class="control-label">IsEditable</label>
+        <input type="checkbox" asp-for="IsEditable" class="form-control" />
+
+        <div class="form-group">
+            <input type="submit" value="Send" class="btn btn-default" />
+        </div>
+</form>
