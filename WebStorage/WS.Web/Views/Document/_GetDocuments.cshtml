@@ -1,9 +1,8 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentView>
-    @if (@Model.ElementAt(0).ParentId != 0)
-    {
-        <button id="backParentId" onclick="GoBack(@Model.ElementAt(0).ParentId)">Назад</button>
-    }
+<script>
+    sessionStorage.setItem("parentId",@Model.ElementAt(0).ParentId)
+</script>
     <table class="table">
         <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
         @for (int i = 0; i < Model.Count(); i++)

@@ -47,8 +47,8 @@ namespace WS.Web.Controllers
         }
         public IActionResult ReturnParent(int id)
         {
-            var parent = _service.Get(id).ParentId;
-            return RedirectToAction("ReturnDocumentList", new { parentId = parent } );
+            var parentId = _service.Get(id).ParentId;
+            return RedirectToAction("ReturnDocumentList","Document",new { parentId});
         }
         public IActionResult FileOptions(int id)
         {

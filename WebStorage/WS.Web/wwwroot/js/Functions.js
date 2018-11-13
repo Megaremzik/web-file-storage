@@ -33,7 +33,8 @@ function DoubleClickAction(isFile, id) {
 function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
-function GoBack(parentId) {
+function GoBack() {
+    var parentId = sessionStorage.getItem("parentId");    
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
