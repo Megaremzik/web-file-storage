@@ -1,0 +1,53 @@
+﻿@mixin dimension($diameter) {
+    margin: -($diameter / 2) 0 0 0-($diameter / 2);
+    height: $diameter;
+    width: $diameter;
+}
+
+html,
+body {
+    background-color: rgb(1,12,13);
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    padding: 50px 0;
+}
+
+.axis {
+    background-color: rgba(255,255,255, 0.2);
+    position: absolute;
+    z-index: 100;
+}
+
+.planet {
+    background-size: cover;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+}
+
+#background {
+    background-image: url('http://www.alienresearchcorp.com/space/hd-wallpapers/amazing/img/l/moment-in-space-cvi.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: -20%;
+    left: -10%;
+    position: absolute;
+    right: -10%;
+    top: -20%;
+}
+
+#planet-1 {
+    @include dimension(150px);
+    background-image: url('http://th02.deviantart.net/fs71/PRE/i/2012/337/3/6/planet_png_by_phip_phantom-d5mwylq.png');
+    z-index: 20;
+}
+
+#planet-2 {
+    @include dimension(200px);
+    background-image: url('http://fc04.deviantart.net/fs71/i/2013/070/e/d/ice_planet___kronos_by_khrymsyn-d5xqmnm.png');
+    z-index: 10;
+}

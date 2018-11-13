@@ -65,33 +65,75 @@
         }
     };
 </script>
-<div class="row">
-    <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
-        <div class="form-group">
-            <div class="col-md-1">
-                <input type="file" name="file" multiple />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-1">
-                <input type="submit" class="btn btn-primary" value="Upload" />
-            </div>
-        </div>
-    </form>
-    <div class="col-md-7">
-        <h2>Your files</h2>
 
-        <div class="dropzone-container" id="dropzone">
-            <form action="/Document/UploadFiles" id="uploader" class="dropzone">
-                <div id="dropzone-drop-area" class="dropzone-drop-area">
-                    @{await Html.RenderPartialAsync("_GetDocuments", Model);}
-                </div>
-            </form>
-        </div>
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Start Bootstrap
+                </a>
+            </li>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+            <li>
+                <a href="#">Shortcuts</a>
+            </li>
+            <li>
+                <a href="#">Overview</a>
+            </li>
+            <li>
+                <a href="#">Events</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Services</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
     </div>
-    <div class="col-md-3">
-        <div id="file-options">
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
+            <div class="row">
+                <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            <input type="file" name="file" multiple />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            <input type="submit" class="btn btn-primary" value="Upload" />
+                        </div>
+                    </div>
+                </form>
+                <div class="col-md-7">
+                    <h2>Your files</h2>
+
+                    <div class="dropzone-container" id="dropzone">
+                        <form action="/Document/UploadFiles" id="uploader" class="dropzone">
+                            <div id="dropzone-drop-area" class="dropzone-drop-area">
+                                @{await Html.RenderPartialAsync("_GetDocuments", Model);}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div id="file-options">
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
