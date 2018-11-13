@@ -15,6 +15,7 @@ function ShowFileOptions(doc) {
 }
 function DoubleClickAction(isFile, id) {
     if (isFile === 0) {
+        $('#backParentId').show();
         $.ajax({
             type: "Post",
             url: '/Document/ReturnDocumentList',
@@ -45,4 +46,10 @@ function GoBack() {
             $('#dropzone-drop-area').html(data);
         }
     }); 
+}
+function SetParentId(id) {
+    if (id == 0) {
+        $('#backParentId').hide();
+    }
+    sessionStorage.setItem("parentId",id)
 }

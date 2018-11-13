@@ -1,7 +1,7 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentView>
 <script>
-    sessionStorage.setItem("parentId",@Model.ElementAt(0).ParentId)
+    SetParentId(@Model.ElementAt(0).ParentId);
 </script>
     <table class="table">
         <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
