@@ -5,10 +5,14 @@
 <script src="~/js/dropzone.js"></script>
 <script src="~/js/Functions.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
 <style>
-    #file-options{
-        background-color: lightgray 
+    #file-options {
+        background-color: lightgray
     }
+
     .dropzone-container {
         width: 100%;
     }
@@ -39,6 +43,23 @@
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
     });
+    $.contextMenu({
+        selector: '.filerow',
+        callback: function (key, options) {
+            var m = "clicked: " + key + " on " + $(this).text();
+            window.console && console.log(m) || alert(m);
+        },
+        items: {
+            "edit": { name: "Edit", icon: "edit" },
+            "cut": { name: "Cut", icon: "cut" },
+            "copy": { name: "Copy", icon: "copy" },
+            "paste": { name: "Paste", icon: "paste" },
+            "delete": { name: "Delete", icon: "delete" },
+            "sep1": "---------",
+            "quit": { name: "Quit", icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-quit'; } }
+        }
+    });
+
     Dropzone.options.uploader = {
         paramName: "file", // The name that will be used to transfer the file
         clickable: true,
@@ -83,6 +104,8 @@
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">
+                </div>
+                <div id="dropzone-message-area" class="dz-message">
                 </div>
             </form>
         </div>
