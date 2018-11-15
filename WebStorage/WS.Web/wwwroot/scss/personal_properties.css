@@ -21,7 +21,7 @@
   vertical-align: middle; }
 
 .btn-square {
-  background: #54e76d;
+  background: #1d8c47;
   color: #fff;
   font-size: 16px;
   line-height: 30px;
@@ -45,3 +45,32 @@
 
 .non-margin {
   margin-bottom: 0px; }
+
+.accessRow1 {
+  padding-right: 0; }
+
+.accessRow2 {
+  padding-left: 0; }
+
+#copy-btn, #sel1, #pl {
+  border-radius: 0; }
+
+.addEmail {
+  margin-top: 10px; }
+
+/*
+img {
+    max-width: 100%;
+    height: auto;
+}
+*/
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .accessRow1 {
+    padding-right: 15px; }
+  .accessRow2 {
+    padding-left: 15px; } }
+
+/* Extra Small Devices, Phones */

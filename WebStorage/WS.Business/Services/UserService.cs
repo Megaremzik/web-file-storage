@@ -27,5 +27,11 @@ namespace WS.Business.Services
             User user = repo.GetUserByName(userName);
             return mapper.Map<User, UserView>(user);
         }
+        public bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
+        {
+            string userId = GetUserIdByDocumentId(documentId);
+            string userId2 = GetUserByName(userName).Id;
+            return userId == userId2;
+        }
     }
 }

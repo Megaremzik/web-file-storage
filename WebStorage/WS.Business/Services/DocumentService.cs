@@ -93,5 +93,10 @@ namespace WS.Business.Services
             }
             return parentId;
         }
+        public bool IsDocumentExist(int documentId)
+        {
+            DocumentView document = Get(documentId);
+            return document != null;
+        }
     }
 }
