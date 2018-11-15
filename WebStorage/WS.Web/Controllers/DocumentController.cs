@@ -56,13 +56,16 @@ namespace WS.Web.Controllers
             return PartialView("_FileOptions", doc);
         }
         [HttpPost]
-        public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
+        public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
         {
             string userId = _userManager.GetUserId(User);
             var folders = _pathProvider.SplitPath(fullpath);
             var uploads = _pathProvider.GetRootPath();
-            if (folders != null) uploads = Path.Combine(uploads, folders);
-            var parentId=_service.CreateFolders(folders,userId);
+            if (folders != null)
+            {
+                uploads = Path.Combine(uploads, folders);
+                parentId = _service.CreateFolders(folders, userId, parentId);
+            }
             if (file.Length > 0)
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))

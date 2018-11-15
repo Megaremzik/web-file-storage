@@ -1,5 +1,7 @@
-﻿function StoreUserToSession() {
-    sessionStorage.setItem("user", document.getElementById("email").value)
+﻿function GetParentId() {
+    var parent = sessionStorage.getItem("parentId");
+    document.querySelector('input[name=parentId]').value = parent;
+    return parent;
 }
 function ShowFileOptions(doc) {
     $.ajax({
@@ -35,7 +37,7 @@ function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
 function GoBack() {
-    var parentId = sessionStorage.getItem("parentId");    
+    var parentId = GetParentId();    
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
@@ -48,8 +50,12 @@ function GoBack() {
     }); 
 }
 function SetParentId(id) {
+    document.querySelector('input[name=parentId]').value = id;
     if (id == 0) {
         $('#backParentId').hide();
     }
     sessionStorage.setItem("parentId",id)
+}
+function ContextResult(action, id) {
+    if (action = "delete") Url.Action("Delete", "Document", id)
 }

@@ -38,17 +38,18 @@
             border: dashed 3px silver;
         }
 </style>
-@Html.Hidden("fullpath", "");
+@Html.Hidden("fullpath", "")
+@Html.Hidden("parentId", "")
 <script>
     $(document).ready(function () {
+        GetParentId();
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
     });
     $.contextMenu({
         selector: '.filerow',
         callback: function (key, options) {
-            var m = "clicked: " + key + " on " + $(this).text();
-            window.console && console.log(m) || alert(m);
+            ContextResult(key, $(this).attr("id"))
         },
         items: {
             "edit": { name: "Edit", icon: "edit" },
@@ -71,13 +72,13 @@
             this.on("sending", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
-                    console.log(file.fullPath);
+                    data.append("parentId", GetParentId());
                 }
             });
             this.on("dropfile", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
-                    console.log(file.fullPath);
+                    data.append("parentId", GetParentId());
                 }
             });
             this.on("queuecomplete", function (file) {
