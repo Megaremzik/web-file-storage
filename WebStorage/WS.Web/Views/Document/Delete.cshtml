@@ -1,5 +1,23 @@
 ﻿@model WS.Business.ViewModels.DocumentView
-    @{
+<div id="deleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <h4 id="deleteMessege"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"></button>
+                <button type="button" class="btn btn-success" onclick="DeleteTask()"></button>
+            </div>
+        </div>
+    </div>
+</div>    
+
+@*@{
         ViewBag.Title = "Удаление";
     }
 @Html.Hidden("id", Model.Id)
@@ -28,4 +46,4 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div>*@

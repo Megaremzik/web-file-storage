@@ -114,15 +114,19 @@ namespace WS.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public JsonResult Delete(int? id)
         {
+            bool result = false;
             if (id != null)
             {
                 _service.Delete(id);
-                return RedirectToAction("Index");
+                result = true;
             }
-            return NotFound();
+            return Json(result);
         }
+
+
+
         [HttpPost]
         public IActionResult ViewFile(DocumentView document)
         {
