@@ -98,19 +98,8 @@ namespace WS.Web.Controllers
         [HttpPost]
         public IActionResult Edit(DocumentView document)
         {
-            _service.Update(document);
+            //_service.Update(document);
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        [ActionName("Delete")]
-        public IActionResult ConfirmDelete(DocumentView document)
-        {
-            if (document != null)
-            {
-                return View(document);
-            }
-            return NotFound();
         }
 
         [HttpPost]
@@ -119,7 +108,7 @@ namespace WS.Web.Controllers
             bool result = false;
             if (id != null)
             {
-                _service.Delete(id);
+                _service.MoveToTrash(id);
                 result = true;
             }
             return Json(result);

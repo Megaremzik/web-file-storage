@@ -33,3 +33,33 @@ function DoubleClickAction(isFile, id) {
         //Просмотр файла
     }
 }
+
+//Delet to Bin
+function ConfirmDelete (name, isFile) {
+    if (isFile === 1) {
+        $(".modal-title").text("Удалить файл?")
+    }
+    else {
+        $(".modal-title").text("Удалить папку?")
+    }
+    $("#deleteMessege").text("Действительно удалить " + name + " из Foxbox?");
+    $("#deleteModal").modal("show");
+}
+
+function DeleteDoc () {
+    var id = $("#hiddenTaskId").val();
+    $.ajax({
+        type: "POST",
+        url: "/Document/Delete",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#deleteModal").modal("hide");
+                $("#" + id).remove();
+            }
+            else {
+                $("#deleteModal").modal("hide");
+            }
+        }
+    })
+}
