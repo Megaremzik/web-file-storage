@@ -60,7 +60,7 @@ namespace WS.Web.Controllers
             var userId = _userManager.GetUserId(User);
             if (type == "copy")
             {
-                _service.CreateACopy(id, parentId,userId);
+                _service.CreateACopy(id, parentId);
             }
             else if (type == "cut")
             {

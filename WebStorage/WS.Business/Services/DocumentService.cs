@@ -109,21 +109,20 @@ namespace WS.Business.Services
                 UpdateParentId(item.Id, id);
             }
         }
-        public void CreateACopy(int id, int parentId, string userId)
+        public void CreateACopy(int id, int parentId)
         {
-            var doc = repo.Get(id);
-            doc.Id = 0;
-            doc.ParentId = parentId;
+            var document = repo.Get(id);
+            Document doc= new Document { IsFile = document.IsFile, Size = document.Size, Name = document.Name, Extention = document.Extention, UserId = document.UserId, ParentId = parentId, Date_change = DateTime.Now };
             repo.Create(doc);
             if (doc.IsFile == false)
-                CreateAFolderCopy(repo.GetIdByName(userId,doc.Name,parentId), parentId, userId); 
+                CreateAFolderCopy(repo.GetIdByName(doc.UserId,doc.Name,parentId), parentId); 
         }
-        public void CreateAFolderCopy(int id, int parentId, string userId)
+        public void CreateAFolderCopy(int id, int parentId)
         {
             var documents = repo.GetAllChildren(id);
             foreach (var doc in documents)
             {
-                CreateACopy(doc.Id, id, userId);
+                CreateACopy(doc.Id, id);
             }
                 
         }
