@@ -57,9 +57,10 @@ namespace WS.Web.Controllers
         }
         public IActionResult Paste(int id, int parentId, string type)
         {
+            var userId = _userManager.GetUserId(User);
             if (type == "copy")
             {
-                _service.CreateACopy(id, parentId);
+                _service.CreateACopy(id, parentId,userId);
             }
             else if (type == "cut")
             {

@@ -97,13 +97,35 @@ namespace WS.Business.Services
             var doc = repo.Get(id);
             doc.ParentId = parentId;
             repo.Update(doc);
+            if (doc.IsFile == false)
+            {
+                UpdateFolderParentId(id, parentId);
+            }
         }
-        public void CreateACopy(int id, int parentId)
+        public void UpdateFolderParentId(int id, int parentId)
+        {
+            foreach(var item in repo.GetAllChildren(id))
+            {
+                UpdateParentId(item.Id, id);
+            }
+        }
+        public void CreateACopy(int id, int parentId, string userId)
         {
             var doc = repo.Get(id);
             doc.Id = 0;
             doc.ParentId = parentId;
             repo.Create(doc);
+            if (doc.IsFile == false)
+                CreateAFolderCopy(repo.GetIdByName(userId,doc.Name,parentId), parentId, userId); 
+        }
+        public void CreateAFolderCopy(int id, int parentId, string userId)
+        {
+            var documents = repo.GetAllChildren(id);
+            foreach (var doc in documents)
+            {
+                CreateACopy(doc.Id, id, userId);
+            }
+                
         }
     }
 }

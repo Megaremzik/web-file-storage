@@ -72,6 +72,7 @@ function ContextResult(action, id) {
         var parent = sessionStorage.getItem("parentId");
         var type = sessionStorage.getItem("type");
         var item = sessionStorage.getItem("copy");
+        sessionStorage.setItem("copy","")
         $.ajax({
             type: "Post",
             url: '/Document/Paste',
