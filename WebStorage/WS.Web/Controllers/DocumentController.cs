@@ -55,6 +55,18 @@ namespace WS.Web.Controllers
             var doc = _service.Get(id);
             return PartialView("_FileOptions", doc);
         }
+        public IActionResult Paste(int id, int parentId, string type)
+        {
+            if (type == "copy")
+            {
+                _service.CreateACopy(id, parentId);
+            }
+            else if (type == "cut")
+            {
+                _service.UpdateParentId(id,parentId);
+            }
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+        }
         [HttpPost]
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
         {

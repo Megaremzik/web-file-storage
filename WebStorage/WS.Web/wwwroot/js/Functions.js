@@ -57,5 +57,32 @@ function SetParentId(id) {
     sessionStorage.setItem("parentId",id)
 }
 function ContextResult(action, id) {
-    if (action = "delete") Url.Action("Delete", "Document", id)
+    if (action == "delete") {
+        Url.Action("Delete", "Document", id);
+    }
+    else if (action == "copy") {
+        sessionStorage.setItem("copy", id);
+        sessionStorage.setItem("type", "copy");
+    }
+    else if (action == "cut") {
+        sessionStorage.setItem("copy", id);
+        sessionStorage.setItem("type", "cut");
+    }
+    else if (action == "paste") {
+        var parent = sessionStorage.getItem("parentId");
+        var type = sessionStorage.getItem("type");
+        var item = sessionStorage.getItem("copy");
+        $.ajax({
+            type: "Post",
+            url: '/Document/Paste',
+            data: {
+                id: item,
+                parentId: parent,
+                type: type
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        }); 
+    }
 }

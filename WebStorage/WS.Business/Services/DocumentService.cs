@@ -92,5 +92,18 @@ namespace WS.Business.Services
             }
             return parentId;
         }
+        public void UpdateParentId(int id, int parentId)
+        {
+            var doc = repo.Get(id);
+            doc.ParentId = parentId;
+            repo.Update(doc);
+        }
+        public void CreateACopy(int id, int parentId)
+        {
+            var doc = repo.Get(id);
+            doc.Id = 0;
+            doc.ParentId = parentId;
+            repo.Create(doc);
+        }
     }
 }
