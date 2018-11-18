@@ -431,6 +431,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\EmailSender.cs" />
     <Compile Include="Services\EmailSenderExtensions.cs" />
     <Compile Include="ViewModels\AccountViewModels\ExternalLoginViewModel.cs" />
