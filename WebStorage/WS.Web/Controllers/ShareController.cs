@@ -17,56 +17,57 @@ namespace WS.Web.Controllers
     {
         private SharingService _sharingService;
         private DocumentService _documentService;
+
         public ShareController(SharingService sharingService, DocumentService documentService)
         {
             _sharingService = sharingService;
             _documentService = documentService;
-
+        
         }
-        public IActionResult GetPublicAccessLink(int documentId)
+        public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
 
-            string guid = _sharingService.GetPublicAccessLink(documentId, User.Identity.Name);
-            string link;
-            if (guid == null)
+            DocumentLinkView docLink = _sharingService.GetPublicAccessLink(documentId, User.Identity.Name);
+
+            if (docLink == null)
             {
-                link = "";
+                return new DocumentLinkJsonView { Link = "", IsEditable = false };
             }
-            else
-            {
-                link = Request.Host.Value + "/Share/Get?id=" + guid;
-            }
-            return Content(link);
+            return new DocumentLinkJsonView { Link = Request.Host.Value + "/Share/Get?id=" + docLink.Link + "&adm=pub", IsEditable = docLink.IsEditable };
         }
+
         public IActionResult AddAccessForUser(int documentId, string guestEmail, bool isEditable)
         {
             string guid = _sharingService.OpenLimitedAccesToFile(documentId, isEditable, User.Identity.Name, guestEmail);
+
+
+
             //   string link = Request.Host.Value + "/Share/Get?id=" + guid;
             //   string message = $"Вам открыли доступ к файлу по следующей ссылке <a href=\"{link}\">Ссылка</a>";
             //     await _emailSender.SendEmailAsync(guestEmail, "WebStorage", message);
-            return Content(Request.Host.Value + "/Share/Get?id=" + guid);
+            return Content(Request.Host.Value + "/Share/Get?id=" + guid + "&adm=lim");
 
         }
         public IActionResult DeleteAccessForUser(int documentId, string guestEmail)
         {
             _sharingService.RemoveAccessForUser(documentId, User.Identity.Name, guestEmail);
-            return Content("Ok");
+            return Ok();
         }
         public IActionResult OpenPublicAccess(int documentId, bool IsEditable)
         {
             string guid = _sharingService.OpenPublicAccesToFile(documentId, IsEditable, User.Identity.Name);
-            string link = Request.Host.Value + "/Share/Get?id=" + guid;
+            string link = Request.Host.Value + "/Share/Get?id=" + guid + "&adm=pub";
             return Content(link);
         }
         public IActionResult ClosePublicAccess(int documentId)
         {
             _sharingService.ClosePublicAccesToFile(documentId, User.Identity.Name);
-            return Content("Ok");
+            return Ok();
         }
         public IActionResult CloseLimitedAccess(int documentId)
         {
             _sharingService.CloseLimitedAccesToFileEntire(documentId, User.Identity.Name);
-            return Content("Ok");
+            return Ok();
         }
 
         public IActionResult Get(string id, string adm)
@@ -97,10 +98,10 @@ namespace WS.Web.Controllers
             }
 
         }
-        public UserDocumentsView GetAllUsersForSharedDocument(int documentId)
+        public ICollection<UserDocumentJsonView> GetAllUsersForSharedDocument(int documentId)
         {
             var userdocs = _sharingService.GetAllUsersForSharedDocument(documentId, HttpContext.User.Identity.Name);
-            return new UserDocumentsView { users = _sharingService.GetAllUsersForSharedDocument(documentId, HttpContext.User.Identity.Name) };
+            return userdocs;
         }
     }
 

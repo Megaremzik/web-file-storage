@@ -18,7 +18,10 @@ namespace WS.Data
         }
         public IEnumerable<UserDocument> GetAll(string s = null)
         {
-            return db.UserDocument.ToList();
+
+            var userDocs = db.UserDocument.ToList();
+            db.SaveChanges();
+            return userDocs;
         }
         public void Create(UserDocument userDocument)
         {
@@ -27,15 +30,21 @@ namespace WS.Data
         }
         public UserDocument Get(string guestEmail, int? documentId)
         {
-            return db.UserDocument.Where(e => e.GuestEmail == guestEmail).Where(e => e.DocumentId == documentId).SingleOrDefault();
+            var userDocs = db.UserDocument.Where(e => e.GuestEmail == guestEmail && e.DocumentId == documentId).SingleOrDefault();
+            db.SaveChanges();
+            return userDocs;
         }
         public IEnumerable<UserDocument> GetUserDocumentsByDocumentId(int? documentId)
         {
-            return db.UserDocument.Where(e => e.DocumentId == documentId);
+            var userDocs = db.UserDocument.Where(e => e.DocumentId == documentId);
+            db.SaveChanges();
+            return userDocs;
         }
         public IEnumerable<UserDocument> GetUserDocumentsByGuestId(string guestEmail)
         {
-            return db.UserDocument.Where(e => e.GuestEmail == guestEmail);
+            var userDocs = db.UserDocument.Where(e => e.GuestEmail == guestEmail);
+            db.SaveChanges();
+            return userDocs;
         }
         public void Update(UserDocument userDocument)
         {

@@ -1,5 +1,4 @@
-﻿body {
-}
+﻿
 
 .accessRow1 {
     padding-right: 0;
@@ -9,7 +8,7 @@
     padding-left: 0;
 }
 
-#copy-btn, #sel1, #pl {
+#copy-btn, #sel1, #pl, #dropdown-button {
     border-radius: 0;
 }
 
@@ -18,16 +17,27 @@
 }
 
 
-
-
-
-
-/*
-img {
-    max-width: 100%;
-    height: auto;
+.sel2 {
+  
+    margin-right: 25px;
+    border: none;
 }
-*/
+.delete-link{
+    font-size: 15px;
+}
+.toggle.ios .toggle-handle {
+    border-radius: 20px;
+}
+.dropdown-access, #dropdown-button {
+
+   width: 100%;
+}
+
+#accessLevelHeader {
+    margin-top: 25px;
+}
+
+
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 }
@@ -45,6 +55,7 @@ img {
     .accessRow2 {
         padding-left: 15px;
     }
+
 }
 
 /* Extra Small Devices, Phones */

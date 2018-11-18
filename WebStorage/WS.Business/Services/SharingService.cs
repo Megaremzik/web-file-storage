@@ -30,18 +30,13 @@ namespace WS.Business.Services
             _userDocumentService = userDocumentService;
             _userService = userService;
         }
-        public string GetPublicAccessLink(int documentId, string userName)
+        public DocumentLinkView GetPublicAccessLink(int documentId, string userName)
         {
             if (!_userService.IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-            string link = _documentLinkService.Get(documentId)?.Link;
-            if (link != null)
-            {
-                return link + "&adm=pub";
-            }
-            return null;
+            return _documentLinkService.Get(documentId);
         }
         public string OpenPublicAccesToFile(int documentId, bool isEditable, string userName)
         {
@@ -59,14 +54,20 @@ namespace WS.Business.Services
             DocumentLinkView docLink = _documentLinkService.Get(documentId);
             if (docLink != null)
             {
-                return docLink.Link + "&adm=pub";
+                if(docLink.IsEditable==isEditable)
+                {
+                    return docLink.Link;
+                }
+                docLink.IsEditable = isEditable;
+                _documentLinkService.Update(docLink);
+                return docLink.Link;
             }
             string guid = Guid.NewGuid().ToString();
             _documentLinkService.Create(new DocumentLinkView { Id = documentId, IsEditable = isEditable, Link = guid });
-            return guid + "&adm=pub";
+            return guid;
         }
 
-        public ICollection<UserDocumentView> GetAllUsersForSharedDocument(int documentId, string userName)
+        public ICollection<UserDocumentJsonView> GetAllUsersForSharedDocument(int documentId, string userName)
         {
             if (!_documentService.IsDocumentExist(documentId))
             {
@@ -77,7 +78,8 @@ namespace WS.Business.Services
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-            var docs =  _userDocumentService.GetUserDocumentsByDocumentId(documentId);
+            var docs = _userDocumentService.GetUserDocumentsByDocumentId(documentId)
+                .Select(n => new UserDocumentJsonView { GuestEmail = n.GuestEmail, IsEditable = n.IsEditable, Link = n.Link });
             return docs.ToList();
         }
         public void ClosePublicAccesToFile(int documentId, string userName)
@@ -87,7 +89,7 @@ namespace WS.Business.Services
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-            //--------------------------------------------------------
+        
             DocumentLinkView documentLink = _documentLinkService.Get(documentId);
             if (documentLink != null)
             {
@@ -127,7 +129,13 @@ namespace WS.Business.Services
             var userDoc = _userDocumentService.Get(guestEmail, documentId);
             if (userDoc != null)
             {
-                return userDoc.Link + "&adm=lim";
+                if (userDoc.IsEditable == isEditable)
+                {
+                    return userDoc.Link;
+                }
+                userDoc.IsEditable = isEditable;
+                _userDocumentService.Update(userDoc);
+                return userDoc.Link;
             }
 
             //If we have already had guid for this document, we use it
@@ -147,7 +155,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = guid, GuestEmail = guestEmail, IsEditable = isEditable });
             }
-            return guid + "&adm=lim";
+            return guid;
         }
         public void RemoveAccessForUser(int documentId, string ownerName, string guestName)
         {
@@ -169,7 +177,7 @@ namespace WS.Business.Services
         public void CloseLimitedAccesToFileEntire(int documentId, string userName)
         {
 
-            if (_userService.IsUserTheOwnerOfTheDocument(userName, documentId))
+            if (!_userService.IsUserTheOwnerOfTheDocument(userName, documentId))
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
@@ -179,6 +187,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
+            
         }
     }
 }

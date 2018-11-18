@@ -1,5 +1,6 @@
 ﻿@using WS.Business.ViewModels
 @model DocumentView
+
 <p>Возможные действия с файлом</p>
 @if (Model.IsFile == true)
 {
@@ -8,64 +9,5 @@
 <p><a href="#" data-toggle="modal" onclick="GetLinks(@Model.Id);" data-target="#myModal">Совместный доступ</a></p>
 <p>@Html.ActionLink("Удалить", "Delete", "Document", Model)</p>
 
+@Html.Partial("../Share/_SharingModal.cshtml", Model);
 
-
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="row">
-                    <div class="col-sm-5">
-                        <h4 class="modal-title">Совместный доступ</h4>
-                    </div>
-                    <div class="col-sm-7" enableFileAccess>
-
-                        <button class="btn btn-default pull-right" onclick="openPublicAccess(@Model.Id, 'false');">Включить доступ</button>
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div id="publicLink">
-                    <div class="row">
-                        <div class="col-sm-8 accessRow1">
-                            <select class="form-control" id="sel1">
-                                <option>Просматривать могут все, у кого есть ссылка</option>
-                                <option>Редактировать могут все, у кого есть ссылка</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-4 accessRow2">
-                            <button id="copy-btn" class="btn btn-default btn-block" onclick="CopyToClipboard();">Копировать ссылку</button>
-                        </div>
-                    </div>
-                    <p><input id="pl" readonly class="form-control" type="text"></p>
-                </div>
-                <div class="privateLink">
-                    <p><hr /></p>
-                    <h5>Люди</h5>
-
-                    <div class="row">
-                        <div class="col-sm-8 accessRow1">
-                            <input id="privateEmail" placeholder="Введите эл. почту" class="form-control" type="text">
-                        </div>
-                        <div class="col-sm-4 accessRow2">
-                            <select class="form-control" id="sel1">
-                                <option>Просмотр</option>
-                                <option>Редактирование</option>
-                            </select>
-                        </div>
-                    </div>
-                    <p class="addEmail"><button onclick="sendInvite(@Model.Id);" class="btn btn-default">Добавить</button></p>
-                    <p><input id="privatel" readonly class="form-control" type="text"></p>
-                    <ul class="list-group EmailsList"></ul>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Готово</button>
-            </div>
-        </div>
-
-    </div>
-</div>

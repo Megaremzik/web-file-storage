@@ -440,6 +440,7 @@
     <Compile Include="ViewModels\AccountViewModels\LoginWithRecoveryCodeViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\DocumentLinkJsonView.cs" />
     <Compile Include="ViewModels\ManageViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels\EnableAuthenticatorViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels\ExternalLoginsViewModel.cs" />
@@ -458,7 +459,7 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\DocumentLinkView.cs" />
     <Compile Include="ViewModels\DocumentView.cs" />
-    <Compile Include="ViewModels\UserDocumentsView.cs" />
+    <Compile Include="ViewModels\UserDocumentJsonView.cs" />
     <Compile Include="ViewModels\UserDocumentView.cs" />
     <Compile Include="ViewModels\UserView.cs" />
   </ItemGroup>

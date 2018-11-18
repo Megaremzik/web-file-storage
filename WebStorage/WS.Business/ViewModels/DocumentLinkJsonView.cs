@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace WS.Business.ViewModels
 {
-    public class UserDocumentsView
+    public class DocumentLinkJsonView
     {
-        public ICollection<UserDocumentView> users { get; set; }
+        public string Link { get; set; }
+        public bool IsEditable { get; set; }
+
     }
 }
