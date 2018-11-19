@@ -126,5 +126,21 @@ namespace WS.Business.Services
             }
                 
         }
+        public string GetFilePath(int id)
+        {
+            string path = "";
+            int parentId = id;
+            do
+            {
+                path = GetParentFolder(ref parentId) +"\\"+ path;
+            } while (parentId != 0);
+            return path;
+        }
+        public string GetParentFolder(ref int id)
+        {
+            var doc=repo.Get(id);
+            id = doc.ParentId;
+            return doc.Name;
+        }
     }
 }
