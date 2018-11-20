@@ -70,9 +70,9 @@ namespace WS.Business
             while (document.ParentId != 0)
             {
                 document = _documentService.Get(document.ParentId);
-                path = document.Name + "/" + path;
+                path = document.Name + "\\" + path;
             }
-            return rootpath + "  +++++   " + path;
+            return rootpath + "\\" + path;
         }
     }
 }

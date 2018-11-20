@@ -59,6 +59,7 @@ namespace WS.Web
             services.AddTransient<DocumentService>();
             services.AddTransient<DocumentLinkService>();
             services.AddTransient<UserDocumentService>();
+            services.AddTransient<DownloadService>();
             services.AddTransient<UserService>();
             services.AddTransient<PathProvider>();
             services.AddAutoMapper();

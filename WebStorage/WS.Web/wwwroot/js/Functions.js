@@ -97,7 +97,7 @@ function sendInvite(docId) {
             console.log(data);
             $('#accessLevelHeader').show();
             $('#closeLAccess').show();
-           
+
             var selectOptions = isEdit == "true" ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
                 '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
             $('.EmailsList').append('<li class="list-group-item">'
@@ -105,8 +105,8 @@ function sendInvite(docId) {
                 '<a href="#"  onclick="deleteUser(' +
                 docId + ', \'' + email + '\', this);" ' +
                 'class="delete-link pull-right"><i class="glyphicon glyphicon-remove"></i></a>' +
-                '<select class="pull-right sel2" onchange="updateAccessForUser(' + docId + ", \'" + email + '\', this);">'  +
-                 selectOptions +
+                '<select class="pull-right sel2" onchange="updateAccessForUser(' + docId + ", \'" + email + '\', this);">' +
+                selectOptions +
                 '</select></li>');
         }
     })
@@ -148,7 +148,7 @@ function GetAllUser(docId) {
                     selectOptions +
                     '</select></li>');
             }
-            if ($('.EmailsList').children().length==0) {
+            if ($('.EmailsList').children().length == 0) {
                 $('#accessLevelHeader').hide();
                 $('#closeLAccess').hide();
             }
@@ -244,3 +244,23 @@ function closeLimitedAccess(docId) {
         }
     })
 }
+
+//function downloadDoc(docId) {
+
+//    $.ajax({
+//        method: 'GET',
+//        url: '/Download/Get',
+//        data: {
+//            documentId: docId,
+//        },
+//        success: function (data) {
+//            var a = document.createElement('a');
+//            var url = window.URL.createObjectURL(data);
+//            a.href = url;
+//            a.download = 'myfile.pdf';
+//            a.click();
+//            window.URL.revokeObjectURL(url);
+//        }
+//    })
+
+//}
