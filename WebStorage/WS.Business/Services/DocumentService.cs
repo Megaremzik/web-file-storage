@@ -8,6 +8,7 @@ using WS.Interfaces;
 using AutoMapper;
 using WS.Business.ViewModels;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace WS.Business.Services
 {
@@ -15,11 +16,12 @@ namespace WS.Business.Services
     {
         private DocumentRepository repo;
         private readonly IMapper mapper;
-
-        public DocumentService(IMapper map,DocumentRepository r)
+        private PathProvider pathprovider;
+        public DocumentService(IMapper map,DocumentRepository r, PathProvider p)
         {
             mapper = map;
             repo = r;
+            pathprovider = p;
         }
 
         public IEnumerable<DocumentView> GetAll(string id)
@@ -114,8 +116,22 @@ namespace WS.Business.Services
             var document = repo.Get(id);
             Document doc= new Document { IsFile = document.IsFile, Size = document.Size, Name = document.Name, Extention = document.Extention, UserId = document.UserId, ParentId = parentId, Date_change = DateTime.Now };
             repo.Create(doc);
+            var newId = repo.GetIdByName(doc.UserId, doc.Name, parentId);
+            var finishPath = GetFilePath(newId);
+            finishPath=Path.Combine(pathprovider.GetRootPath(),doc.UserId ,finishPath);
+            string startPath = "";
             if (doc.IsFile == false)
-                CreateAFolderCopy(repo.GetIdByName(doc.UserId,doc.Name,parentId), parentId); 
+            {
+                pathprovider.SplitPath(finishPath);
+                CreateAFolderCopy(newId, parentId);
+            }
+            else
+            {
+                startPath = GetFilePath(id);
+                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath);
+                File.Copy(startPath, finishPath);
+            }
+
         }
         public void CreateAFolderCopy(int id, int parentId)
         {
