@@ -99,9 +99,20 @@ namespace WS.Business.Services
             var doc = repo.Get(id);
             doc.ParentId = parentId;
             repo.Update(doc);
+            var newId = repo.GetIdByName(doc.UserId, doc.Name, parentId);
+            var finishPath = GetFilePath(newId);
+            finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
+            string startPath = "";
             if (doc.IsFile == false)
             {
+                pathprovider.AddFoldersWhenCopy(finishPath, doc.UserId);
                 UpdateFolderParentId(id, parentId);
+            }
+            else
+            {
+                startPath = GetFilePath(id);
+                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath);
+                File.Move(startPath, finishPath);
             }
         }
         public void UpdateFolderParentId(int id, int parentId)
@@ -118,15 +129,16 @@ namespace WS.Business.Services
             repo.Create(doc);
             var newId = repo.GetIdByName(doc.UserId, doc.Name, parentId);
             var finishPath = GetFilePath(newId);
-            finishPath=Path.Combine(pathprovider.GetRootPath(),doc.UserId ,finishPath);
             string startPath = "";
             if (doc.IsFile == false)
             {
-                pathprovider.SplitPath(finishPath);
-                CreateAFolderCopy(newId, parentId);
+                pathprovider.AddFoldersWhenCopy(finishPath,doc.UserId);
+                finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
+                CreateAFolderCopy(id, newId);
             }
             else
             {
+                finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
                 startPath = GetFilePath(id);
                 startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath);
                 File.Copy(startPath, finishPath);
@@ -138,7 +150,7 @@ namespace WS.Business.Services
             var documents = repo.GetAllChildren(id);
             foreach (var doc in documents)
             {
-                CreateACopy(doc.Id, id);
+                CreateACopy(doc.Id, parentId);
             }
                 
         }

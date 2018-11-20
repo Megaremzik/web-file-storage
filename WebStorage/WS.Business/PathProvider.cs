@@ -59,5 +59,18 @@ namespace WS.Business
 
             return folders;
         }
+        public string AddFoldersWhenCopy(string path, string userId)
+        {
+            rootpath = Path.Combine(rootpath, userId);
+            var str = path.Split('/');
+            string folders = "";
+            for (int i = 0; i < str.Length; i++)
+            {
+                MapPath(str[i], folders);
+                folders += str[i] + "/";
+            }
+
+            return folders;
+        }
     }
 }
