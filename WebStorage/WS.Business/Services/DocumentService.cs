@@ -148,7 +148,7 @@ namespace WS.Business.Services
             int parentId = id;
             do
             {
-                path = GetParentFolder(ref parentId) +"\\"+ path;
+                path = Path.Combine(GetParentFolder(ref parentId) , path);
             } while (parentId != 0);
             return path;
         }

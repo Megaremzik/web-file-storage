@@ -45,8 +45,9 @@ namespace WS.Business
         {
             Directory.CreateDirectory(path);
         }
-        public string SplitPath(string path)
+        public string SplitPath(string path, string userId=null)
         {
+            if (userId != null) rootpath=Path.Combine(rootpath, userId);
             if (path == null) return null;
             var str = path.Split('/');
             string folders="";

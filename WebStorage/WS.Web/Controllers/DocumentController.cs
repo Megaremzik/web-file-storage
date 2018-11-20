@@ -72,7 +72,7 @@ namespace WS.Web.Controllers
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
         {
             string userId = _userManager.GetUserId(User);
-            var folders = _pathProvider.SplitPath(fullpath);
+            var folders = _pathProvider.SplitPath(fullpath,_userManager.GetUserId(User));
             var uploads = _pathProvider.GetRootPath();
             if (folders != null)
             {
