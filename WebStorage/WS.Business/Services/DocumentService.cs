@@ -94,32 +94,40 @@ namespace WS.Business.Services
             }
             return parentId;
         }
-        public void UpdateParentId(int id, int parentId)
+        public void UpdateParentId(int id, int parentId, string startPath="")
         {
+            var path = GetFilePath(id);
             var doc = repo.Get(id);
             doc.ParentId = parentId;
             repo.Update(doc);
-            var newId = repo.GetIdByName(doc.UserId, doc.Name, parentId);
-            var finishPath = GetFilePath(newId);
-            finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
-            string startPath = "";
+            var finishPath = GetFilePath(id);
             if (doc.IsFile == false)
             {
+                if (startPath != "") startPath = Path.Combine(startPath,doc.Name);
+                else startPath =path;
                 pathprovider.AddFoldersWhenCopy(finishPath, doc.UserId);
-                UpdateFolderParentId(id, parentId);
+                finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
+                UpdateFolderParentId(id, parentId,ref startPath);
             }
             else
             {
-                startPath = GetFilePath(id);
-                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath);
+                finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
+                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath,doc.Name);
                 File.Move(startPath, finishPath);
             }
         }
-        public void UpdateFolderParentId(int id, int parentId)
+        public void UpdateFolderParentId(int id, int parentId, ref string startPath)
         {
             foreach(var item in repo.GetAllChildren(id))
             {
-                UpdateParentId(item.Id, id);
+                UpdateParentId(item.Id, id,startPath);
+            }
+            var path = startPath.Split('\\');
+            startPath = "";
+            //path.ElementAt(path.Length - 1).Take(path.Length - 1);
+            for(int i = 0; i < path.Length - 1; i++)
+            {
+                startPath = Path.Combine(startPath, path[i]);
             }
         }
         public void CreateACopy(int id, int parentId)

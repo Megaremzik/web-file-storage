@@ -61,9 +61,9 @@ namespace WS.Business
         }
         public string AddFoldersWhenCopy(string path, string userId)
         {
-            rootpath = Path.Combine(rootpath, userId);
+            //rootpath = Path.Combine(rootpath, userId);
             var str = path.Split('/');
-            string folders = "";
+            string folders = userId;
             for (int i = 0; i < str.Length; i++)
             {
                 MapPath(str[i], folders);
