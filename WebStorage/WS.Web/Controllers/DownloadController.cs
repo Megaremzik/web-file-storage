@@ -34,7 +34,7 @@ namespace WS.Web.Controllers
                 return PhysicalFile(path, GetContentType(name), name);
             }
             string zipName = _downloadService.CreateZip(path);
-            return PhysicalFile(_pathProvider.GetRootPath() + "\\" + zipName, GetContentType(zipName), zipName);
+            return PhysicalFile(_pathProvider.GetRootPath() + "\\" + zipName, GetContentType(doc.Name + ".zip"), doc.Name + ".zip");
         }
 
         private string GetContentType(string fileName)
