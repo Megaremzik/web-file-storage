@@ -48,7 +48,7 @@ namespace WS.Web
             });
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<EmailSender>();
 
             services.AddScoped<DocumentRepository>();
             services.AddScoped<DocumentRepository>();
@@ -62,6 +62,7 @@ namespace WS.Web
             services.AddTransient<DownloadService>();
             services.AddTransient<UserService>();
             services.AddTransient<PathProvider>();
+        
             services.AddAutoMapper();
             services.AddSharing();
 

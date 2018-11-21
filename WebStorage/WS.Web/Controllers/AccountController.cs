@@ -23,14 +23,14 @@ namespace WS.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
             DocumentService service,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IEmailSender emailSender,
+            EmailSender emailSender,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;

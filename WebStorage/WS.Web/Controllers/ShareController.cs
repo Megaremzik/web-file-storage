@@ -17,12 +17,13 @@ namespace WS.Web.Controllers
     {
         private SharingService _sharingService;
         private DocumentService _documentService;
+        EmailSender _emailSender;
 
-        public ShareController(SharingService sharingService, DocumentService documentService)
+        public ShareController(SharingService sharingService, DocumentService documentService, EmailSender emailSender)
         {
             _sharingService = sharingService;
             _documentService = documentService;
-        
+            _emailSender = emailSender;
         }
         public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
@@ -36,18 +37,16 @@ namespace WS.Web.Controllers
             return new DocumentLinkJsonView { Link = Request.Host.Value + "/Share/Get?id=" + docLink.Link + "&adm=pub", IsEditable = docLink.IsEditable };
         }
 
-        public IActionResult AddAccessForUser(int documentId, string guestEmail, bool isEditable)
+        public async Task<IActionResult> AddAccessForUser(int documentId, string guestEmail, bool isEditable)
         {
             string guid = _sharingService.OpenLimitedAccesToFile(documentId, isEditable, User.Identity.Name, guestEmail);
-
-
-
-            //   string link = Request.Host.Value + "/Share/Get?id=" + guid;
-            //   string message = $"Вам открыли доступ к файлу по следующей ссылке <a href=\"{link}\">Ссылка</a>";
-            //     await _emailSender.SendEmailAsync(guestEmail, "WebStorage", message);
-            return Content(Request.Host.Value + "/Share/Get?id=" + guid + "&adm=lim");
-
+            string link = Request.Host.Value + "/Share/Get?id=" + guid + "&adm=lim";
+            string subject = "Пользователь " + User.Identity.Name + " поделился с вами файлом";
+            string message = "<p>Пользователь " + User.Identity.Name +  $" поделился с вами файлом по следующей ссылке {link}</p>";
+            await _emailSender.SendEmailAsync(guestEmail, subject, message);
+            return Content(link);
         }
+
         public IActionResult DeleteAccessForUser(int documentId, string guestEmail)
         {
             _sharingService.RemoveAccessForUser(documentId, User.Identity.Name, guestEmail);
