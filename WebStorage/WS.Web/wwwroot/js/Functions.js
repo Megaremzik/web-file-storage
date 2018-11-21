@@ -244,23 +244,3 @@ function closeLimitedAccess(docId) {
         }
     })
 }
-
-//function downloadDoc(docId) {
-
-//    $.ajax({
-//        method: 'GET',
-//        url: '/Download/Get',
-//        data: {
-//            documentId: docId,
-//        },
-//        success: function (data) {
-//            var a = document.createElement('a');
-//            var url = window.URL.createObjectURL(data);
-//            a.href = url;
-//            a.download = 'myfile.pdf';
-//            a.click();
-//            window.URL.revokeObjectURL(url);
-//        }
-//    })
-
-//}

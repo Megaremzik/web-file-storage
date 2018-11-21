@@ -74,6 +74,21 @@
 #accessLevelHeader {
   margin-top: 25px; }
 
+.download-message {
+  border-radius: 20px;
+  width: 300px;
+  height: 150px;
+  background-color: #ddd;
+  text-align: center;
+  margin: 0 auto;
+  padding: 19px; }
+
+.downnload-div {
+  height: 82vh; }
+
+.download-button {
+  margin: 15px auto 0 auto; }
+
 /* Large Devices, Wide Screens */
 /* Medium Devices, Desktops */
 /* Small Devices, Tablets */

@@ -6,9 +6,12 @@
 {
     <p>@Html.ActionLink("Просмотр файла", "ViewFile", "Document", Model)</p>
 }
+
 <p><a href="#" data-toggle="modal" onclick="GetLinks(@Model.Id);" data-target="#myModal">Совместный доступ</a></p>
 
-<p><a href="/Download/Get?documentId=@Model.Id">Загрузить</a></p>
+<p>@Html.ActionLink("Скачать", "Get", "Download", new { documentId = Model.Id })</p>
+
+
 
 @Html.Partial("../Share/_SharingModal.cshtml", Model);
 

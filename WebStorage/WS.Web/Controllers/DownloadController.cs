@@ -30,23 +30,14 @@ namespace WS.Web.Controllers
     
             if (doc.IsFile)
             {
-                string name = Path.GetFileName(path);
-                return PhysicalFile(path, GetContentType(name), name);
+                string contentType = MimeTypeMap.GetMimeType(doc.Name);
+                return PhysicalFile(path, contentType, doc.Name);
             }
             string zipName = _downloadService.CreateZip(path);
-            return PhysicalFile(_pathProvider.GetRootPath() + "\\" + zipName, GetContentType(doc.Name + ".zip"), doc.Name + ".zip");
+            return PhysicalFile(Path.Combine( _downloadService.GetPathForZip(), zipName), "application/zip" , doc.Name + ".zip");
         }
 
-        private string GetContentType(string fileName)
-        {
-            var provider = new FileExtensionContentTypeProvider();
-            string contentType;
-            if (!provider.TryGetContentType(fileName, out contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-            return contentType;
-        }
+      
 
 
     }
