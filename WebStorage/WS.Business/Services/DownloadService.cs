@@ -21,10 +21,6 @@ namespace WS.Business.Services
         {
             return PathForZip;
         }
-        public string Get(int documentId)
-        {
-            return _pathProvider.GetFullPath(documentId);
-        }
 
         public string CreateZip(string fullPath)
         {
