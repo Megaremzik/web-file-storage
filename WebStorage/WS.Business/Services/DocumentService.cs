@@ -181,11 +181,26 @@ namespace WS.Business.Services
         public void RenameFile(int id, string name)
         {
             var doc = repo.Get(id);
-            var startpath = Path.Combine(pathprovider.GetRootPath(),doc.UserId,GetFilePath(id));
+            if (!doc.IsFile)
+                RenameFolder(id, name);
+            else
+            {
+                var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+                doc.Name = name;
+                var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+                repo.Update(doc);
+                File.Move(startpath, finishpath);
+            }
+            
+        }
+        public void RenameFolder(int id, string name)
+        {
+            var doc = repo.Get(id);
+            var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
             doc.Name = name;
             var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
             repo.Update(doc);
-            File.Move(startpath, finishpath);
+            Directory.Move(startpath,finishpath);
         }
     }
 }

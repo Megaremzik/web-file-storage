@@ -43,6 +43,7 @@
 <script>
     $(document).ready(function () {
         GetParentId();
+        $('#renameModal').modal({ show: false })
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
     });
@@ -129,4 +130,7 @@
         </div>
     </div>
 </div>
+@{
+    Html.RenderPartial("_Rename",Model.ElementAt(0));
+}
 
