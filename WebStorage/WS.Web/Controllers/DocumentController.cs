@@ -79,13 +79,18 @@ namespace WS.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
         {
+            var currentpath = "";
+            if (parentId != 0)
+            {
+                currentpath=_service.GetFilePath(parentId);
+            }
             string userId = _userManager.GetUserId(User);
-            var folders = _pathProvider.SplitPath(fullpath,_userManager.GetUserId(User));
+            var folders = _pathProvider.SplitPath(fullpath,_userManager.GetUserId(User),currentpath);
             var uploads = _pathProvider.GetRootPath();
             if (folders != null)
             {
                 uploads = Path.Combine(uploads, folders);
-                parentId = _service.CreateFolders(folders, userId, parentId);
+                parentId = _service.CreateFolders(fullpath, userId, parentId);
             }
             if (file.Length > 0)
             {

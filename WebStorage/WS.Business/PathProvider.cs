@@ -45,12 +45,12 @@ namespace WS.Business
         {
             Directory.CreateDirectory(path);
         }
-        public string SplitPath(string path, string userId=null)
+        public string SplitPath(string path, string userId,string currentFolder="")
         {
             if (userId != null) rootpath=Path.Combine(rootpath, userId);
             if (path == null) return null;
             var str = path.Split('/');
-            string folders="";
+            string folders=(currentFolder!="")?currentFolder+"/":"";
             for(int i = 0; i < str.Length - 1; i++)
             {
                 MapPath(str[i],folders);
