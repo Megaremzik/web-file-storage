@@ -24,7 +24,7 @@
         min-height: 350px;
         box-sizing: border-box;
         padding: 2px;
-        display: flex;
+        /*display: flex;*/
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
@@ -52,9 +52,12 @@
             ContextResult(key, $(this).attr("id"))
         },
         items: {
-            "edit": { name: "Edit", icon: "edit" },
-            "cut": { name: "Cut", icon: "cut" },
-            "copy": { name: "Copy", icon: "copy" },
+            "download": { name: "Download"},
+            "share": { name: "Share"},
+            "view": { name: "View", icon: "edit"},
+            "rename": { name: "Rename"},
+            "cut": { name: "Cut", icon: "cut"},
+            "copy": { name: "Copy", icon: "copy"},
             "paste": {
                 name: "Paste", icon: "paste", disabled: function () {
                     if (sessionStorage.getItem("copy") == "" || sessionStorage.getItem("copy") == undefined) {
@@ -65,7 +68,7 @@
                     }
                 }
             },
-            "delete": { name: "Delete", icon: "delete" },
+            "delete": { name: "Delete", icon: "delete", disabled: CheckIfItIsABlankSpace($(this).attr("id")) },
             "sep1": "---------",
             "quit": { name: "Quit", icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-quit'; } }
         }

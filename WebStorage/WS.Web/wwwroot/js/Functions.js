@@ -86,4 +86,20 @@ function ContextResult(action, id) {
             }
         }); 
     }
+    else if (action == "rename") {
+        $.ajax({
+            type: "Post",
+            url: '/Document/Rename',
+            data: {
+                id: id,
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        }); 
+    }
+}
+function CheckIfItIsABlankSpace(id) {
+    if (id == "filetable") return true;
+    return false;
 }

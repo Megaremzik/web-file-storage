@@ -1,9 +1,9 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentView>
 <script>
-    SetParentId(@Model.ElementAt(0).ParentId);
+    SetParentId(@ViewBag.ParentId);
 </script>
-    <table class="table">
+    <table class="table filerow" id="filetable">
         <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
         @for (int i = 0; i < Model.Count(); i++)
         {
