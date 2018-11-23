@@ -1,6 +1,7 @@
-﻿[
+[
   {
     "outputFile": "wwwroot/scss/personal_properties.css",
-    "inputFile": "wwwroot/scss/personal_properties.scss"
+    "inputFile": "wwwroot/scss/personal_properties.scss",
+    "sourceMap": false
   }
 ]

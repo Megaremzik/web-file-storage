@@ -202,5 +202,10 @@ namespace WS.Business.Services
             repo.Update(doc);
             Directory.Move(startpath,finishpath);
         }
+        public bool IsDocumentExist(int documentId)
+        {
+            DocumentView document = Get(documentId);
+            return document != null;
+        }
     }
 }

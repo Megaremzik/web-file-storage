@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WS.Business.ViewModels.DocumentView>
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>Название Папки: @ViewBag.FolderName</h2>
+<h2></h2>
+<table class="table">
+    <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
+    @for (int i = 0; i < Model.Count(); i++)
+        {
+    <tr>
+        <td>@Model.ElementAt(i).Name</td>
+        <td>@Model.ElementAt(i).Extention</td>
+        <td>@Model.ElementAt(i).Size</td>
+        <td>@Model.ElementAt(i).IsFile</td>
+    </tr>
+        }
+</table>

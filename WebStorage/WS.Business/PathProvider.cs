@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WS.Business.Services;
+using WS.Business.ViewModels;
 using WS.Interfaces;
 
 namespace WS.Business
@@ -12,9 +14,11 @@ namespace WS.Business
     public class PathProvider
     {
         private IHostingEnvironment _hostingEnvironment;
+        DocumentService _documentService;
         private string rootpath;
-        public PathProvider(IHostingEnvironment environment)
+        public PathProvider(IHostingEnvironment environment, DocumentService documentService)
         {
+            _documentService = documentService;
             _hostingEnvironment = environment;
             rootpath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             CreateFolder(rootpath);
@@ -30,7 +34,7 @@ namespace WS.Business
                 rootpath = Path.Combine(rootpath, id);
                 CreateFolder(rootpath);
             }
-            
+
         }
         public string MapPath(string name, string path = null)
         {
@@ -53,7 +57,7 @@ namespace WS.Business
             string folders=(currentFolder!="")?currentFolder+"/":"";
             for(int i = 0; i < str.Length - 1; i++)
             {
-                MapPath(str[i],folders);
+                MapPath(str[i], folders);
                 folders += str[i] + "/";
             }
 
@@ -71,6 +75,18 @@ namespace WS.Business
             }
 
             return folders;
+        }
+        public string GetFullPath(int documentId)
+        {
+            string path = string.Empty;
+            DocumentView document = _documentService.Get(documentId);
+            path = document.Name;
+            while (document.ParentId != 0)
+            {
+                document = _documentService.Get(document.ParentId);
+                path = document.Name + "\\" + path;
+            }
+            return rootpath + "\\" + path;
         }
     }
 }
