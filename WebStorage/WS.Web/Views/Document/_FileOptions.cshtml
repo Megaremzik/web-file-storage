@@ -1,10 +1,10 @@
 ﻿@using WS.Business.ViewModels
 @model DocumentView
-
+<input type="hidden" id="hiddenTaskId" value="@Model.Id" />
 <p>Возможные действия с файлом</p>
 @if (Model.IsFile == true)
 {
-    <p>@Html.ActionLink("Просмотр файла", "ViewFile", "Document", Model)</p>
+<p>@Html.ActionLink("Просмотр файла", "ViewFile", "Document", Model)</p>
 }
 
 <p><a href="#" data-toggle="modal" onclick="GetLinks(@Model.Id);" data-target="#myModal">Совместный доступ</a></p>
@@ -15,3 +15,22 @@
 
 @Html.Partial("../Share/_SharingModal.cshtml", Model);
 
+<button type="button" class="btn btn-danger" onclick="ConfirmDelete(@Convert.ToString(" \"" + Model.Name + "\" "), @Convert.ToInt32(Model.IsFile))"><i class="glyphicon glyphicon-trash"></i>Удалить</button>
+
+<div id="deleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <h4 id="deleteMessege"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-success" onclick="DeleteDoc()">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>

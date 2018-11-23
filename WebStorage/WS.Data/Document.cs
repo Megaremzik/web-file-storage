@@ -9,6 +9,7 @@ namespace WS.Data
         public string UserId { get; set; }
         public string Name { get; set; }
         public DateTime Date_change { get; set; }
+        public string Type_change { get; set; }
         public int Size { get; set; }
         public int ParentId { get; set; }
         public bool IsFile { get; set; }

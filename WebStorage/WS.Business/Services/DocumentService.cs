@@ -35,6 +35,12 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
+        public Document GetExactlyDocument (int? id)
+        {
+            Document document = repo.Get(id);
+            return document;
+        }
+
         public void Create(IFormFile file, string userId, int parentId=0)
         {
             Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId, ParentId = parentId, Date_change=DateTime.Now };
@@ -45,8 +51,39 @@ namespace WS.Business.Services
             Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId=parentId,Date_change=DateTime.Now };
             repo.Create(doc);
         }
-        public void Update(DocumentView documentView)
+        public void Update(int? id)
         {
+            //var document = Get(id);
+            //Document document = mapper.Map<DocumentView, Document>(documentView);
+            //repo.Update(document);
+        }
+
+        public void MoveToTrash(int? id)
+        {
+            var document = GetExactlyDocument (id);
+            document.Date_change = DateTime.Now;
+            document.Type_change = "Delete";
+            var isFile = document.IsFile;
+            if (isFile == true)
+            {
+                repo.Update(document);
+            }
+            else
+            {
+                MoveToTrashFolder(id);
+            }
+        }
+
+        public void MoveToTrashFolder(int? id)
+        {
+            var documents = repo.GetAllChildren(id);
+            foreach (var doc in documents)
+            {
+                MoveToTrash(doc.Id);
+            }
+            var documentView = Get(id);
+            documentView.Date_change = DateTime.Now;
+            documentView.Type_change = "Delete";
             Document document = mapper.Map<DocumentView, Document>(documentView);
             repo.Update(document);
         }
@@ -73,6 +110,7 @@ namespace WS.Business.Services
             }
             repo.Delete(id);
         }
+
         public IEnumerable<DocumentView> GetAllChildren(int? id)
         {
             var documents = repo.GetAllChildren(id);
