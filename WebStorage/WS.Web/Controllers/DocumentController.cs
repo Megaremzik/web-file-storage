@@ -43,6 +43,7 @@ namespace WS.Web.Controllers
             IEnumerable<DocumentView> documents;
             if (parentId != 0) documents = _service.GetAllChildren(parentId);
             else documents = _service.GetAllRootElements(userId);
+            ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
         public IActionResult ReturnParent(int id)
@@ -66,6 +67,13 @@ namespace WS.Web.Controllers
             {
                 _service.UpdateParentId(id,parentId);
             }
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+        }
+        public IActionResult Rename(int id, string name)
+        {
+            var userId = _userManager.GetUserId(User);
+            _service.RenameFile(id, name);
+            var parentId = _service.Get(id).ParentId;
             return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
         }
         [HttpPost]

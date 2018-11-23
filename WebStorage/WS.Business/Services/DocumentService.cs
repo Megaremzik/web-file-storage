@@ -178,5 +178,14 @@ namespace WS.Business.Services
             id = doc.ParentId;
             return doc.Name;
         }
+        public void RenameFile(int id, string name)
+        {
+            var doc = repo.Get(id);
+            var startpath = Path.Combine(pathprovider.GetRootPath(),doc.UserId,GetFilePath(id));
+            doc.Name = name;
+            var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+            repo.Update(doc);
+            File.Move(startpath, finishpath);
+        }
     }
 }
