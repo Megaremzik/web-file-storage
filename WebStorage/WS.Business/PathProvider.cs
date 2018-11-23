@@ -14,11 +14,9 @@ namespace WS.Business
     public class PathProvider
     {
         private IHostingEnvironment _hostingEnvironment;
-        DocumentService _documentService;
         private string rootpath;
-        public PathProvider(IHostingEnvironment environment, DocumentService documentService)
+        public PathProvider(IHostingEnvironment environment)
         {
-            _documentService = documentService;
             _hostingEnvironment = environment;
             rootpath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             CreateFolder(rootpath);
@@ -75,18 +73,6 @@ namespace WS.Business
             }
 
             return folders;
-        }
-        public string GetFullPath(int documentId)
-        {
-            string path = string.Empty;
-            DocumentView document = _documentService.Get(documentId);
-            path = document.Name;
-            while (document.ParentId != 0)
-            {
-                document = _documentService.Get(document.ParentId);
-                path = document.Name + "\\" + path;
-            }
-            return rootpath + "\\" + path;
         }
     }
 }

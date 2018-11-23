@@ -248,8 +248,6 @@ function closeLimitedAccess(docId) {
         }
     })
 }
-    }); 
-}
 function SetParentId(id) {
     document.querySelector('input[name=parentId]').value = id;
     if (id == 0) {

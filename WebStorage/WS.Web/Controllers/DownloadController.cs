@@ -26,7 +26,7 @@ namespace WS.Web.Controllers
         public IActionResult Get(int documentId)
         {
             var doc = _documentService.Get(documentId);
-            string path = _pathProvider.GetFullPath(documentId);
+            string path = _documentService.GetFullPath(documentId);
     
             if (doc.IsFile)
             {

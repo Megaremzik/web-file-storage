@@ -207,5 +207,17 @@ namespace WS.Business.Services
             DocumentView document = Get(documentId);
             return document != null;
         }
+        public string GetFullPath(int documentId)
+        {
+            string path = string.Empty;
+            var document = Get(documentId);
+            path = document.Name;
+            while (document.ParentId != 0)
+            {
+                document = Get(document.ParentId);
+                path = Path.Combine(document.Name, path);
+            }
+            return Path.Combine(pathprovider.GetRootPath(),document.UserId, path);
+        }
     }
 }

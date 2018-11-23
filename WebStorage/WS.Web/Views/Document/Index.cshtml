@@ -130,7 +130,11 @@
         </div>
     </div>
 </div>
-@{
-    Html.RenderPartial("_Rename",Model.ElementAt(0));
-}
+@*@{
+    if (Model != null && Model.Count() != 0)
+    {
+        @Html.RenderPartial("_Rename", Model.ElementAt(0));
+    }
+
+}*@
 
