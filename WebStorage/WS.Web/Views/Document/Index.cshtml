@@ -33,7 +33,7 @@
         position: relative;
     }
 
-        .dropzone-drop-area:hover {
+        .dropzone-drop-area.over {
             background-color: white;
             border: dashed 3px silver;
         }
@@ -41,7 +41,27 @@
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
 <script>
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+        return false;
+    }
+    function handleDragEnter(e) {
+        // this / e.target is the current hover target.
+        this.classList.add('over');
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('over');  // this / e.target is previous target element.
+    }
     $(document).ready(function () {
+        var zone = document.querySelector('.dropzone-drop-area');
+        zone.addEventListener('dragenter', handleDragEnter, false);
+        zone.addEventListener('dragover', handleDragOver, false);
+        zone.addEventListener('dragleave', handleDragLeave, false);
         GetParentId();
         $('#renameModal').modal({ show: false })
         $('#backParentId').hide();
