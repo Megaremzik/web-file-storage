@@ -317,6 +317,18 @@ function ContextResult(action, id) {
     else if (action == "share") {
         $('#myModal').modal('show');
     }
+    else if (action == "view") {
+        $.ajax({
+            type: "Post",
+            url: '/Document/ViewFile',
+            data: {
+                id: id
+            }
+            //success: function (data, textStatus, jqXHR) {
+            //    $('#dropzone-drop-area').html(data);
+            //}
+        }); 
+    }
 }
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;

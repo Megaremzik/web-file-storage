@@ -107,14 +107,14 @@
             this.on("sending", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
-                    data.append("parentId", GetParentId());
                 }
+                data.append("parentId", GetParentId());
             });
             this.on("dropfile", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
-                    data.append("parentId", GetParentId());
                 }
+                data.append("parentId", GetParentId());
             });
             this.on("queuecomplete", function (file) {
                  $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');

@@ -148,18 +148,18 @@ namespace WS.Web.Controllers
             }
             return Json(result);
         }
-
-
-
         [HttpPost]
-        public IActionResult ViewFile(DocumentView document)
+        public IActionResult ViewFile(int id)
         {
-            return RedirectToAction("Index");
-        }
-        [HttpPost]
-        public IActionResult Share(DocumentView document)
-        {
-            return RedirectToAction("Index");
+            var doc = _service.Get(id);
+            string path = _service.GetFullPath(id);
+
+            if (doc.IsFile)
+            {
+                string contentType = MimeTypeMap.GetMimeType(doc.Name);
+                return PhysicalFile(path, contentType, doc.Name);
+            }
+            return RedirectToAction("ReturnDocumentList", doc.ParentId);
         }
     }
 }
