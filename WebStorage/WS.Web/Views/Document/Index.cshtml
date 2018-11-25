@@ -1,4 +1,5 @@
-﻿@model IEnumerable<WS.Business.ViewModels.DocumentView>
+﻿@using WS.Business.ViewModels
+@model IEnumerable<DocumentView>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -63,7 +64,8 @@
         zone.addEventListener('dragover', handleDragOver, false);
         zone.addEventListener('dragleave', handleDragLeave, false);
         GetParentId();
-        $('#renameModal').modal({ show: false })
+        $('#renameModal').modal({ show: false });
+        $('#myModal').modal({ show: false });
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
     });
@@ -150,11 +152,8 @@
         </div>
     </div>
 </div>
-@*@{
-    if (Model != null && Model.Count() != 0)
-    {
-        @Html.RenderPartial("_Rename", Model.ElementAt(0));
-    }
-
-}*@
+@{
+    Html.RenderPartial("_Rename", new DocumentView());
+    @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
+}
 

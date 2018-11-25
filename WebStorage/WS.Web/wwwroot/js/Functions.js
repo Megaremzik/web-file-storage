@@ -302,6 +302,21 @@ function ContextResult(action, id) {
         //    }
         //}); 
     }
+    else if (action == "download") {
+        $.ajax({
+            type: "Post",
+            url: '/Download/Get',
+            data: {
+                id: id
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        }); 
+    }
+    else if (action == "share") {
+        $('#myModal').modal('show');
+    }
 }
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
