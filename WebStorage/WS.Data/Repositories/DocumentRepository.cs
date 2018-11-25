@@ -27,9 +27,15 @@ namespace WS.Data
         {
             return db.Document.Where(d=>d.User.Id==id).ToList();
         }
+
+        public IEnumerable<Document> GetAllWithoutDeleted(string id)
+        {
+            return db.Document.Where(d => d.User.Id == id && d.Type_change != "Delete").ToList();
+        }
+
         public void Create(Document document)
         {
-            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId);
+            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change != "Delete");
             if (doc.Count() == 0)
             {
                 db.Document.Add(document);
@@ -65,9 +71,22 @@ namespace WS.Data
             var documents= db.Document.Where(d => d.ParentId == id).ToList();
             return documents;
         }
+
+        public IEnumerable<Document> GetAllChildrensWithoutDeleted(int? id)
+        {
+            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change != "Delete").ToList();
+            return documents;
+        }
+
         public IEnumerable<Document> GetAllRootElements(string userId)
         {
-            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId).ToList();
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId ).ToList();
+            return documents;
+        }
+
+        public IEnumerable<Document> GetAllRootElementsWithoutDeleted(string userId)
+        {
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId && d.Type_change != "Delete").ToList();
             return documents;
         }
     }

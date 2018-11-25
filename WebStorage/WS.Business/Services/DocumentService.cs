@@ -30,6 +30,12 @@ namespace WS.Business.Services
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); 
         }
 
+        public IEnumerable<DocumentView> GetAllWithoutDeleted(string id)
+        {
+            IEnumerable<Document> documents = repo.GetAllWithoutDeleted(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+
         public DocumentView Get(int? id)
         {
             Document document = repo.Get(id);
@@ -58,33 +64,36 @@ namespace WS.Business.Services
             //repo.Update(document);
         }
 
-        public void MoveToTrash(int? id)
+        public void MoveToTrash(int? id, DateTime moveDate)
         {
             var document = GetExactlyDocument (id);
-            document.Date_change = DateTime.Now;
+            document.Date_change = moveDate;
             document.Type_change = "Delete";
             var isFile = document.IsFile;
+
+
+
+
             if (isFile == true)
             {
                 repo.Update(document);
             }
             else
             {
-                MoveToTrashFolder(id);
+                MoveToTrashFolder(id, moveDate);
             }
         }
 
-        public void MoveToTrashFolder(int? id)
+        public void MoveToTrashFolder(int? id, DateTime moveDate)
         {
             var documents = repo.GetAllChildren(id);
             foreach (var doc in documents)
             {
-                MoveToTrash(doc.Id);
+                MoveToTrash(doc.Id, moveDate);
             }
-            var documentView = Get(id);
-            documentView.Date_change = DateTime.Now;
-            documentView.Type_change = "Delete";
-            Document document = mapper.Map<DocumentView, Document>(documentView);
+            var document = GetExactlyDocument(id);
+            document.Date_change = moveDate;
+            document.Type_change = "Delete";
             repo.Update(document);
         }
 
@@ -116,11 +125,25 @@ namespace WS.Business.Services
             var documents = repo.GetAllChildren(id);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
+
+        public IEnumerable<DocumentView> GetAllChildrensWithoutDeleted(int? id)
+        {
+            var documents = repo.GetAllChildrensWithoutDeleted(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+
         public IEnumerable<DocumentView> GetAllRootElements(string userId)
         {
             var documents = repo.GetAllRootElements(userId);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
+
+        public IEnumerable<DocumentView> GetAllRootElementsWithoutDeleted(string userId)
+        {
+            var documents = repo.GetAllRootElementsWithoutDeleted(userId);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+
         public int CreateFolders(string folders,string userId, int parentId=0)
         {
             if (folders == null) return 0;
@@ -197,8 +220,7 @@ namespace WS.Business.Services
             foreach (var doc in documents)
             {
                 CreateACopy(doc.Id, parentId);
-            }
-                
+            }            
         }
         public string GetFilePath(int id)
         {

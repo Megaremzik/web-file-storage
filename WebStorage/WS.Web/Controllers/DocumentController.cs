@@ -34,15 +34,15 @@ namespace WS.Web.Controllers
         {
             string userId = _userManager.GetUserId(User);
             _pathProvider.MapId(userId);
-            var documents = _service.GetAll(userId);
+            var documents = _service.GetAllWithoutDeleted(userId);
             return View(documents);
         }
         public IActionResult ReturnDocumentList(int parentId=0)
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<DocumentView> documents;
-            if (parentId != 0) documents = _service.GetAllChildren(parentId);
-            else documents = _service.GetAllRootElements(userId);
+            if (parentId != 0) documents = _service.GetAllChildrensWithoutDeleted(parentId);
+            else documents = _service.GetAllRootElementsWithoutDeleted(userId);
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
@@ -100,7 +100,7 @@ namespace WS.Web.Controllers
                     _service.Create(file,userId,parentId);
                 }
             }
-            var documents = _service.GetAll(userId);
+            var documents = _service.GetAllRootElementsWithoutDeleted(userId);
             return PartialView("_GetDocuments", documents);
             //return RedirectToAction("Index");
         }
@@ -143,13 +143,12 @@ namespace WS.Web.Controllers
             bool result = false;
             if (id != null)
             {
-                _service.MoveToTrash(id);
+                DateTime moveDate = DateTime.Now;
+                _service.MoveToTrash(id, moveDate);
                 result = true;
             }
             return Json(result);
         }
-
-
 
         [HttpPost]
         public IActionResult ViewFile(DocumentView document)
