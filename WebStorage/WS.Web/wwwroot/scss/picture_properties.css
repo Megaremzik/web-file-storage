@@ -1,0 +1,32 @@
+﻿html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; }
+
+body {
+  padding: 50px 0; }
+
+.postCompozition {
+  background-size: cover; }
+
+/*@media screen and (max-width: 479px) {
+    #notebook {
+        min-width: 10%;
+    }
+}*/
+#notebook {
+  height: 220px;
+  width: 366.66667px;
+  background-image: url("../../images/comp.png");
+  z-index: 10; }
+
+#plane {
+  height: 80px;
+  width: 133.33333px;
+  position: relative;
+  top: -213px;
+  right: -321px;
+  margin: -40px 0 0 -40px;
+  background-image: url("../../images/plane.png");
+  z-index: 20; }
