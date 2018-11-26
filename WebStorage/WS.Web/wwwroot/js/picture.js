@@ -30,7 +30,7 @@ $(window).on('mousemove.parallax', function (event) {
         1,
         {
             css: {
-                transform: 'translateX(' + left / 4 + 'px) translateY(' + top / 2 + 'px)'
+                transform: 'translateX(' + left / 6 + 'px) translateY(' + top / 3 + 'px)'
             },
             ease: Expo.easeOut,
             overwrite: 'all'

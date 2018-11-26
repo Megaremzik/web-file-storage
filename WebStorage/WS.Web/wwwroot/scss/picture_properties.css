@@ -15,9 +15,24 @@ body {
         min-width: 10%;
     }
 }*/
+@media only screen and (max-width: 479px) {
+  .loginAdd #notebook {
+    height: 165px;
+    width: 275px;
+    top: -4px;
+    right: -33px; }
+  .loginAdd #plane {
+    height: 60px;
+    width: 100px;
+    top: -167px;
+    right: -236px; } }
+
 #notebook {
   height: 220px;
   width: 366.66667px;
+  position: relative;
+  top: 53px;
+  right: 1px;
   background-image: url("../../images/comp.png");
   z-index: 10; }
 
@@ -25,8 +40,8 @@ body {
   height: 80px;
   width: 133.33333px;
   position: relative;
-  top: -213px;
-  right: -321px;
+  top: -189px;
+  right: -295px;
   margin: -40px 0 0 -40px;
   background-image: url("../../images/plane.png");
   z-index: 20; }
