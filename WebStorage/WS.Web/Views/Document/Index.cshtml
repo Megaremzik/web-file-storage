@@ -67,7 +67,7 @@
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#backParentId').hide();
-        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
+        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new { parentId = ViewBag.parentId })');
     });
     $.contextMenu({
         selector: '.filerow',
@@ -153,7 +153,7 @@
     </div>
 </div>
 @{
-    Html.RenderPartial("_Rename", new DocumentView());
+    //Html.RenderPartial("_Rename", new DocumentView());
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 
