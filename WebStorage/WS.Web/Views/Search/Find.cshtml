@@ -1,0 +1,7 @@
+﻿@using WS.Business.ViewModels;
+@model IEnumerable<DocumentSearch>;
+
+@foreach(var p in Model)
+{
+    <div><p>@p.Name  @p.Path  @p.IsFile @p.Size</p></div>
+}

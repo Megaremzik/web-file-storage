@@ -62,7 +62,7 @@ namespace WS.Web
             services.AddTransient<DownloadService>();
             services.AddTransient<UserService>();
             services.AddTransient<PathProvider>();
-        
+            services.AddTransient<SearchService>();
             services.AddAutoMapper();
             services.AddSharing();
 

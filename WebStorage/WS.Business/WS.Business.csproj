@@ -437,6 +437,7 @@
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\EmailSender.cs" />
     <Compile Include="Services\EmailSenderExtensions.cs" />
+    <Compile Include="Services\SearchService.cs" />
     <Compile Include="ViewModels\AccountViewModels\ExternalLoginViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\LoginViewModel.cs" />
@@ -445,6 +446,7 @@
     <Compile Include="ViewModels\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\DocumentLinkJsonView.cs" />
+    <Compile Include="ViewModels\DocumentSearch.cs" />
     <Compile Include="ViewModels\ManageViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels\EnableAuthenticatorViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels\ExternalLoginsViewModel.cs" />
