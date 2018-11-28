@@ -1,8 +1,5 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentView>
-@{
-    ViewData["Title"] = "Home Page";
-}
 <script src="~/js/dropzone.js"></script>
 <script src="~/js/Functions.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -96,7 +93,6 @@
             "quit": { name: "Quit", icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-quit'; } }
         }
     });
-
     Dropzone.options.uploader = {
         paramName: "file", // The name that will be used to transfer the file
         clickable: true,
@@ -123,19 +119,12 @@
     };
 </script>
 <div class="row form-control-static">
-    <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
-        <div class="form-group">
-            <div class="col-md-1">
-                <input type="file" name="file" multiple />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-1">
-                <input type="submit" class="btn btn-primary" value="Upload" />
-            </div>
-        </div>
-    </form>
-    <div class="col-md-7">
+    <div class="form-group">
+         <div class="col-md-1">
+                <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
+         </div>
+    </div>
+    <div class="col-md-8">
         <h2>Your files</h2>
         <button id="backParentId" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">

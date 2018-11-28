@@ -358,3 +358,6 @@ function DeleteDoc() {
         }
     })
 }
+function ChooseFiles() {
+    $('.dropzone').trigger('click');
+}
