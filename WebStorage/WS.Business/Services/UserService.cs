@@ -38,7 +38,7 @@ namespace WS.Business.Services
         }
         public string GetUserId(ClaimsPrincipal user)
         {
-            return _manage.GetUserId(user);
+            return _userManager.GetUserId(user);
         }
     }
 }

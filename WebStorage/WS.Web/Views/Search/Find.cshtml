@@ -1,7 +1,15 @@
 ﻿@using WS.Business.ViewModels;
 @model IEnumerable<DocumentSearch>;
 
-@foreach(var p in Model)
-{
-    <div><p>@p.Name  @p.Path  @p.IsFile @p.Size</p></div>
-}
+<div class="list-group">
+
+    @foreach (var p in Model)
+    {
+        <a href="#" class="list-group-item">
+            <p><b>Название: </b>@p.Name</p>
+            <p>@p.Path</p>
+            <p>@p.IsFile</p>
+            <p>@p.Size</p>
+        </a>
+    }
+</div>
