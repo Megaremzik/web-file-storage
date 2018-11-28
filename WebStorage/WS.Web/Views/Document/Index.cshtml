@@ -67,7 +67,7 @@
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#backParentId').hide();
-        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
+        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
     });
     $.contextMenu({
         selector: '.filerow',
@@ -122,7 +122,7 @@
         }
     };
 </script>
-<div class="row">
+<div class="row form-control-static">
     <form method="post" enctype="multipart/form-data" asp-controller="Document" asp-action="UploadFiles">
         <div class="form-group">
             <div class="col-md-1">

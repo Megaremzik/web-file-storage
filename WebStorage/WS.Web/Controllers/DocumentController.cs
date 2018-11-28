@@ -30,11 +30,12 @@ namespace WS.Web.Controllers
             _userManager = userManager;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id=0)
         {
             string userId = _userManager.GetUserId(User);
             _pathProvider.MapId(userId);
             var documents = _service.GetAll(userId);
+            ViewBag.ParentId = id;
             return View(documents);
         }
         public IActionResult ReturnDocumentList(int parentId=0)

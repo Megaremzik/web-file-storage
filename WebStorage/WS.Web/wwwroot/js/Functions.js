@@ -291,16 +291,6 @@ function ContextResult(action, id) {
         $("#renameModal #ModelId").val(id);
         $("#renameModal #ModelName").val(cell);
         $('#renameModal').modal('show');
-        //$.ajax({
-        //    type: "Post",
-        //    url: '/Document/Rename',
-        //    data: {
-        //        id: id,
-        //    },
-        //    success: function (data, textStatus, jqXHR) {
-        //        $('#dropzone-drop-area').html(data);
-        //    }
-        //}); 
     }
     else if (action == "download") {
         $.ajax({
@@ -321,8 +311,20 @@ function ContextResult(action, id) {
         window.open('/Document/ViewFile/?id=' + id, "_blank");
     }
 }
-function GetClientReport() {
-    window.open('/Document/ViewFile', "_blank");  
+function Rename() {
+    var id = document.getElementById("ModelId").value;
+    var name = document.getElementById("ModelName").value;
+    $.ajax({
+            type: "Post",
+            url: '/Document/Rename',
+            data: {
+                id: id,
+                name: name
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        });
 };  
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
