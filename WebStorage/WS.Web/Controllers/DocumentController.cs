@@ -33,6 +33,7 @@ namespace WS.Web.Controllers
         public IActionResult Index(int id=0)
         {
             string userId = _userManager.GetUserId(User);
+            if (userId == null) return RedirectToAction("Login", "Account");
             _pathProvider.MapId(userId);
             var documents = _service.GetAll(userId);
             ViewBag.ParentId = id;
