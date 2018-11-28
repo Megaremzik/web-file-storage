@@ -322,6 +322,11 @@ function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
 }
+
+function ForgotPassword() {
+    $("#ForgotModal").modal("show");
+}
+
 function ConfirmDelete(name, isFile) {
     if (isFile === 1) {
         $(".modal-title").text("Удалить файл?")

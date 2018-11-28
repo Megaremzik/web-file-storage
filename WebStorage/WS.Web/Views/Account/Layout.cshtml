@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - WS.Web</title>
 
     <environment include="Development">
+        <script src="~/js/Functions.js"></script>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-social.css" />
@@ -22,7 +23,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" id="navbar">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

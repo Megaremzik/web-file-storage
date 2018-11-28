@@ -9,7 +9,7 @@
 
 .hr-label {
   margin-top: 10px;
-  margin-bottom: 5px; }
+  margin-bottom: 10px; }
 
 .hr-label::before, .hr-label::after {
   content: '';
@@ -57,11 +57,15 @@
 .password-field {
   padding-right: 5px; }
 
-/*.password-field1{
+.password-field1 {
+  padding-right: 5px; }
 
-}
 .password-field2 {
-}*/
+  padding-right: 5px; }
+
+.navbar {
+  background-color: #34d3f9; }
+
 .accessRow1 {
   padding-right: 0; }
 
