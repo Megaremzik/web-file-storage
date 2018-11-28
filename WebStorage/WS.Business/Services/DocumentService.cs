@@ -66,6 +66,7 @@ namespace WS.Business.Services
             var isFile = document.IsFile;
             if (isFile == true)
             {
+                document.Date_change = DateTime.Now;
                 repo.Update(document);
             }
             else
@@ -85,6 +86,7 @@ namespace WS.Business.Services
             documentView.Date_change = DateTime.Now;
             documentView.Type_change = "Delete";
             Document document = mapper.Map<DocumentView, Document>(documentView);
+            document.Date_change = DateTime.Now;
             repo.Update(document);
         }
 
@@ -137,6 +139,7 @@ namespace WS.Business.Services
             var path = GetFilePath(id);
             var doc = repo.Get(id);
             doc.ParentId = parentId;
+            doc.Date_change = DateTime.Now;
             repo.Update(doc);
             var finishPath = GetFilePath(id);
             if (doc.IsFile == false)
@@ -226,6 +229,7 @@ namespace WS.Business.Services
                 var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
                 doc.Name = name;
                 var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+                doc.Date_change = DateTime.Now;
                 repo.Update(doc);
                 File.Move(startpath, finishpath);
             }
@@ -237,6 +241,7 @@ namespace WS.Business.Services
             var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
             doc.Name = name;
             var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+            doc.Date_change = DateTime.Now;
             repo.Update(doc);
             Directory.Move(startpath,finishpath);
         }
