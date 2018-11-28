@@ -14,11 +14,10 @@ namespace WS.Business.Services
     {
         private UserRepository repo;
         IMapper mapper;
-        UserManager<User> _manage;
-        public UserService(IMapper map, UserRepository r, UserManager<User> manage)
+        private UserManager<User> _userManager;
+        public UserService(IMapper map, UserRepository r, UserManager<User> userManager)
         {
-
-            _manage = manage;
+            _userManager = userManager;
             mapper = map;
             repo = r;
         }
@@ -26,20 +25,20 @@ namespace WS.Business.Services
         {
             return repo.GetUserIdByDocumentId(documentId);
         }
+        public UserView GetUserByUserClaims(ClaimsPrincipal userClaims)
+        {
+            User user = repo.GetUserByName(userClaims.Identity.Name);
+            return mapper.Map<User, UserView>(user);
+        }
+        public bool IsUserTheOwnerOfTheDocument(ClaimsPrincipal user, int documentId)
+        {
+            string userId = GetUserIdByDocumentId(documentId);
+            string userId2 = _userManager.GetUserId(user);
+            return userId == userId2;
+        }
         public string GetUserId(ClaimsPrincipal user)
         {
             return _manage.GetUserId(user);
-        }
-        public UserView GetUserByName(string userName)
-        {
-            User user = repo.GetUserByName(userName);
-            return mapper.Map<User, UserView>(user);
-        }
-        public bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
-        {
-            string userId = GetUserIdByDocumentId(documentId);
-            string userId2 = GetUserByName(userName).Id;
-            return userId == userId2;
         }
     }
 }

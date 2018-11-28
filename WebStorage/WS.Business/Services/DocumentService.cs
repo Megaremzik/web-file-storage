@@ -9,6 +9,7 @@ using AutoMapper;
 using WS.Business.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Security.Claims;
 
 namespace WS.Business.Services
 {
@@ -17,8 +18,10 @@ namespace WS.Business.Services
         private DocumentRepository repo;
         private readonly IMapper mapper;
         private PathProvider pathprovider;
-        public DocumentService(IMapper map,DocumentRepository r, PathProvider p)
+        private UserService _userService;
+        public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService)
         {
+            _userService = userService;
             mapper = map;
             repo = r;
             pathprovider = p;
@@ -27,7 +30,7 @@ namespace WS.Business.Services
         public IEnumerable<DocumentView> GetAll(string id)
         {
             IEnumerable<Document> documents = repo.GetAll(id);
-            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents); 
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
 
         public DocumentView Get(int? id)
@@ -35,20 +38,40 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
-        public Document GetExactlyDocument (int? id)
+        public ICollection<DocumentView> GetAllChildrensForFolder(int folderId)
+        {
+            List<DocumentView> filesList = new List<DocumentView>();
+
+            var childs = GetAllChildren(folderId);
+            foreach (var p in childs)
+            {
+                filesList.Add(Get(p.Id));
+                if (!p.IsFile)
+                {
+                    filesList.AddRange(GetAllChildrensForFolder(p.Id));
+                }
+            }
+            return filesList;
+        }
+
+        public ICollection<DocumentView> FindTop10ByDocumentName(int documentId, string pattern, ClaimsPrincipal user)
+        {
+            return GetAll(_userService.GetUserByUserClaims(user).Id).Where(n => n.Name.Contains(pattern)).Take(10).ToList();
+        }
+        public Document GetExactlyDocument(int? id)
         {
             Document document = repo.Get(id);
             return document;
         }
 
-        public void Create(IFormFile file, string userId, int parentId=0)
+        public void Create(IFormFile file, string userId, int parentId = 0)
         {
-            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName,Extention=file.ContentType , UserId=userId, ParentId = parentId, Date_change=DateTime.Now };
+            Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName, Extention = file.ContentType, UserId = userId, ParentId = parentId, Date_change = DateTime.Now };
             repo.Create(doc);
         }
-        public void Create(string folder, string userId, int parentId=0)
+        public void Create(string folder, string userId, int parentId = 0)
         {
-            Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId=parentId,Date_change=DateTime.Now };
+            Document doc = new Document { IsFile = false, Size = 0, Name = folder, Extention = "Folder", UserId = userId, ParentId = parentId, Date_change = DateTime.Now };
             repo.Create(doc);
         }
         public void Update(int? id)
@@ -60,7 +83,7 @@ namespace WS.Business.Services
 
         public void MoveToTrash(int? id)
         {
-            var document = GetExactlyDocument (id);
+            var document = GetExactlyDocument(id);
             document.Date_change = DateTime.Now;
             document.Type_change = "Delete";
             var isFile = document.IsFile;
@@ -103,8 +126,8 @@ namespace WS.Business.Services
 
         public void DeleteFolder(int? id)
         {
-            var documents=repo.GetAllChildren(id);
-            foreach(var doc in documents)
+            var documents = repo.GetAllChildren(id);
+            foreach (var doc in documents)
             {
                 Delete(doc.Id);
             }
@@ -121,18 +144,18 @@ namespace WS.Business.Services
             var documents = repo.GetAllRootElements(userId);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
-        public int CreateFolders(string folders,string userId, int parentId=0)
+        public int CreateFolders(string folders, string userId, int parentId = 0)
         {
             if (folders == null) return 0;
             var folder = folders.Split('/');
-            for(int i=0; i < folder.Length - 1; i++)
+            for (int i = 0; i < folder.Length - 1; i++)
             {
                 Create(folder[i], userId, parentId);
-                parentId= repo.GetIdByName(userId,folder[i],parentId);
+                parentId = repo.GetIdByName(userId, folder[i], parentId);
             }
             return parentId;
         }
-        public void UpdateParentId(int id, int parentId, string startPath="")
+        public void UpdateParentId(int id, int parentId, string startPath = "")
         {
             var path = GetFilePath(id);
             var doc = repo.Get(id);
@@ -141,29 +164,29 @@ namespace WS.Business.Services
             var finishPath = GetFilePath(id);
             if (doc.IsFile == false)
             {
-                if (startPath != "") startPath = Path.Combine(startPath,doc.Name);
-                else startPath =path;
+                if (startPath != "") startPath = Path.Combine(startPath, doc.Name);
+                else startPath = path;
                 pathprovider.AddFoldersWhenCopy(finishPath, doc.UserId);
                 finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
-                UpdateFolderParentId(id, parentId,ref startPath);
+                UpdateFolderParentId(id, parentId, ref startPath);
             }
             else
             {
                 finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
-                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath,doc.Name);
+                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath, doc.Name);
                 File.Move(startPath, finishPath);
             }
         }
         public void UpdateFolderParentId(int id, int parentId, ref string startPath)
         {
-            foreach(var item in repo.GetAllChildren(id))
+            foreach (var item in repo.GetAllChildren(id))
             {
-                UpdateParentId(item.Id, id,startPath);
+                UpdateParentId(item.Id, id, startPath);
             }
             var path = startPath.Split('\\');
             startPath = "";
             //path.ElementAt(path.Length - 1).Take(path.Length - 1);
-            for(int i = 0; i < path.Length - 1; i++)
+            for (int i = 0; i < path.Length - 1; i++)
             {
                 startPath = Path.Combine(startPath, path[i]);
             }
@@ -171,14 +194,14 @@ namespace WS.Business.Services
         public void CreateACopy(int id, int parentId)
         {
             var document = repo.Get(id);
-            Document doc= new Document { IsFile = document.IsFile, Size = document.Size, Name = document.Name, Extention = document.Extention, UserId = document.UserId, ParentId = parentId, Date_change = DateTime.Now };
+            Document doc = new Document { IsFile = document.IsFile, Size = document.Size, Name = document.Name, Extention = document.Extention, UserId = document.UserId, ParentId = parentId, Date_change = DateTime.Now };
             repo.Create(doc);
             var newId = repo.GetIdByName(doc.UserId, doc.Name, parentId);
             var finishPath = GetFilePath(newId);
             string startPath = "";
             if (doc.IsFile == false)
             {
-                pathprovider.AddFoldersWhenCopy(finishPath,doc.UserId);
+                pathprovider.AddFoldersWhenCopy(finishPath, doc.UserId);
                 finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
                 CreateAFolderCopy(id, newId);
             }
@@ -198,7 +221,7 @@ namespace WS.Business.Services
             {
                 CreateACopy(doc.Id, parentId);
             }
-                
+
         }
         public string GetFilePath(int id)
         {
@@ -206,13 +229,13 @@ namespace WS.Business.Services
             int parentId = id;
             do
             {
-                path = Path.Combine(GetParentFolder(ref parentId) , path);
+                path = Path.Combine(GetParentFolder(ref parentId), path);
             } while (parentId != 0);
             return path;
         }
         public string GetParentFolder(ref int id)
         {
-            var doc=repo.Get(id);
+            var doc = repo.Get(id);
             id = doc.ParentId;
             return doc.Name;
         }
@@ -229,7 +252,7 @@ namespace WS.Business.Services
                 repo.Update(doc);
                 File.Move(startpath, finishpath);
             }
-            
+
         }
         public void RenameFolder(int id, string name)
         {
@@ -238,7 +261,7 @@ namespace WS.Business.Services
             doc.Name = name;
             var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
             repo.Update(doc);
-            Directory.Move(startpath,finishpath);
+            Directory.Move(startpath, finishpath);
         }
         public bool IsDocumentExist(int documentId)
         {
@@ -255,7 +278,7 @@ namespace WS.Business.Services
                 document = Get(document.ParentId);
                 path = Path.Combine(document.Name, path);
             }
-            return Path.Combine(pathprovider.GetRootPath(),document.UserId, path);
+            return Path.Combine(pathprovider.GetRootPath(), document.UserId, path);
         }
     }
 }

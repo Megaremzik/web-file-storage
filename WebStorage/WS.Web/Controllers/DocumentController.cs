@@ -30,11 +30,12 @@ namespace WS.Web.Controllers
             _userManager = userManager;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id = 0)
         {
             string userId = _userManager.GetUserId(User);
             _pathProvider.MapId(userId);
             var documents = _service.GetAll(userId);
+            ViewBag.parentId = id;
             return View(documents);
         }
         public IActionResult ReturnDocumentList(int parentId=0)
@@ -160,6 +161,10 @@ namespace WS.Web.Controllers
                 return File(System.IO.File.OpenRead(path), contentType);
             }
             return RedirectToAction("ReturnDocumentList", doc.ParentId);
+        }
+        public ICollection<DocumentView> FindTop10ByDocumentName(int documentId, string pattern)
+        {
+            return _service.FindTop10ByDocumentName(documentId, pattern, User);
         }
     }
 }
