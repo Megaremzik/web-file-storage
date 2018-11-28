@@ -148,7 +148,6 @@ namespace WS.Web.Controllers
             }
             return Json(result);
         }
-        [HttpPost]
         public IActionResult ViewFile(int id)
         {
             var doc = _service.Get(id);
@@ -157,7 +156,8 @@ namespace WS.Web.Controllers
             if (doc.IsFile)
             {
                 string contentType = MimeTypeMap.GetMimeType(doc.Name);
-                return PhysicalFile(path, contentType, doc.Name);
+                //return PhysicalFile(path, contentType, doc.Name);
+                return File(System.IO.File.OpenRead(path), contentType);
             }
             return RedirectToAction("ReturnDocumentList", doc.ParentId);
         }

@@ -318,18 +318,12 @@ function ContextResult(action, id) {
         $('#myModal').modal('show');
     }
     else if (action == "view") {
-        $.ajax({
-            type: "Post",
-            url: '/Document/ViewFile',
-            data: {
-                id: id
-            }
-            //success: function (data, textStatus, jqXHR) {
-            //    $('#dropzone-drop-area').html(data);
-            //}
-        }); 
+        window.open('/Document/ViewFile/?id=' + id, "_blank");
     }
 }
+function GetClientReport() {
+    window.open('/Document/ViewFile', "_blank");  
+};  
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
