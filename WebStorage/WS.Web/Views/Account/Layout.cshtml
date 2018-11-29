@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - WS.Web</title>
 
     <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/js/Functions.js"></script>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -43,23 +44,14 @@
         </div>
     </nav>
     <div class="container body-content">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-1 loginAdd">
-                <div id="notebook" class="postCompozition layer-1"></div>
-                <div id="plane" class="postCompozition layer-2"></div>
-            </div>
-            <div class="col-md-4 col-md-offset-2 loginAdd">
-                @RenderBody()
-                <hr />
-            </div>
-        </div>
+        @RenderBody()
         <footer>
-            <p>&copy; 2018 - WS.Web</p>
+            <hr />
+            <p>&copy;Web Storage "Fox Box"</p>
         </footer>
     </div>
 
             <environment include="Development">
-                <script src="~/lib/jquery/dist/jquery.js"></script>
                 <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
                 <script src="~/js/site.js" asp-append-version="true"></script>
                 <script src="~/js/picture.js"></script>

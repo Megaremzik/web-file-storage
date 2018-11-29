@@ -1,31 +1,57 @@
 ﻿@model WS.Business.ViewModels.AccountViewModels.RegisterViewModel
+@inject SignInManager<User> SignInManager
+
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Account/Layout.cshtml";
 }
 
-<h3>@ViewData["Title"]</h3>
-<p class="pull-right">
-    or
-    <a class="right" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">login</a>
-</p>
+<div class="row">
+    <div class="col-md-4 col-md-offset-1 loginAdd">
+        <div id="notebook" class="postCompozition layer-1"></div>
+        <div id="plane" class="postCompozition layer-2"></div>
+    </div>
+    <div class="col-md-4 col-md-offset-2 loginAdd">
+        <h3>@ViewData["Title"]</h3>
+        <p class="pull-right">
+            or
+            <a class="right" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">login</a>
+        </p>
 
-<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <input placeholder="Email" asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div class="form-group">
+                <input placeholder="Email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="password-field1" placeholder="Password" asp-for="Password" class="form-control" style="padding-right: 25px" />
+                <span toggle="#password-field1" class="fa fa-fw fa-eye field-icon toggle-password text-danger"></span>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="password-field2" placeholder="Confirm Password" asp-for="ConfirmPassword" class="form-control" style="padding-right: 25px" />
+                <span toggle="#password-field2" class="fa fa-fw fa-eye field-icon toggle-password text-danger"></span>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn-square btn-submit">Register</button>
+            </div>
+
+            <div class="hr-label text-center">
+                <span>or</span>
+            </div>
+        </form>
+        @{
+            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                <div>
+                    <button type="submit" class="btn btn-facebook btn-social btn-block btn-space" name="provider" value="@loginProviders[1].Name" title="Register using your @loginProviders[1].DisplayName account"><i class="fab fa-facebook-f"></i>Register using your @loginProviders[1].Name</button>
+                    <button type="submit" class="btn btn-google btn-social btn-block btn-space" name="provider" value="@loginProviders[0].Name" title="Register using your @loginProviders[0].DisplayName account"><i class="fab fa-google"></i>Register using your @loginProviders[0].Name</button>
+                </div>
+            </form>
+        }
     </div>
-    <div class="form-group">
-        <input id="password-field1" placeholder="Password" asp-for="Password" class="form-control"  style="padding-right: 25px"/>
-        <span toggle="#password-field1" asp-validation-for="Password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-    </div>
-    <div class="form-group">
-        <input id="password-field2" placeholder="Confirm Password" asp-for="ConfirmPassword" class="form-control"  style="padding-right: 25px"/>
-        <span toggle="#password-field2" asp-validation-for="ConfirmPassword" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-    </div>
-    <button type="submit" class="btn btn-default">Register</button>
-</form>
+</div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

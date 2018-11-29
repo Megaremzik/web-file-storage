@@ -350,8 +350,9 @@ namespace WS.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword(bool setModal = false)
         {
+            ViewData["SetModal"] = setModal;
             return View();
         }
 
@@ -386,7 +387,7 @@ namespace WS.Web.Controllers
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
         {
-            return View();
+            return RedirectToAction("ForgotPassword", new {setModal = true });
         }
 
         [HttpGet]

@@ -323,8 +323,25 @@ function CheckIfItIsABlankSpace(id) {
     return false;
 }
 
-function ForgotPassword() {
-    $("#ForgotModal").modal("show");
+function SendEmail(email) {
+    var model = {
+        'Email': email
+    };
+    $.ajax({
+        type: "POST",
+        url: "/Account/ForgotPassword",
+        data: JSON.stringify(model),
+        contentType: 'application/json',
+        success: function () {
+            $("#forgotModal").modal("hide");
+        }
+    })
+}
+
+function ConfirmForgot() {
+    $(window).load(function () {
+        $('#forgotModal').modal('show');
+    });
 }
 
 function ConfirmDelete(name, isFile) {

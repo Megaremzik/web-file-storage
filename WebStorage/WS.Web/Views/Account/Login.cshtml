@@ -11,7 +11,12 @@
     Layout = "~/Views/Account/Layout.cshtml";
 }
 
-
+<div class="row">
+    <div class="col-md-4 col-md-offset-1 loginAdd">
+        <div id="notebook" class="postCompozition layer-1"></div>
+        <div id="plane" class="postCompozition layer-2"></div>
+    </div>
+    <div class="col-md-4 col-md-offset-2 loginAdd">
         <section>
             <h3>@ViewData["Title"]</h3>
             <p class="pull-right">
@@ -32,15 +37,14 @@
             </div>
 
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-
                 <div class="form-group">
                     <input placeholder="Email" asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input id="password-field" placeholder="Password" asp-for="Password" class="form-control" style="padding-right: 25px"/>
-                    <span toggle="#password-field" asp-validation-for="Password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                    <input id="password-field" placeholder="Password" asp-for="Password" class="form-control" style="padding-right: 25px" />
+                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group non-margin">
                     <div class="checkbox non-margin">
@@ -61,6 +65,11 @@
                 </div>
             </form>
         </section>
+    </div>
+</div>
+
+
+
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
