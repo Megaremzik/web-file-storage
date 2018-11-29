@@ -157,9 +157,12 @@ namespace WS.Web.Controllers
 
             if (doc.IsFile)
             {
-                string contentType = MimeTypeMap.GetMimeType(doc.Name);
-                //return PhysicalFile(path, contentType, doc.Name);
-                return File(System.IO.File.OpenRead(path), contentType);
+                if (_service.CanBeViewed(doc))
+                {
+                    string contentType = MimeTypeMap.GetMimeType(doc.Name);
+                    //return PhysicalFile(path, contentType, doc.Name);
+                    return File(System.IO.File.OpenRead(path), contentType);
+                } 
             }
             return RedirectToAction("ReturnDocumentList", doc.ParentId);
         }

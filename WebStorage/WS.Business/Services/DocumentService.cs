@@ -262,5 +262,14 @@ namespace WS.Business.Services
             }
             return Path.Combine(pathprovider.GetRootPath(),document.UserId, path);
         }
+        public bool CanBeViewed(DocumentView doc)
+        {
+            var extention = doc.Extention.Split('/');
+            if (extention[0] == "text" || extention[0] == "audio" || extention[0]=="image"|| extention[1] == "pdf")
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

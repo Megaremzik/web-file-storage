@@ -30,7 +30,7 @@ function DoubleClickAction(isFile, id) {
         });
     }
     else {
-        //Просмотр файла
+        ViewFile(id);
     }
 }
 function TurnOnDeletionMode() {
@@ -308,7 +308,7 @@ function ContextResult(action, id) {
         $('#myModal').modal('show');
     }
     else if (action == "view") {
-        window.open('/Document/ViewFile/?id=' + id, "_blank");
+        ViewFile(id);
     }
 }
 function Rename() {
@@ -325,7 +325,10 @@ function Rename() {
                 $('#dropzone-drop-area').html(data);
             }
         });
-};  
+};
+function ViewFile(id) {
+    window.open('/Document/ViewFile/?id=' + id, "_blank");
+}
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
