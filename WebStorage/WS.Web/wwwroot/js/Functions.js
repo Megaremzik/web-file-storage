@@ -344,6 +344,12 @@ function ConfirmForgot() {
     });
 }
 
+function ConfirmReset() {
+    $(window).load(function () {
+        $('#resetModal').modal('show');
+    });
+}
+
 function ConfirmDelete(name, isFile) {
     if (isFile === 1) {
         $(".modal-title").text("Удалить файл?")

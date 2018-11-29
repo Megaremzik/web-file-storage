@@ -367,7 +367,7 @@ namespace WS.Web.Controllers
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                    return RedirectToAction("ForgotPassword", new {setModal = true });
                 }
 
                 // For more information on how to enable account confirmation and password reset please
@@ -376,24 +376,17 @@ namespace WS.Web.Controllers
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                return RedirectToAction("ForgotPassword", new {setModal = true });
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
+        public IActionResult ResetPassword(string code = null, bool setModal = false)
         {
-            return RedirectToAction("ForgotPassword", new {setModal = true });
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
+            ViewData["SetModalReset"] = setModal;
             if (code == null)
             {
                 throw new ApplicationException("A code must be supplied for password reset.");
@@ -415,21 +408,14 @@ namespace WS.Web.Controllers
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
+                return RedirectToAction(nameof(ResetPassword), new { model.Code, setModal = true });
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
+                return RedirectToAction(nameof(ResetPassword), new { model.Code, setModal = true });
             }
             AddErrors(result);
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
             return View();
         }
 
