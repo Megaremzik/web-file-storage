@@ -35,16 +35,16 @@ namespace WS.Web.Controllers
             string userId = _userManager.GetUserId(User);
             if (userId == null) return RedirectToAction("Login", "Account");
             _pathProvider.MapId(userId);
-            var documents = _service.GetAll(userId);
+            var documents = _service.ConvertToViewModel(_service.GetAll(userId)); ;
             ViewBag.ParentId = id;
             return View(documents);
         }
         public IActionResult ReturnDocumentList(int parentId=0)
         {
             string userId = _userManager.GetUserId(User);
-            IEnumerable<DocumentView> documents;
-            if (parentId != 0) documents = _service.GetAllChildren(parentId);
-            else documents = _service.GetAllRootElements(userId);
+            IEnumerable<DocumentViewModel> documents;
+            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildren(parentId));
+            else documents = _service.ConvertToViewModel(_service.GetAllRootElements(userId));
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
@@ -76,7 +76,7 @@ namespace WS.Web.Controllers
             var userId = _userManager.GetUserId(User);
             _service.RenameFile(id, name);
             var parentId = _service.Get(id).ParentId;
-            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+            return RedirectToAction("Index", "Document", new { id=parentId });
         }
         [HttpPost]
         public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
@@ -102,7 +102,7 @@ namespace WS.Web.Controllers
                     _service.Create(file,userId,parentId);
                 }
             }
-            var documents = _service.GetAll(userId);
+            var documents = _service.ConvertToViewModel(_service.GetAll(userId));
             return PartialView("_GetDocuments", documents);
             //return RedirectToAction("Index");
         }
@@ -157,14 +157,11 @@ namespace WS.Web.Controllers
 
             if (doc.IsFile)
             {
-                if (_service.CanBeViewed(doc))
-                {
-                    string contentType = MimeTypeMap.GetMimeType(doc.Name);
-                    //return PhysicalFile(path, contentType, doc.Name);
-                    return File(System.IO.File.OpenRead(path), contentType);
-                } 
-            }
-            return RedirectToAction("ReturnDocumentList", doc.ParentId);
+                string contentType = MimeTypeMap.GetMimeType(doc.Name);
+                //return PhysicalFile(path, contentType, doc.Name);
+                return File(System.IO.File.OpenRead(path), contentType);
+            } 
+            return RedirectToAction("Index", doc.ParentId);
         }
     }
 }

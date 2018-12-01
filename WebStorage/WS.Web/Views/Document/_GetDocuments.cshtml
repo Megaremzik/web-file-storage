@@ -1,5 +1,5 @@
 ﻿@using WS.Business.ViewModels
-@model IEnumerable<DocumentView>
+@model IEnumerable<DocumentViewModel>
 <script>
     SetParentId(@ViewBag.ParentId);
 </script>
@@ -8,11 +8,11 @@
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-                <tr class="filerow" id="@Model.ElementAt(i).Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).IsFile),@Model.ElementAt(i).Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Id)">
-                    <td>@Model.ElementAt(i).Name</td>
-                    <td>@Model.ElementAt(i).Size</td>
-                    <td>@Model.ElementAt(i).Date_change</td>
-                    <td>@Model.ElementAt(i).IsFile</td>
+                <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
+                    <td class="table_file_name">@Model.ElementAt(i).Document.Name</td>
+                    <td class="table_file_size">@Model.ElementAt(i).Size</td>
+                    <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
+                    <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
                 </tr>
             }
         </tbody>

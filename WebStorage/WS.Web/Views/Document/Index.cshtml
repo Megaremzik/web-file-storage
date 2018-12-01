@@ -1,6 +1,6 @@
 ﻿@using WS.Business.ViewModels
-@model IEnumerable<DocumentView>
-<script src="~/js/dropzone.js"></script>
+@model IEnumerable<DocumentViewModel>
+@*<script src="~/js/dropzone.js"></script>
 <script src="~/js/Functions.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.min.js"></script>
@@ -9,11 +9,12 @@
 <link rel="stylesheet" href="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.css">
 <style>
     #file-options {
-        background-color: lightgray
+        background-color: white;
+        font-size:15px;
     }
 
     .dropzone-container {
-        width: 100%;
+        width: 90%;
     }
 
     .dropzone-drop-area {
@@ -33,12 +34,13 @@
 
         .dropzone-drop-area.over {
             background-color: white;
-            border: dashed 3px silver;
+            border: dashed 2px silver;
         }
 </style>
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
 <script>
+    GetParentId();
     function handleDragOver(e) {
         if (e.preventDefault) {
             e.preventDefault(); // Necessary. Allows us to drop.
@@ -60,7 +62,6 @@
         zone.addEventListener('dragenter', handleDragEnter, false);
         zone.addEventListener('dragover', handleDragOver, false);
         zone.addEventListener('dragleave', handleDragLeave, false);
-        GetParentId();
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#backParentId').hide();
@@ -88,7 +89,7 @@
                     }
                 }
             },
-            "delete": { name: "Delete", icon: "delete", disabled: CheckIfItIsABlankSpace($(this).attr("id")) },
+            "delete": { name: "Delete", icon: "delete" },
             "sep1": "---------",
             "quit": { name: "Quit", icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-quit'; } }
         }
@@ -120,7 +121,7 @@
 </script>
 <div class="row form-control-static">
     <div class="form-group">
-         <div class="col-md-1">
+         <div class="col-md-2">
                 <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
          </div>
     </div>
@@ -136,7 +137,7 @@
             </form>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div id="file-options">
         </div>
     </div>

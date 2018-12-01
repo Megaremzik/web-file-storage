@@ -433,6 +433,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
     <Compile Include="MimeTypeMap.cs" />
     <Compile Include="Services\DownloadService.cs" />
     <Compile Include="Services\EmailSender.cs" />
