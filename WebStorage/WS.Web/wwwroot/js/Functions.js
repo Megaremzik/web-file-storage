@@ -37,7 +37,7 @@ function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
 function GoBack() {
-    var parentId = GetParentId();    
+    var parentId = GetParentId();
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
@@ -253,7 +253,7 @@ function SetParentId(id) {
     if (id == 0) {
         $('#backParentId').hide();
     }
-    sessionStorage.setItem("parentId",id)
+    sessionStorage.setItem("parentId", id)
 }
 function ContextResult(action, id) {
     if (action == "delete") {
@@ -271,7 +271,7 @@ function ContextResult(action, id) {
         var parent = sessionStorage.getItem("parentId");
         var type = sessionStorage.getItem("type");
         var item = sessionStorage.getItem("copy");
-        sessionStorage.setItem("copy","")
+        sessionStorage.setItem("copy", "")
         $.ajax({
             type: "Post",
             url: '/Document/Paste',
@@ -283,7 +283,7 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "rename") {
         var row = document.getElementById(id);
@@ -312,7 +312,7 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "share") {
         $('#myModal').modal('show');
@@ -322,8 +322,8 @@ function ContextResult(action, id) {
     }
 }
 function GetClientReport() {
-    window.open('/Document/ViewFile', "_blank");  
-};  
+    window.open('/Document/ViewFile', "_blank");
+};
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
@@ -382,13 +382,16 @@ function SearchTop() {
                 var ptrn = data[i].name.slice(index, index + searchPattern.length);
                 var name = data[i].name.slice(0, index) + `<b>${ptrn}</b>` + data[i].name.slice(index + ptrn.length);
                 var path = data[i].path;
-         
+
                 $(".result").append(
-                    `<div class="search-item">${icon}<div><p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p><div></div>`);
+                    `<div class="search-item" onclick="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
+                    <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p><div></div>`);
             }
         }
     });
 }
 function HideResults() {
-    $(".result").hide();
+    setTimeout(function () {
+        $(".result").hide();
+    }, 150);
 }

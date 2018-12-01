@@ -40,6 +40,14 @@ namespace WS.Web.Controllers
                 .ToList();
             return a;
         }
-      
+        public IActionResult GetDocument(int documentId)
+        {
+            var doc = _documentService.Get(documentId);
+            if (doc.IsFile)
+            {
+                return View("../Share/Get", doc);
+            }
+            return RedirectToAction("Index", "Document", new { id = documentId });
+        }
     }
 }
