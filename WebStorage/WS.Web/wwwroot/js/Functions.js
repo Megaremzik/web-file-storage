@@ -364,9 +364,10 @@ function SearchTop4() {
             pattern: $('#pattern').val()
         },
         success: function (data) {
+            $(".result").html("");
             for (var i = 0; i < data.length; i++) {
                 $(".result").append(
-                    `<div class="search-item">${data[i].name}</div>`);
+                    `<div class="search-item">${data[i].name} <br>путь: ${data[i].path}</div>`);
             }
         }
     });

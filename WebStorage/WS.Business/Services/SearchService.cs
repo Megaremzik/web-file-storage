@@ -19,7 +19,11 @@ namespace WS.Business.Services
         }
         public ICollection<DocumentView> FindTop4ByDocumentName(string pattern, ClaimsPrincipal user)
         {
-            return _documentService.GetAll(_userService.GetUserByUserClaims(user).Id).Where(n => n.Name.Contains(pattern)).Take(4).ToList();
+            var userId = _userService.GetUserId(user);
+            return _documentService.GetAll(userId)
+                .Where(n => n.Name.ToLower().Contains(pattern))
+                .OrderBy(n => n.Name.ToLower().IndexOf(pattern))
+                .Take(4).ToList();
         }
         public ICollection<DocumentView> GetDocumentsByPattern(string pattern, ClaimsPrincipal user)
         {
