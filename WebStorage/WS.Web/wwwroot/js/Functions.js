@@ -1,6 +1,9 @@
 ﻿function GetParentId() {
     var parent = sessionStorage.getItem("parentId");
     document.querySelector('input[name=parentId]').value = parent;
+    if (parent != 0) {
+        $('#backParentId').show();
+    }
     return parent;
 }
 function ShowFileOptions(doc) {
@@ -321,13 +324,22 @@ function Rename() {
                 id: id,
                 name: name
             },
-            success: function (data, textStatus, jqXHR) {
+        success: function (data, textStatus, jqXHR) {
+                $('#renameModal').modal('hide');
                 $('#dropzone-drop-area').html(data);
             }
         });
 };
 function ViewFile(id) {
-    window.open('/Document/ViewFile/?id=' + id, "_blank");
+    var row = document.getElementById(id);
+    var name = row.children[0].textContent;
+    var isfile = row.children[3].textContent;
+    if (isfile == "True") {
+        var extention = name.split('.');
+        if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
+            window.open('/Document/ViewFile/?id=' + id, "_blank");
+        }
+    }
 }
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;

@@ -1,6 +1,6 @@
 ﻿@using WS.Business.ViewModels
 @model DocumentView
-<form>
+
     <div class="modal fade" id="renameModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -13,12 +13,9 @@
                     @Html.EditorFor(Model => Model.Name, new { htmlAttributes = new { @class = "form-control", @id = "ModelName" } })
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" onclick="Rename()">Change</button>
+                    <button class="btn btn-success" onclick="Rename()">Change</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-</form>
-    
-}
