@@ -356,19 +356,33 @@ function DeleteDoc() {
         }
     })
 }
-function SearchTop4() {
-
+function SearchTop() {
+    var searchPattern = $('#pattern').val()
     $.ajax({
-        url: "/search/FindTop4",
+        url: "/search/FindTop",
         data: {
-            pattern: $('#pattern').val()
+            pattern: searchPattern,
+            count: 4
         },
         success: function (data) {
             $(".result").html("");
             for (var i = 0; i < data.length; i++) {
+                var icon;
+                if (data[i].isFile) {
+                    icon = '<i class="glyphicon glyphicon-file pull-left file-icon"></i>'
+                }
+                else {
+                    icon = '<i class="glyphicon glyphicon-folder-close pull-left folder-icon"></i>'
+                }
+                var index = data[i].name.toLowerCase().indexOf(searchPattern.toLowerCase());
+                var ptrn = data[i].name.slice(index, index + searchPattern.length);
+                var name = data[i].name.slice(0, index) + `<b>${ptrn}</b>` + data[i].name.slice(index + ptrn.length);
                 $(".result").append(
-                    `<div class="search-item">${data[i].name} <br>путь: ${data[i].path}</div>`);
+                    `<div class="search-item">${icon}${name}<br><span class="folderPath">В папке: ${data[i].path}</span></div>`);
             }
         }
     });
+}
+function HideResults(){
+    $(".result").html("");
 }

@@ -1,4 +1,26 @@
-﻿
+﻿/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+    .accessRow1 {
+        padding-right: 15px;
+    }
+
+    .accessRow2 {
+        padding-left: 15px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+}
+
 
 .accessRow1 {
     padding-right: 0;
@@ -40,61 +62,55 @@
 
 .download-message {
     border-radius: 20px;
-
     width: 300px;
     height: 150px;
-    background-color:#ddd;
+    background-color: #ddd;
     text-align: center;
     margin: 0 auto;
-
-    padding:19px;
+    padding: 19px;
 }
 
 .downnload-div {
     height: 82vh;
-
 }
 
 
 .download-button {
- 
     margin: 15px auto 0 auto;
 }
+
 .result {
-   
     position: absolute;
     z-index: 99999;
-   
+    -webkit-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
+    box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
 }
+
 .search-item {
-    width: 350px;
+    width: 400px;
     padding: 10px;
-    border: solid 1px black;
-    border-radius: 10px;
-    background: #b6ff00;
+    background: #fff;
 
-}
-
-
-/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width : 767px) {
-    .accessRow1 {
-        padding-right: 15px;
-    }
-
-    .accessRow2 {
-        padding-left: 15px;
+    &:hover {
+        background: #f7f9fa;
+        cursor: pointer;
     }
 }
 
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
+.folderPath {
+    color: #7b8994;
+    font-size: 12px;
+}
+
+.file-icon {
+    margin: 3px 6px 0 0;
+    font-size: 30px;
+    color: #92ceff;
+}
+
+.folder-icon {
+    margin: 7px 10px 0 0;
+    font-size: 28px;
+    color: #ffcf49;
 }

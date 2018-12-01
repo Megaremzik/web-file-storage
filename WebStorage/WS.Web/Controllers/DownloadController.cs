@@ -39,9 +39,5 @@ namespace WS.Web.Controllers
             System.IO.File.Delete(Path.Combine(_downloadService.GetPathForZip(), zipName));
             return File(archive, "application/zip" , doc.Name + ".zip");
         }
-
-      
-
-
     }
 }

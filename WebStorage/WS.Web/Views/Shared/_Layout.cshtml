@@ -41,7 +41,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" action="/search/find" method="post">
                     <div class="input-group">
-                        <input type="text" name="pattern" id="pattern" class="form-control" autocomplete="off" oninput="SearchTop4();" placeholder="Search">
+                        <input type="text" name="pattern" id="pattern" class="form-control" autocomplete="off" onfocus="SearchTop();" onblur="HideResults();" oninput="SearchTop();" placeholder="Search">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </span>

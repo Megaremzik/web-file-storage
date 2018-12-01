@@ -230,6 +230,19 @@ namespace WS.Business.Services
             } while (parentId != 0);
             return path;
         }
+        public string GetPathToFile(int id)
+        {
+            string path = string.Empty;
+            var doc = Get(id);
+            int parentId = doc.ParentId;
+            while(parentId!=0)
+            {
+                doc = Get(parentId);
+                path += "\\" + doc.Name;
+                parentId = doc.ParentId;
+            }
+            return path;
+        }
         public string GetParentFolder(ref int id)
         {
             var doc = repo.Get(id);

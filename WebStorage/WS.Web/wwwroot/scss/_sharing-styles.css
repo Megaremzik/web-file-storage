@@ -1,4 +1,14 @@
-﻿.accessRow1 {
+﻿/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .accessRow1 {
+    padding-right: 15px; }
+  .accessRow2 {
+    padding-left: 15px; } }
+
+/* Extra Small Devices, Phones */
+.accessRow1 {
   padding-right: 0; }
 
 .accessRow2 {
@@ -43,22 +53,29 @@
 
 .result {
   position: absolute;
-  z-index: 99999; }
+  z-index: 99999;
+  -webkit-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75); }
 
 .search-item {
-  width: 350px;
+  width: 400px;
   padding: 10px;
-  border: solid 1px black;
-  border-radius: 10px;
-  background: #b6ff00; }
+  background: #fff; }
+  .search-item:hover {
+    background: #f7f9fa;
+    cursor: pointer; }
 
-/* Large Devices, Wide Screens */
-/* Medium Devices, Desktops */
-/* Small Devices, Tablets */
-@media only screen and (max-width: 767px) {
-  .accessRow1 {
-    padding-right: 15px; }
-  .accessRow2 {
-    padding-left: 15px; } }
+.folderPath {
+  color: #7b8994;
+  font-size: 12px; }
 
-/* Extra Small Devices, Phones */
+.file-icon {
+  margin: 3px 6px 0 0;
+  font-size: 30px;
+  color: #92ceff; }
+
+.folder-icon {
+  margin: 7px 10px 0 0;
+  font-size: 28px;
+  color: #ffcf49; }

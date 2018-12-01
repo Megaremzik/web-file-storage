@@ -17,22 +17,22 @@ namespace WS.Business.Services
             _documentService = documentService;
             _userService = userService;
         }
-        public ICollection<DocumentView> FindTop4ByDocumentName(string pattern, ClaimsPrincipal user)
+        public ICollection<DocumentView> FindTopByPattern(string pattern, int count, ClaimsPrincipal user)
         {
-            var userId = _userService.GetUserId(user);
-            return _documentService.GetAll(userId)
-                .Where(n => n.Name.ToLower().Contains(pattern))
-                .OrderBy(n => n.Name.ToLower().IndexOf(pattern))
-                .Take(4).ToList();
+          
+            return FindOnPattern(pattern, user).Take(count).ToList();
         }
         public ICollection<DocumentView> GetDocumentsByPattern(string pattern, ClaimsPrincipal user)
         {
-            string id = _userService.GetUserId(user);
+            return FindOnPattern(pattern, user).ToList();
+        }
+        private IEnumerable<DocumentView> FindOnPattern(string pattern, ClaimsPrincipal user)
+        {
+            var userId = _userService.GetUserId(user);
             pattern = pattern.ToLower();
-            return _documentService.GetAll(id)
+            return _documentService.GetAll(userId)
                 .Where(n => n.Name.ToLower().Contains(pattern))
-                .OrderBy(n=>n.Name.ToLower().IndexOf(pattern))
-                .ToList();
+                .OrderBy(n => n.Name.ToLower().IndexOf(pattern));
         }
     }
 }
