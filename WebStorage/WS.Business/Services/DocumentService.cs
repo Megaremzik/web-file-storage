@@ -54,10 +54,7 @@ namespace WS.Business.Services
             return filesList;
         }
 
-        public ICollection<DocumentView> FindTop10ByDocumentName(int documentId, string pattern, ClaimsPrincipal user)
-        {
-            return GetAll(_userService.GetUserByUserClaims(user).Id).Where(n => n.Name.Contains(pattern)).Take(10).ToList();
-        }
+      
         public Document GetExactlyDocument(int? id)
         {
             Document document = repo.Get(id);

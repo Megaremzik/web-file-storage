@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace WS.Business.Services
 
         public string CreateZip(string fullPath)
         {
+            
+         
             string folderName = fullPath.Substring(fullPath.LastIndexOf("\\") + 1);
             string zipName = DateTime.Now.ToString("o").Replace(':', ';') + ".zip";
             System.IO.Compression.ZipFile.CreateFromDirectory(fullPath, Path.Combine(GetPathForZip(), zipName));

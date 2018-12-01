@@ -24,8 +24,24 @@ namespace WS.Web.Controllers
         public IActionResult Find(string pattern)
         {
             var docs = _searchService.GetDocumentsByPattern(pattern, User)
-                .Select(n=> new DocumentSearch { Id = n.Id, IsFile = n.IsFile, Name = n.Name, Size = n.Size, Path = _documentService.GetFilePath(n.Id) });
+                .Select(n=> new DocumentSearch { Id = n.Id, IsFile = n.IsFile, Name = n.Name, Size = n.Size, Path = _documentService.GetFilePath(n.Id) })
+                .ToList();
             return View(docs);
+        }
+        public ICollection<DocumentSearch> FindTop4(string pattern)
+        {
+            if (pattern == null || pattern == string.Empty)
+            {
+                return new List<DocumentSearch>();
+            }
+            var a = _searchService.FindTop4ByDocumentName(pattern, User)
+                .Select(n => new DocumentSearch { Id = n.Id, IsFile = n.IsFile, Name = n.Name, Size = n.Size, Path = _documentService.GetFilePath(n.Id) })
+                .ToList();
+            return a;
+        }
+        public IActionResult Index()
+        {
+            return View();
         }
     }
 }

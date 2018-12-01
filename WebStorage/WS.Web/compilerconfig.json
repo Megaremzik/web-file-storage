@@ -1,7 +1,10 @@
-[
+﻿[
   {
     "outputFile": "wwwroot/scss/personal_properties.css",
-    "inputFile": "wwwroot/scss/personal_properties.scss",
-    "sourceMap": false
+    "inputFile": "wwwroot/scss/personal_properties.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/_sharing-styles.css",
+    "inputFile": "wwwroot/scss/_sharing-styles.scss"
   }
 ]

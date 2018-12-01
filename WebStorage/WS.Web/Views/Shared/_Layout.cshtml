@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-social.css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         <link rel="stylesheet" href="~/scss/personal_properties.css" />
+        <script src="~/js/Functions.js"></script>
 </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -40,10 +41,13 @@
                 </ul>
                 <form class="navbar-form navbar-left" action="/search/find" method="post">
                     <div class="input-group">
-                        <input type="text" name="pattern" class="form-control" placeholder="Search">
+                        <input type="text" name="pattern" id="pattern" class="form-control" oninput="SearchTop4();" placeholder="Search">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </span>
+                    </div>
+                    <div class="result">
+
                     </div>
                 </form>
                 @await Html.PartialAsync("_LoginPartial")

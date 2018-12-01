@@ -60,6 +60,22 @@
  
     margin: 15px auto 0 auto;
 }
+.result {
+   
+    position: absolute;
+    z-index: 99999;
+}
+.search-item {
+    width: 350px;
+    height: 70px;
+    border: solid 1px black;
+    border-radius: 10px;
+    
+    background: #b6ff00;
+
+}
+
+
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 }

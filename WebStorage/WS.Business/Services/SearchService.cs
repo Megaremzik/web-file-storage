@@ -17,7 +17,10 @@ namespace WS.Business.Services
             _documentService = documentService;
             _userService = userService;
         }
-
+        public ICollection<DocumentView> FindTop4ByDocumentName(string pattern, ClaimsPrincipal user)
+        {
+            return _documentService.GetAll(_userService.GetUserByUserClaims(user).Id).Where(n => n.Name.Contains(pattern)).Take(4).ToList();
+        }
         public ICollection<DocumentView> GetDocumentsByPattern(string pattern, ClaimsPrincipal user)
         {
             string id = _userService.GetUserId(user);

@@ -162,9 +162,6 @@ namespace WS.Web.Controllers
             }
             return RedirectToAction("ReturnDocumentList", doc.ParentId);
         }
-        public ICollection<DocumentView> FindTop10ByDocumentName(int documentId, string pattern)
-        {
-            return _service.FindTop10ByDocumentName(documentId, pattern, User);
-        }
+     
     }
 }

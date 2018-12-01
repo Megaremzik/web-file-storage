@@ -356,3 +356,18 @@ function DeleteDoc() {
         }
     })
 }
+function SearchTop4() {
+
+    $.ajax({
+        url: "/search/FindTop4",
+        data: {
+            pattern: $('#pattern').val()
+        },
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $(".result").append(
+                    `<div class="search-item">${data[i].name}</div>`);
+            }
+        }
+    });
+}
