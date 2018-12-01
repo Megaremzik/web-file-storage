@@ -12,11 +12,13 @@ namespace WS.Business.ViewModels
         public DocumentView Document { get; set; }
         public string Size { get; set; }
         public bool IsShared { get; set; }
-        public DocumentViewModel(DocumentView doc, string size="", bool isShared = false)
+        public string Icon { get; set; }
+        public DocumentViewModel(DocumentView doc, string size="", bool isShared = false, string icon= "fa fa-file fa-fw")
         {
             Document = doc;
             Size = size;
             IsShared = isShared;
+            Icon = icon;
         }
     }
 }

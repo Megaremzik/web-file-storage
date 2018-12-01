@@ -9,6 +9,7 @@ using AutoMapper;
 using WS.Business.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WS.Business.Services
 {
@@ -294,9 +295,47 @@ namespace WS.Business.Services
             List<DocumentViewModel> documents = new List<DocumentViewModel>();
             foreach (var doc in document)
             {
-                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc)));
+                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc),false,IconForFile(doc)));
             }
             return documents;
+        }
+        public string IconForFile(DocumentView document)
+        {
+            if(document.IsFile==false) return "fa fa-folder fa-2x";
+            var name = document.Name;
+            var extention = name.Split('.');
+            if (extention[extention.Length-1]=="png"|| extention[extention.Length - 1] == "jpg" || extention[extention.Length - 1] == "jpeg" || extention[extention.Length - 1] == "bmp")
+            {
+                return "fa fa-file-image fa-2x";
+            }
+            else if (extention[extention.Length - 1] == "txt" || extention[extention.Length - 1] == "js" || extention[extention.Length - 1] == "html")
+            {
+                return "fa fa-file fa-2x"; 
+            }
+            else if (extention[extention.Length - 1] == "doc" || extention[extention.Length - 1] == "docx")
+            {
+                return "fa fa-file-word fa-2x";
+            }
+            else if (extention[extention.Length - 1] == "pdf")
+            {
+                return "fa fa-file-pdf fa-2x";
+            }
+            else if (extention[extention.Length - 1] == "mp3" || extention[extention.Length - 1] == "mp4")
+            {
+                return "fa fa-file-audio fa-2x";
+            }
+            else if (extention[extention.Length - 1] == "zip" || extention[extention.Length - 1] == "rar")
+            {
+                return "fa fa-file-archieve fa-2x";
+            }
+            else if ( extention[extention.Length - 1] == "js" || extention[extention.Length - 1] == "html"|| extention[extention.Length - 1] == "cs"|| extention[extention.Length - 1] == "py")
+            {
+                return "fa fa-file-code fa-2x";
+            }
+            else
+            {
+                return "fa fa-file fa-2x";
+            }
         }
     }
 }

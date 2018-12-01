@@ -8,12 +8,20 @@
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-                <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
-                    <td class="table_file_name">@Model.ElementAt(i).Document.Name</td>
-                    <td class="table_file_size">@Model.ElementAt(i).Size</td>
-                    <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
-                    <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
-                </tr>
+            <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
+                @*<td><img src=@Model.ElementAt(i).Type width="5" height="5" alt="Type" /></td>*@
+                @if (Model.ElementAt(i).IsShared)
+                {
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i>@Model.ElementAt(i).Document.Name<i class="fa fa-users fa-2x" aria-hidden="true"></i></td>
+                }
+                else
+                {
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i>@Model.ElementAt(i).Document.Name</td>
+                }
+                <td class="table_file_size">@Model.ElementAt(i).Size</td>
+                <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
+                <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
+            </tr>
             }
         </tbody>
     </table>
