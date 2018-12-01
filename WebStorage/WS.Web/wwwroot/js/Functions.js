@@ -357,6 +357,7 @@ function DeleteDoc() {
     })
 }
 function SearchTop() {
+    $(".result").show();
     var searchPattern = $('#pattern').val()
     $.ajax({
         url: "/search/FindTop",
@@ -366,23 +367,28 @@ function SearchTop() {
         },
         success: function (data) {
             $(".result").html("");
+            if (!data.length && searchPattern) {
+                $(".result").html("<div class='search-error'>Ничего не найдено<div>");
+            }
             for (var i = 0; i < data.length; i++) {
                 var icon;
                 if (data[i].isFile) {
                     icon = '<i class="glyphicon glyphicon-file pull-left file-icon"></i>'
                 }
                 else {
-                    icon = '<i class="glyphicon glyphicon-folder-close pull-left folder-icon"></i>'
+                    icon = '<i class="glyphicon glyphicon-folder-open pull-left folder-icon"></i>'
                 }
                 var index = data[i].name.toLowerCase().indexOf(searchPattern.toLowerCase());
                 var ptrn = data[i].name.slice(index, index + searchPattern.length);
                 var name = data[i].name.slice(0, index) + `<b>${ptrn}</b>` + data[i].name.slice(index + ptrn.length);
+                var path = data[i].path;
+         
                 $(".result").append(
-                    `<div class="search-item">${icon}${name}<br><span class="folderPath">В папке: ${data[i].path}</span></div>`);
+                    `<div class="search-item">${icon}<div><p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p><div></div>`);
             }
         }
     });
 }
-function HideResults(){
-    $(".result").html("");
+function HideResults() {
+    $(".result").hide();
 }
