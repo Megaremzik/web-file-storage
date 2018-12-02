@@ -6,13 +6,14 @@
     <title>@ViewData["Title"] - WS.Web</title>
 
     <environment include="Development">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-social.css" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         <link rel="stylesheet" href="~/scss/personal_properties.css" />
         <script src="~/js/Functions.js"></script>
-</environment>
+    </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -41,7 +42,7 @@
                 </ul>
                 <form class="navbar-form navbar-left" action="/search/find" method="post">
                     <div class="input-group">
-                        <input type="text" name="pattern" id="pattern" class="form-control" autocomplete="off" onfocus="SearchTop();" onblur="HideResults();" oninput="SearchTop();" placeholder="Search">
+                        <input type="text" name="pattern" id="pattern" class="form-control" autocomplete="off" placeholder="Search">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </span>

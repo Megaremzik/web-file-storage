@@ -115,8 +115,8 @@ function sendInvite(docId) {
         }
     })
 }
-function updateAccessForUser(docId, email, tag) {
-    var isEdit = $(tag).val();
+function updateAccessForUser(docId, email, tagIsEdit) {
+    var isEdit = $(tagIsEdit).val();
     $.ajax({
         method: 'GET',
         url: '/Share/AddAccessForUser',
@@ -126,7 +126,7 @@ function updateAccessForUser(docId, email, tag) {
             isEditable: isEdit
         },
         success: function (data) {
-            console.log("test");
+            console.log(data);
         }
     })
 }
@@ -384,14 +384,17 @@ function SearchTop() {
                 var path = data[i].path;
 
                 $(".result").append(
-                    `<div class="search-item" onclick="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
+                    `<div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
                     <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p><div></div>`);
             }
         }
     });
 }
-function HideResults() {
-    setTimeout(function () {
+
+$("#pattern").on({
+    blur: function () {
         $(".result").hide();
-    }, 150);
-}
+    },
+    focus: SearchTop,
+    input: SearchTop
+})
