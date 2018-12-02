@@ -24,6 +24,7 @@ namespace WS.Web.Controllers
 
         public IActionResult Find(string pattern)
         {
+            ViewBag.pattern = pattern;
             var docs = _searchService.GetDocumentsByPattern(pattern, User)
                 .Select(n => new DocumentSearch { Id = n.Id, IsFile = n.IsFile, Name = n.Name, Size = n.Size, Path = "FoxBox" + _documentService.GetPathToFile(n.Id) })
                 .ToList();

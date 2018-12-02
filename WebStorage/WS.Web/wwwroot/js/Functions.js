@@ -385,7 +385,7 @@ function SearchTop() {
 
                 $(".result").append(
                     `<div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
-                    <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p><div></div>`);
+                    <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p></div></div>`);
             }
         }
     });

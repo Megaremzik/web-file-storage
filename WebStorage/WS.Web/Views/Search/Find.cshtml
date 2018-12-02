@@ -1,15 +1,25 @@
 ﻿@using WS.Business.ViewModels;
 @model ICollection<DocumentSearch>;
 
-<div class="list-group">
+<h2>Результаты поиска: @ViewBag.pattern</h2>
 
-    @foreach (var p in Model)
-    {
-        <a href="#" class="list-group-item">
-            <p><b>Название: </b>@p.Name</p>
-            <p>@p.Path</p>
-            <p>@p.IsFile</p>
-            <p>@p.Size</p>
-        </a>
-    }
-</div>
+@foreach (var p in Model)
+{
+    int index = p.Name.ToLower().IndexOf(ViewBag.pattern.ToLower());
+    string ptrn = p.Name.Substring(index, ViewBag.pattern.Length);
+    string name = p.Name.Substring(0, index) + $"<b>{ptrn}</b>" + p.Name.Substring(index + ptrn.Length);
+
+    <div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=@p.Id'">
+        @if (p.IsFile)
+        {
+            <i class="glyphicon glyphicon-file pull-left file-icon"></i>
+        }
+        else
+        {
+            <i class="glyphicon glyphicon-folder-open pull-left folder-icon"></i>
+        }
+        <div>
+            <p class="file-name">@Html.Raw(@name)</p><p class="folder-path">В папке: @p.Path</p>
+        </div>
+    </div>
+}
