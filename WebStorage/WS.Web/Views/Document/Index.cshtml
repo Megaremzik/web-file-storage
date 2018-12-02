@@ -6,7 +6,9 @@
 <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.min.js"></script>
 <script src="~/lib/jQuery-contextMenu-master/dist/jquery.ui.position.js"></script>
 <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
+<script src="~/lib/DataTables/DataTables-1.10.18/datatables.min.js"></script>
 <link rel="stylesheet" href="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.css">
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.10.18/datatables.min.css">*@
 <style>
     #file-options {
         background-color: white;
@@ -64,8 +66,15 @@
         zone.addEventListener('dragleave', handleDragLeave, false);
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
+        $('#createModal').modal({ show: false });
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
+        $('#menuButton').on('click', function (e) {
+            e.preventDefault();
+            //$('.filerow').contextMenu();
+            $('.filerow').trigger("contextmenu");
+            // or $('.context-menu-one').contextMenu({x: 100, y: 100});
+        });
     });
     $.contextMenu({
         selector: '.filerow',
@@ -74,7 +83,7 @@
         },
         items: {
             "download": { name: "Download"},
-            "share": { name: "Share"},
+            "share": { name: "Share", icon:"fa fa-share"},
             "view": { name: "View", icon: "edit"},
             "rename": { name: "Rename"},
             "cut": { name: "Cut", icon: "cut"},
@@ -121,9 +130,12 @@
 </script>
 <div class="row form-control-static">
     <div class="form-group">
-         <div class="col-md-2">
-                <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
-         </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
+            <br />
+            <br />
+            <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
+        </div>
     </div>
     <div class="col-md-8">
         <h2>Your files</h2>
@@ -144,6 +156,7 @@
 </div>
 @{
     Html.RenderPartial("_Rename", new DocumentView());
+    Html.RenderPartial("_CreateFolder", new DocumentView());
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 

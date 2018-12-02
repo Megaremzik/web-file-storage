@@ -376,3 +376,36 @@ function DeleteDoc() {
 function ChooseFiles() {
     $('.dropzone').trigger('click');
 }
+function TriggerMenu() {
+    $('.filerow').trigger("contextmenu");
+}
+$(function () {
+    // make button open the menu
+    $('#menuButton').on('click', function (e) {
+        e.preventDefault();
+        //$('.filerow').contextMenu();
+        $('.filerow').trigger("contextmenu");
+        // or $('.context-menu-one').contextMenu({x: 100, y: 100});
+    });
+})
+function CreateFolder() {
+    var id = GetParentId();
+    $("#renameModal #CreateParentId").val(id);
+    $("#createModal").modal("show");
+}
+function SendCreateFolderRequest() {
+    var id = document.getElementById("CreateParentId").value;
+    var name = document.getElementById("CreateName").value;
+    $.ajax({
+        type: "Post",
+        url: '/Document/CreateFolder',
+        data: {
+            parentId: id,
+            name: name
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#createModal').modal('hide');
+            $('#dropzone-drop-area').html(data);
+        }
+    });
+}

@@ -106,39 +106,18 @@ namespace WS.Web.Controllers
             return PartialView("_GetDocuments", documents);
             //return RedirectToAction("Index");
         }
-        public IActionResult Create()
+        public IActionResult CreateFolder(int parentId, string name)
         {
-            return View();
-        }
-
-        public IActionResult Details(int? id)
-        {
-            if (id != null)
+            var currentpath = "";
+            if (parentId != 0)
             {
-                DocumentView document = _service.Get(id);
-                if (document != null)
-                    return View(document);
+                currentpath = _service.GetFilePath(parentId);
             }
-            return NotFound();
+            string userId = _userManager.GetUserId(User);
+            _pathProvider.CreateFolder(Path.Combine(_pathProvider.GetRootPath(), userId, currentpath, name));
+            _service.Create(name, userId, parentId);
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
         }
-
-        public IActionResult Edit(int? id)
-        {
-            if (id != null)
-            {
-                DocumentView document = _service.Get(id);
-                if (document != null)
-                    return View(document);
-            }
-            return NotFound();
-        }
-        [HttpPost]
-        public IActionResult Edit(DocumentView document)
-        {
-            //_service.Update(document);
-            return RedirectToAction("Index");
-        }
-
         [HttpPost]
         public JsonResult Delete(int? id)
         {
