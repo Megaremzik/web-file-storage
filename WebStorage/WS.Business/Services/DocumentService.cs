@@ -31,6 +31,12 @@ namespace WS.Business.Services
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
 
+        public IEnumerable<DocumentView> GetAllWithotDeleted(string id)
+        {
+            IEnumerable<Document> documents = repo.GetAllWithotDeleted(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+
         public DocumentView Get(int? id)
         {
             Document document = repo.Get(id);
@@ -59,37 +65,99 @@ namespace WS.Business.Services
             //repo.Update(document);
         }
 
-        public void MoveToTrash(int? id)
+        public void MoveToTrash(int? id, DateTime moveDate)
         {
             var document = GetExactlyDocument(id);
-            document.Date_change = DateTime.Now;
+            document.Date_change = moveDate;
             document.Type_change = "Delete";
             var isFile = document.IsFile;
+
             if (isFile == true)
             {
-                document.Date_change = DateTime.Now;
+                RenameFileInFileSysytem(Convert.ToInt32(id));
+
                 repo.Update(document);
             }
             else
             {
-                MoveToTrashFolder(id);
+                MoveToTrashFolder(id, moveDate);
             }
         }
 
-        public void MoveToTrashFolder(int? id)
+        public void MoveToTrashFolder(int? id, DateTime moveDate)
         {
-            var documents = repo.GetAllChildren(id);
+            var documents = repo.GetAllChildrenWithoutDeleted(id);
             foreach (var doc in documents)
             {
-                MoveToTrash(doc.Id);
+                MoveToTrash(doc.Id, moveDate);
             }
-            var documentView = Get(id);
-            documentView.Date_change = DateTime.Now;
-            documentView.Type_change = "Delete";
-            Document document = mapper.Map<DocumentView, Document>(documentView);
-            document.Date_change = DateTime.Now;
+            var document = GetExactlyDocument(id);
+            document.Date_change = moveDate;
+            document.Type_change = "Delete";
+            RenameFolderInFileSysytem(Convert.ToInt32(id));
             repo.Update(document);
         }
+
+        public void RenameFileInFileSysytem(int id)
+        {
+            var doc = repo.Get(id);
+            if (!doc.IsFile)
+                RenameFolderInFileSysytem(id);
+            else
+            {
+                var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+                var extension = doc.Name.Split('.');
+                var time = doc.Date_change.GetHashCode() + "." + extension[extension.Length-1];
+                var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetNewFilePath(id, time));
+                File.Move(startpath, finishpath);
+            }
+
+        }
+        public void RenameFolderInFileSysytem(int id)
+        {
+            var doc = repo.Get(id);
+            var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+            var time = doc.Date_change.GetHashCode().ToString();
+            var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetNewFilePath(id, time));
+            Directory.Move(startpath, finishpath);
+        }
+
+        //public string GetNewParentFolder(ref int id)
+        //{
+        //    var doc = repo.Get(id);
+        //    id = doc.ParentId;
+        //    if (doc.Type_change != "Delete")
+        //        return doc.Name;
+        //    else
+        //        return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString());
+        //}
+
+        //public string GetNewFilePath(int id)
+        //{
+        //    string path = "";
+        //    int parentId = id;
+        //    path = Path.Combine(GetParentFolder(ref parentId), path);
+        //    while (parentId != 0)
+        //    {
+        //        path = Path.Combine(GetNewParentFolder(ref parentId), path);
+        //    }
+        //    return path;
+        //}
+
+        public string GetNewFilePath(int id, string time)
+        {
+            string path = "";
+            int parentId = id;
+            path = Path.Combine(Convert.ToString(parentId + " " + time), path);
+            GetParentFolder(ref parentId);
+            while (parentId != 0)
+            {
+                path = Path.Combine(GetParentFolder(ref parentId), path);
+            }
+
+            return path;
+        }
+
 
         public void Delete(int? id)
         {
@@ -124,6 +192,18 @@ namespace WS.Business.Services
             var documents = repo.GetAllRootElements(userId);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
+
+        public IEnumerable<DocumentView> GetAllChildrenWithoutDeleted(int? id)
+        {
+            var documents = repo.GetAllChildrenWithoutDeleted(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public IEnumerable<DocumentView> GetAllRootElementsWithoutDeleted(string userId)
+        {
+            var documents = repo.GetAllRootElementsWithoutDeleted(userId);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+
         public int CreateFolders(string folders, string userId, int parentId = 0)
         {
             if (folders == null) return 0;

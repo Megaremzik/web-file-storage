@@ -35,7 +35,7 @@ namespace WS.Web.Controllers
             string userId = _userManager.GetUserId(User);
             if (userId == null) return RedirectToAction("Login", "Account");
             _pathProvider.MapId(userId);
-            var documents = _service.ConvertToViewModel(_service.GetAll(userId)); ;
+            var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
             ViewBag.ParentId = id;
             return View(documents);
         }
@@ -43,8 +43,8 @@ namespace WS.Web.Controllers
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<DocumentViewModel> documents;
-            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildren(parentId));
-            else documents = _service.ConvertToViewModel(_service.GetAllRootElements(userId));
+            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildrenWithoutDeleted(parentId));
+            else documents = _service.ConvertToViewModel(_service.GetAllRootElementsWithoutDeleted(userId));
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
@@ -71,7 +71,7 @@ namespace WS.Web.Controllers
             }
             return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
         }
-        public IActionResult Rename(int id, string name)
+        public IActionResult Rename(int id, string name = "RRr")
         {
             var userId = _userManager.GetUserId(User);
             _service.RenameFile(id, name);
@@ -145,11 +145,13 @@ namespace WS.Web.Controllers
             bool result = false;
             if (id != null)
             {
-                _service.MoveToTrash(id);
+                DateTime moveDate = DateTime.Now;
+                _service.MoveToTrash(id, moveDate);
                 result = true;
             }
             return Json(result);
         }
+
         public IActionResult ViewFile(int id)
         {
             var doc = _service.Get(id);

@@ -288,19 +288,19 @@ function ContextResult(action, id) {
     else if (action == "rename") {
         var row = document.getElementById(id);
         var cell = row.children[0].textContent
-        $("#renameModal #ModelId").val(id);
-        $("#renameModal #ModelName").val(cell);
-        $('#renameModal').modal('show');
-        //$.ajax({
-        //    type: "Post",
-        //    url: '/Document/Rename',
-        //    data: {
-        //        id: id,
-        //    },
-        //    success: function (data, textStatus, jqXHR) {
-        //        $('#dropzone-drop-area').html(data);
-        //    }
-        //}); 
+        //$("#renameModal #ModelId").val(id);
+        //$("#renameModal #ModelName").val(cell);
+        //$('#renameModal').modal('show');
+        $.ajax({
+            type: "Post",
+            url: '/Document/Rename',
+            data: {
+                id: id,
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#dropzone-drop-area').html(data);
+            }
+        }); 
     }
     else if (action == "download") {
         $.ajax({
