@@ -34,10 +34,14 @@
         position: relative;
     }
 
-        .dropzone-drop-area.over {
-            background-color: white;
-            border: dashed 2px silver;
-        }
+    .dropzone-drop-area.over {
+        background-color: white;
+        border: dashed 2px silver;
+    }
+    tr.selected{
+        background-color: #95e9ee;
+        /*color: #fff;*/
+    }
 </style>
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
@@ -139,8 +143,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        <h2>Your files</h2>
-        <button id="backParentId" onclick="GoBack()">Назад</button>
+        <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">

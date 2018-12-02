@@ -7,6 +7,15 @@
     return parent;
 }
 function ShowFileOptions(doc) {
+    var tr = document.getElementById(doc)
+    $('.filerow').removeClass('selected'); // "Unselect" all the rows
+    $('#'+doc).addClass('selected'); // Select the one clicked
+    //if (tr.hasClass("selected") == false) {
+    //    var selected = document.getElementsByClassName("selected");
+    //    selected.removeClass("selected");
+    //    tr.addClass("selected");
+    //}
+
     $.ajax({
         type: "Post",
         url: '/Document/FileOptions',
