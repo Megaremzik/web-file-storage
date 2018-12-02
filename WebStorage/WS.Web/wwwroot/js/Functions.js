@@ -391,10 +391,6 @@ function SearchTop() {
     });
 }
 
-$("#pattern").on({
-    blur: function () {
-        $(".result").hide();
-    },
-    focus: SearchTop,
-    input: SearchTop
-})
+function HideResults() {
+    $(".result").hide();
+}

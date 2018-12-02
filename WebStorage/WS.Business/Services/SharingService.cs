@@ -55,7 +55,7 @@ namespace WS.Business.Services
             DocumentLinkView docLink = _documentLinkService.Get(documentId);
             if (docLink != null)
             {
-                if(docLink.IsEditable==isEditable)
+                if (docLink.IsEditable == isEditable)
                 {
                     return docLink.Link;
                 }
@@ -90,7 +90,7 @@ namespace WS.Business.Services
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-        
+
             DocumentLinkView documentLink = _documentLinkService.Get(documentId);
             if (documentLink != null)
             {
@@ -159,6 +159,16 @@ namespace WS.Business.Services
             }
             return guid;
         }
+        public bool IsShared(int documentId)
+        {
+            return IsSharedEcactlyFile(documentId) || _documentService.GetParentFolders(documentId).Any(n => IsSharedEcactlyFile(n.Id));
+        }
+        private bool IsSharedEcactlyFile(int documentId)
+        {
+            var docLink = _documentLinkService.Get(documentId);
+            var userDocs = _userDocumentService.GetAll().Where(n => n.DocumentId == documentId);
+            return docLink != null || userDocs.Count() != 0;
+        }
         public void RemoveAccessForUser(int documentId, ClaimsPrincipal owner, string guestName)
         {
             if (!_documentService.IsDocumentExist(documentId))
@@ -189,7 +199,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
-            
+
         }
     }
 }

@@ -27,7 +27,6 @@ namespace WS.Web.Controllers
         }
         public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
-
             DocumentLinkView docLink = _sharingService.GetPublicAccessLink(documentId, User);
 
             if (docLink == null)
@@ -91,15 +90,8 @@ namespace WS.Web.Controllers
             }
             else
             {
-
                 var docs = _documentService.GetAllChildrensForFolder(doc.Id);
-
                 return RedirectToAction("Index", "Document", new { id = doc.Id });
-
-
-                //var docs = _documentService.GetAllChildren(doc.Id);
-                //ViewBag.FolderName = doc.Name;
-                //return View("GetFolder", docs);
             }
 
         }

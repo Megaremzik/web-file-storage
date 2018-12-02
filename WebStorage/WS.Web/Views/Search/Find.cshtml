@@ -9,7 +9,7 @@
     string ptrn = p.Name.Substring(index, ViewBag.pattern.Length);
     string name = p.Name.Substring(0, index) + $"<b>{ptrn}</b>" + p.Name.Substring(index + ptrn.Length);
 
-    <div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=@p.Id'">
+    <div class="search-item" onmousedown="return location.href='/Search/GetDocument?documentId=@p.Id'">
         @if (p.IsFile)
         {
             <i class="glyphicon glyphicon-file pull-left file-icon"></i>
