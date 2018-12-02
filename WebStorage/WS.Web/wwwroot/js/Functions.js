@@ -1,9 +1,6 @@
 ﻿function GetParentId() {
     var parent = sessionStorage.getItem("parentId");
     document.querySelector('input[name=parentId]').value = parent;
-    if (parent != 0) {
-        $('#backParentId').show();
-    }
     return parent;
 }
 function ShowFileOptions(doc) {
@@ -33,14 +30,14 @@ function DoubleClickAction(isFile, id) {
         });
     }
     else {
-        ViewFile(id);
+        //Просмотр файла
     }
 }
 function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
 function GoBack() {
-    var parentId = GetParentId();    
+    var parentId = GetParentId();
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
@@ -256,7 +253,7 @@ function SetParentId(id) {
     if (id == 0) {
         $('#backParentId').hide();
     }
-    sessionStorage.setItem("parentId",id)
+    sessionStorage.setItem("parentId", id)
 }
 function ContextResult(action, id) {
     if (action == "delete") {
@@ -274,7 +271,7 @@ function ContextResult(action, id) {
         var parent = sessionStorage.getItem("parentId");
         var type = sessionStorage.getItem("type");
         var item = sessionStorage.getItem("copy");
-        sessionStorage.setItem("copy","")
+        sessionStorage.setItem("copy", "")
         $.ajax({
             type: "Post",
             url: '/Document/Paste',
@@ -286,7 +283,7 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "rename") {
         var row = document.getElementById(id);
@@ -294,6 +291,16 @@ function ContextResult(action, id) {
         $("#renameModal #ModelId").val(id);
         $("#renameModal #ModelName").val(cell);
         $('#renameModal').modal('show');
+        //$.ajax({
+        //    type: "Post",
+        //    url: '/Document/Rename',
+        //    data: {
+        //        id: id,
+        //    },
+        //    success: function (data, textStatus, jqXHR) {
+        //        $('#dropzone-drop-area').html(data);
+        //    }
+        //}); 
     }
     else if (action == "download") {
         $.ajax({
@@ -305,46 +312,44 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "share") {
         $('#myModal').modal('show');
-    }
-    else if (action == "view") {
-        ViewFile(id);
-    }
-}
-function Rename() {
-    var id = document.getElementById("ModelId").value;
-    var name = document.getElementById("ModelName").value;
-    $.ajax({
-            type: "Post",
-            url: '/Document/Rename',
-            data: {
-                id: id,
-                name: name
-            },
-        success: function (data, textStatus, jqXHR) {
-                $('#renameModal').modal('hide');
-                $('#dropzone-drop-area').html(data);
-            }
-        });
-};
-function ViewFile(id) {
-    var row = document.getElementById(id);
-    var name = row.children[0].textContent;
-    var isfile = row.children[3].textContent;
-    if (isfile == "True") {
-        var extention = name.split('.');
-        if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
-            window.open('/Document/ViewFile/?id=' + id, "_blank");
-        }
     }
 }
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
 }
+
+function SendEmail(email) {
+    var model = {
+        'Email': email
+    };
+    $.ajax({
+        type: "POST",
+        url: "/Account/ForgotPassword",
+        data: JSON.stringify(model),
+        contentType: 'application/json',
+        success: function () {
+            $("#forgotModal").modal("hide");
+        }
+    })
+}
+
+function ConfirmForgot() {
+    $(window).load(function () {
+        $('#forgotModal').modal('show');
+    });
+}
+
+function ConfirmReset() {
+    $(window).load(function () {
+        $('#resetModal').modal('show');
+    });
+}
+
 function ConfirmDelete(name, isFile) {
     if (isFile === 1) {
         $(".modal-title").text("Удалить файл?")
@@ -373,6 +378,6 @@ function DeleteDoc() {
         }
     })
 }
-function ChooseFiles() {
-    $('.dropzone').trigger('click');
+function StoreUserToSession() {
+    sessionStorage.setItem("user", document.getElementById("email").value)
 }
