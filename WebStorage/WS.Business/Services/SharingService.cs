@@ -134,9 +134,10 @@ namespace WS.Business.Services
                 {
                     return userDoc.Link;
                 }
-                userDoc.IsEditable = isEditable;
-                _userDocumentService.Update(userDoc);
-                return userDoc.Link;
+                string createdguid = userDoc.Link;
+                _userDocumentService.Delete(guestEmail, documentId);
+                _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = createdguid, GuestEmail = guestEmail, IsEditable = isEditable });
+                return createdguid;
             }
 
             //If we have already had guid for this document, we use it
