@@ -94,6 +94,10 @@ namespace WS.Web.Controllers
                 uploads = Path.Combine(uploads, folders);
                 parentId = _service.CreateFolders(fullpath, userId, parentId);
             }
+            else
+            {
+                uploads = Path.Combine(uploads, currentpath);
+            }
             if (file.Length > 0)
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))

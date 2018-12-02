@@ -67,6 +67,7 @@
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#createModal').modal({ show: false });
+        $('#viewErrorModal').modal({ show: false });   
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
         $('#menuButton').on('click', function (e) {
@@ -156,6 +157,7 @@
 </div>
 @{
     Html.RenderPartial("_Rename", new DocumentView());
+    Html.RenderPartial("_FileViewErrorResult", new DocumentView());
     Html.RenderPartial("_CreateFolder", new DocumentView());
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }

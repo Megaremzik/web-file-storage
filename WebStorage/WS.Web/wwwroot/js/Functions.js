@@ -296,16 +296,7 @@ function ContextResult(action, id) {
         $('#renameModal').modal('show');
     }
     else if (action == "download") {
-        $.ajax({
-            type: "Post",
-            url: '/Download/Get',
-            data: {
-                id: id
-            },
-            success: function (data, textStatus, jqXHR) {
-                $('#dropzone-drop-area').html(data);
-            }
-        }); 
+        Download(id);
     }
     else if (action == "share") {
         $('#myModal').modal('show');
@@ -338,6 +329,10 @@ function ViewFile(id) {
         var extention = name.split('.');
         if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
             window.open('/Document/ViewFile/?id=' + id, "_blank");
+        }
+        else {
+            $("#viewErrorModal #DownloadFileId").val(id);
+            $("#viewErrorModal").modal("show");     
         }
     }
 }
@@ -390,7 +385,7 @@ $(function () {
 })
 function CreateFolder() {
     var id = GetParentId();
-    $("#renameModal #CreateParentId").val(id);
+    $("#createModal #CreateParentId").val(id);
     $("#createModal").modal("show");
 }
 function SendCreateFolderRequest() {
@@ -408,4 +403,16 @@ function SendCreateFolderRequest() {
             $('#dropzone-drop-area').html(data);
         }
     });
+}
+function Download(id) {
+    $.ajax({
+        type: "GET",
+        url: '/Download/Get',
+        data: {
+            documentId: id
+        },
+        success: function (data) {
+            window.location = '/Download/Get?documentId='+id;
+        }
+    }); 
 }
