@@ -12,6 +12,7 @@ using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
 using WS.Business;
+using Microsoft.AspNetCore.Routing;
 
 namespace WS.Web.Controllers
 {
@@ -29,11 +30,12 @@ namespace WS.Web.Controllers
             _userManager = userManager;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id = 0)
         {
             string userId = _userManager.GetUserId(User);
             _pathProvider.MapId(userId);
             var documents = _service.GetAll(userId);
+            ViewBag.parentId = id;
             return View(documents);
         }
         public IActionResult ReturnDocumentList(int parentId=0)
@@ -42,21 +44,55 @@ namespace WS.Web.Controllers
             IEnumerable<DocumentView> documents;
             if (parentId != 0) documents = _service.GetAllChildren(parentId);
             else documents = _service.GetAllRootElements(userId);
+            ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
+        }
+        public IActionResult ReturnParent(int id)
+        {
+            var parentId = _service.Get(id).ParentId;
+            return RedirectToAction("ReturnDocumentList","Document",new { parentId});
         }
         public IActionResult FileOptions(int id)
         {
             var doc = _service.Get(id);
             return PartialView("_FileOptions", doc);
         }
-        [HttpPost]
-        public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath)
+        public IActionResult Paste(int id, int parentId, string type)
         {
+            var userId = _userManager.GetUserId(User);
+            if (type == "copy")
+            {
+                _service.CreateACopy(id, parentId);
+            }
+            else if (type == "cut")
+            {
+                _service.UpdateParentId(id,parentId);
+            }
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+        }
+        public IActionResult Rename(int id, string name)
+        {
+            var userId = _userManager.GetUserId(User);
+            _service.RenameFile(id, name);
+            var parentId = _service.Get(id).ParentId;
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UploadFiles(IFormFile file, string fullpath,int parentId=0)
+        {
+            var currentpath = "";
+            if (parentId != 0)
+            {
+                currentpath=_service.GetFilePath(parentId);
+            }
             string userId = _userManager.GetUserId(User);
-            var folders = _pathProvider.SplitPath(fullpath);
+            var folders = _pathProvider.SplitPath(fullpath,_userManager.GetUserId(User),currentpath);
             var uploads = _pathProvider.GetRootPath();
-            if (folders != null) uploads = Path.Combine(uploads, folders);
-            var parentId=_service.CreateFolders(folders,userId);
+            if (folders != null)
+            {
+                uploads = Path.Combine(uploads, folders);
+                parentId = _service.CreateFolders(fullpath, userId, parentId);
+            }
             if (file.Length > 0)
             {
                 using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
@@ -98,40 +134,37 @@ namespace WS.Web.Controllers
         [HttpPost]
         public IActionResult Edit(DocumentView document)
         {
-            _service.Update(document);
+            //_service.Update(document);
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        [ActionName("Delete")]
-        public IActionResult ConfirmDelete(DocumentView document)
-        {
-            if (document != null)
-            {
-                return View(document);
-            }
-            return NotFound();
-        }
-
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public JsonResult Delete(int? id)
         {
+            bool result = false;
             if (id != null)
             {
-                _service.Delete(id);
-                return RedirectToAction("Index");
+                _service.MoveToTrash(id);
+                result = true;
             }
-            return NotFound();
+            return Json(result);
         }
         [HttpPost]
-        public IActionResult ViewFile(DocumentView document)
+        public IActionResult ViewFile(int id)
         {
-            return RedirectToAction("Index");
+            var doc = _service.Get(id);
+            string path = _service.GetFullPath(id);
+
+            if (doc.IsFile)
+            {
+                string contentType = MimeTypeMap.GetMimeType(doc.Name);
+                return PhysicalFile(path, contentType, doc.Name);
+            }
+            return RedirectToAction("ReturnDocumentList", doc.ParentId);
         }
-        [HttpPost]
-        public IActionResult Share(DocumentView document)
+        public ICollection<DocumentView> FindTop10ByDocumentName(int documentId, string pattern)
         {
-            return RedirectToAction("Index");
+            return _service.FindTop10ByDocumentName(documentId, pattern, User);
         }
     }
 }

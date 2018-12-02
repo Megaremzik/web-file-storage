@@ -1,7 +1,4 @@
 ﻿@model WS.Business.ViewModels.DocumentView;
-@{
-    Layout = null;
-}
 
 <!DOCTYPE html>
 
@@ -11,7 +8,12 @@
     <title>Index</title>
 </head>
 <body>
-    <p>@Model.Name</p>
-    <button>Загрузить</button>
+    <div class="download-div">
+        <h4>@Model.Name</h4>
+        <div class="download-message">
+            <h5>Предварительный просмотр невозможен</h5>
+            <p>@Html.ActionLink("Скачать", "Get", "Download", new { documentId = Model.Id }, new { @class = "btn btn-primary download-button" })</p>
+        </div>
+    </div>
 </body>
 </html>

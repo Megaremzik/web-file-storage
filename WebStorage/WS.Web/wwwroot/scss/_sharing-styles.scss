@@ -1,0 +1,84 @@
+﻿
+
+.accessRow1 {
+    padding-right: 0;
+}
+
+.accessRow2 {
+    padding-left: 0;
+}
+
+#copy-btn, #sel1, #pl, #dropdown-button {
+    border-radius: 0;
+}
+
+.addEmail {
+    margin-top: 10px;
+}
+
+
+.sel2 {
+    margin-right: 25px;
+    border: none;
+}
+
+.delete-link {
+    font-size: 15px;
+}
+
+.toggle.ios .toggle-handle {
+    border-radius: 20px;
+}
+
+.dropdown-access, #dropdown-button {
+    width: 100%;
+}
+
+#accessLevelHeader {
+    margin-top: 25px;
+}
+
+.download-message {
+    border-radius: 20px;
+
+    width: 300px;
+    height: 150px;
+    background-color:#ddd;
+    text-align: center;
+    margin: 0 auto;
+
+    padding:19px;
+}
+
+.downnload-div {
+    height: 82vh;
+
+}
+
+
+.download-button {
+ 
+    margin: 15px auto 0 auto;
+}
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+    .accessRow1 {
+        padding-right: 15px;
+    }
+
+    .accessRow2 {
+        padding-left: 15px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+}

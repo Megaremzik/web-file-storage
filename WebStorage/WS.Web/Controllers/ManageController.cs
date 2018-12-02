@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WS.Business.Services;
 using WS.Business.ViewModels.ManageViewModels;
 using WS.Data;
 using WS.Interfaces;
@@ -23,7 +24,7 @@ namespace WS.Web.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
 
@@ -33,7 +34,7 @@ namespace WS.Web.Controllers
         public ManageController(
           UserManager<User> userManager,
           SignInManager<User> signInManager,
-          IEmailSender emailSender,
+          EmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {

@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WS.Business.Services;
+using WS.Business.ViewModels;
 using WS.Interfaces;
 
 namespace WS.Business
@@ -25,8 +27,12 @@ namespace WS.Business
         }
         public void MapId(string id)
         {
-            rootpath = Path.Combine(rootpath, id);
-            CreateFolder(rootpath);
+            if (id != null)
+            {
+                rootpath = Path.Combine(rootpath, id);
+                CreateFolder(rootpath);
+            }
+
         }
         public string MapPath(string name, string path = null)
         {
@@ -41,14 +47,28 @@ namespace WS.Business
         {
             Directory.CreateDirectory(path);
         }
-        public string SplitPath(string path)
+        public string SplitPath(string path, string userId,string currentFolder="")
         {
+            if (userId != null) rootpath=Path.Combine(rootpath, userId);
             if (path == null) return null;
             var str = path.Split('/');
-            string folders="";
+            string folders=(currentFolder!="")?currentFolder+"/":"";
             for(int i = 0; i < str.Length - 1; i++)
             {
-                MapPath(str[i],folders);
+                MapPath(str[i], folders);
+                folders += str[i] + "/";
+            }
+
+            return folders;
+        }
+        public string AddFoldersWhenCopy(string path, string userId)
+        {
+            //rootpath = Path.Combine(rootpath, userId);
+            var str = path.Split('/');
+            string folders = userId;
+            for (int i = 0; i < str.Length; i++)
+            {
+                MapPath(str[i], folders);
                 folders += str[i] + "/";
             }
 

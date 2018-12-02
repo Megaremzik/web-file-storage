@@ -27,7 +27,7 @@ namespace WS.Data
         }
         public DocumentLink Get(int? id)
         {
-            return db.DocumentLink.FirstOrDefault(p => p.Id == id);
+            return db.DocumentLink.AsNoTracking().FirstOrDefault(p => p.Id == id);
         }
         public void Update(DocumentLink documentLink)
         {

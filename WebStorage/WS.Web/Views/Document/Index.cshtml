@@ -1,25 +1,31 @@
-﻿@model IEnumerable<WS.Business.ViewModels.DocumentView>
+﻿@using WS.Business.ViewModels
+@model IEnumerable<DocumentView>
 @{
     ViewData["Title"] = "Home Page";
 }
 <script src="~/js/dropzone.js"></script>
 <script src="~/js/Functions.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.min.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.ui.position.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
+<link rel="stylesheet" href="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.css">
 <style>
-    #file-options{
-        background-color: lightgray 
+    #file-options {
+        background-color: lightgray
     }
+
     .dropzone-container {
         width: 100%;
     }
 
     .dropzone-drop-area {
         background-color: white;
-        width: 85%;
+        width: 90%;
         min-height: 350px;
         box-sizing: border-box;
-        padding: 6px;
-        display: flex;
+        padding: 2px;
+        /*display: flex;*/
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
@@ -28,37 +34,87 @@
         position: relative;
     }
 
-        .dropzone-drop-area:hover {
+        .dropzone-drop-area.over {
             background-color: white;
             border: dashed 3px silver;
         }
 </style>
-@Html.Hidden("fullpath", "");
+@Html.Hidden("fullpath", "")
+@Html.Hidden("parentId", "")
 <script>
+    function handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+        return false;
+    }
+    function handleDragEnter(e) {
+        // this / e.target is the current hover target.
+        this.classList.add('over');
+    }
+
+    function handleDragLeave(e) {
+        this.classList.remove('over');  // this / e.target is previous target element.
+    }
     $(document).ready(function () {
-        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
-        Dropzone.options.uploader = {
-            paramName: "file", // The name that will be used to transfer the file
-            clickable: true,
-            uploadMultiple: false,
-            createImageThumbnails: true,
-            accept: function (file, done) {
-                if (file.name == "badfile.jpg") {
-                    done("This is a bad file!");
-                }
-                else {
-                    //Show a confirm alert and display the image on the page.
-                }
-            }
-        };
+        var zone = document.querySelector('.dropzone-drop-area');
+        zone.addEventListener('dragenter', handleDragEnter, false);
+        zone.addEventListener('dragover', handleDragOver, false);
+        zone.addEventListener('dragleave', handleDragLeave, false);
+        GetParentId();
+        $('#renameModal').modal({ show: false });
+        $('#myModal').modal({ show: false });
+        $('#backParentId').hide();
+        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new { parentId = ViewBag.parentId })');
     });
+    $.contextMenu({
+        selector: '.filerow',
+        callback: function (key, options) {
+            ContextResult(key, $(this).attr("id"))
+        },
+        items: {
+            "download": { name: "Download"},
+            "share": { name: "Share"},
+            "view": { name: "View", icon: "edit"},
+            "rename": { name: "Rename"},
+            "cut": { name: "Cut", icon: "cut"},
+            "copy": { name: "Copy", icon: "copy"},
+            "paste": {
+                name: "Paste", icon: "paste", disabled: function () {
+                    if (sessionStorage.getItem("copy") == "" || sessionStorage.getItem("copy") == undefined) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            },
+            "delete": { name: "Delete", icon: "delete", disabled: CheckIfItIsABlankSpace($(this).attr("id")) },
+            "sep1": "---------",
+            "quit": { name: "Quit", icon: function ($element, key, item) { return 'context-menu-icon context-menu-icon-quit'; } }
+        }
+    });
+
     Dropzone.options.uploader = {
+        paramName: "file", // The name that will be used to transfer the file
+        clickable: true,
+        uploadMultiple: false,
+        parallelUploads: 1,
+        autoProcessQueue: true,
         init: function () {
             this.on("sending", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
-                    console.log(file.fullPath);
                 }
+                data.append("parentId", GetParentId());
+            });
+            this.on("dropfile", function (file, xhr, data) {
+                if (file.fullPath) {
+                    data.append("fullPath", file.fullPath);
+                }
+                data.append("parentId", GetParentId());
             });
             this.on("queuecomplete", function (file) {
                  $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
@@ -81,10 +137,12 @@
     </form>
     <div class="col-md-7">
         <h2>Your files</h2>
-
+        <button id="backParentId" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
                 <div id="dropzone-drop-area" class="dropzone-drop-area">
+                </div>
+                <div id="dropzone-message-area" class="dz-message">
                 </div>
             </form>
         </div>
@@ -94,4 +152,8 @@
         </div>
     </div>
 </div>
+@{
+    //Html.RenderPartial("_Rename", new DocumentView());
+    @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
+}
 

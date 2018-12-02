@@ -1,0 +1,23 @@
+﻿@using WS.Business.ViewModels
+@model DocumentView
+@using (Html.BeginForm("Rename", "Document", FormMethod.Post))
+{
+    <div class="modal fade" id="renameModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Rename document</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.EditorFor(Model => Model.Id, new { htmlAttributes = new { @type = "hidden", @id = "ModelId" } })
+                    @Html.EditorFor(Model => Model.Name, new { htmlAttributes = new { @class = "form-control", @id = "ModelName" } })
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Change</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
