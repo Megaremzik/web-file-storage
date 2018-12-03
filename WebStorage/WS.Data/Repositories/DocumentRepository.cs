@@ -86,5 +86,12 @@ namespace WS.Data
             var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId && d.Type_change != "Delete").ToList();
             return documents;
         }
+
+        public IEnumerable<Document> GetAllDeletedFiles()
+        {
+            var documents = db.Document.Where(d => d.Type_change == "Delete").ToList();
+
+            return documents;
+        }
     }
 }

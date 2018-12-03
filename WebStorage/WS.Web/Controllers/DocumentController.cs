@@ -48,6 +48,25 @@ namespace WS.Web.Controllers
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
+
+        public IActionResult ReturnDeleted()
+        {
+            string userId = _userManager.GetUserId(User);
+            IEnumerable<DocumentViewModel> documents;
+            documents = _service.ConvertToViewModel(_service.GetAllDeletedFiles());
+            var documentsSorted = documents.OrderBy(d => d.Document.Date_change);
+            return PartialView("_GetDocuments", documentsSorted);
+        }
+        public IActionResult DeletedFiles(int id = 0)
+        {
+            string userId = _userManager.GetUserId(User);
+            if (userId == null) return RedirectToAction("Login", "Account");
+            _pathProvider.MapId(userId);
+            var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
+            ViewBag.ParentId = id;
+            return View(documents);
+        }
+
         public IActionResult ReturnParent(int id)
         {
             var parentId = _service.Get(id).ParentId;

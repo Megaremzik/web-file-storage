@@ -378,5 +378,32 @@ namespace WS.Business.Services
             }
             return documents;
         }
+        public IEnumerable<DocumentView> GetAllDeletedFiles()
+        {
+            var documents = repo.GetAllDeletedFiles();
+            List<Document> mainDocuments = new List<Document>();
+            Document parent;
+            foreach (Document doc in documents)
+            {
+                parent = FindParent(doc.Id);
+                if(!mainDocuments.Contains(parent))
+                    mainDocuments.Add(FindParent(doc.Id));
+            }
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(mainDocuments.AsEnumerable());
+        }
+        public Document FindParent(int id)
+        {
+            int parentId = id;
+            Document doc;
+            do
+            {
+                doc = repo.Get(parentId);
+                if (doc.ParentId == 0 || doc.Date_change != repo.Get(doc.ParentId).Date_change)
+                    return doc;
+                else
+                    parentId = doc.ParentId;
+
+            } while (true);
+        }
     }
 }

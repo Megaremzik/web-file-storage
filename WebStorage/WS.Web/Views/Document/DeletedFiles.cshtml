@@ -1,0 +1,40 @@
+﻿@using WS.Business.ViewModels
+@model IEnumerable<DocumentViewModel>
+<script src="~/js/dropzone.js"></script>
+<script src="~/js/Functions.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.min.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.ui.position.js"></script>
+<script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
+<link rel="stylesheet" href="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.css">
+
+@Html.Hidden("fullpath", "")
+@Html.Hidden("parentId", "")
+<script>
+    GetParentId();
+    $(document).ready(function () {
+        $('#backParentId').hide();
+        $('#dropzone-drop-area').load('@Url.Action("ReturnDeleted", "Document", new {parentId=ViewBag.ParentId })');
+    });
+</script>
+<div class="row form-control-static">
+    <div class="form-group">
+
+    </div>
+    <div class="col-md-8">
+        <h2>Your files</h2>
+        <form action="/Document/UploadFiles" id="uploader">
+            <div id="dropzone-drop-area">
+            </div>
+        </form>
+    </div>
+    @*<div class="col-md-2">
+        <div id="file-options">
+        </div>
+    </div>*@
+</div>
+@{
+    Html.RenderPartial("_Rename", new DocumentView());
+    @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
+}
+
