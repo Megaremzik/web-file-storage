@@ -180,7 +180,7 @@ namespace WS.Web.Controllers
             bool result = false;
             if (id != null)
             {
-                _service.Delete(id);
+                _service.FirstStepDelete(id);
                 result = true;
             }
             return Json(result);

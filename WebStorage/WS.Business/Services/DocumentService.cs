@@ -122,28 +122,6 @@ namespace WS.Business.Services
             Directory.Move(startpath, finishpath);
         }
 
-        //public string GetNewParentFolder(ref int id)
-        //{
-        //    var doc = repo.Get(id);
-        //    id = doc.ParentId;
-        //    if (doc.Type_change != "Delete")
-        //        return doc.Name;
-        //    else
-        //        return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString());
-        //}
-
-        //public string GetNewFilePath(int id)
-        //{
-        //    string path = "";
-        //    int parentId = id;
-        //    path = Path.Combine(GetParentFolder(ref parentId), path);
-        //    while (parentId != 0)
-        //    {
-        //        path = Path.Combine(GetNewParentFolder(ref parentId), path);
-        //    }
-        //    return path;
-        //}
-
         public string GetNewFilePath(int id, string time)
         {
             string path = "";
@@ -158,28 +136,122 @@ namespace WS.Business.Services
             return path;
         }
 
-
-        public void Delete(int? id)
+        public Document FindVirtualParent(int id)
         {
-            var document = Get(id);
+            int parentId = id;
+            Document doc;
+            do
+            {
+                doc = repo.Get(parentId);
+                if (doc.ParentId == 0 || doc.Date_change != repo.Get(doc.ParentId).Date_change || repo.Get(doc.ParentId).Type_change != "SaveForFile")
+                    return doc;
+                else
+                    parentId = doc.ParentId;
+
+            } while (true);
+        }
+
+        public void FirstStepDelete(int? id)
+        {
+            Document document = GetExactlyDocument(id);
+            if (document.IsFile == true)
+                document = FindVirtualParent(Convert.ToInt32(id));
+            Delete(document.Id);
+        }
+
+            public void Delete(int? id)
+        {
+            Document document = GetExactlyDocument(id);
             if (document.IsFile == true)
             {
-                repo.Delete(id);
+                var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
+                if (File.Exists(filetpath))
+                {
+                    try
+                    {
+                        File.Delete(filetpath);
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                    }
+                }
+                repo.Delete(document.Id);
             }
             else
             {
-                DeleteFolder(id);
+                DeleteFolder(document.Id);
             }
         }
 
         public void DeleteFolder(int? id)
         {
-            var documents = repo.GetAllChildrenDeletedWithIt(id);
+            var document = GetExactlyDocument(id);
+            IEnumerable<Document> documents = null;
+            if (document.Type_change == "Delete")
+                documents = repo.GetAllChildrenDeletedWithIt(id);
+            else if (document.Type_change == "SaveForFile")
+                documents = repo.GetAllWirtualChildrenDeletedWithIt(id);
             foreach (var doc in documents)
             {
                 Delete(doc.Id);
             }
-            repo.Delete(id);
+            documents = repo.GetAllChildren(id);
+            if (documents.Count() == 0)
+            {
+                var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
+                if (File.Exists(filetpath))
+                {
+                    try
+                    {
+                        File.Delete(filetpath);
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                    }
+                }
+                repo.Delete(id);
+            }
+            else
+            {
+                var startpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32( id)));
+                document.Date_change = documents.First().Date_change;
+                document.Type_change = "SaveForFile";
+                var finishpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
+                Directory.Move(startpath, finishpath);
+                repo.Update(document);
+            }
+        }
+
+        public string GetNewParentFolder(ref int id)
+        {
+            var doc = repo.Get(id);
+            id = doc.ParentId;
+            if (doc.Type_change != "Delete" && doc.Type_change != "SaveForFile")
+                return doc.Name;
+            else
+            {
+                if (!doc.IsFile)
+                {
+                    return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString());
+                }
+                else
+                {
+                    var extension = doc.Name.Split('.');
+                    return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString() + "." + extension[extension.Length - 1]) ;
+                }
+            }
+        }
+
+        public string GetNewFilePath(int id)
+        {
+            string path = "";
+            int parentId = id;
+            path = Path.Combine(GetNewParentFolder(ref parentId), path);
+            while (parentId != 0)
+            {
+                path = Path.Combine(GetNewParentFolder(ref parentId), path);
+            }
+            return path;
         }
 
         public IEnumerable<DocumentView> GetAllChildren(int? id)
@@ -398,7 +470,7 @@ namespace WS.Business.Services
             do
             {
                 doc = repo.Get(parentId);
-                if (doc.ParentId == 0 || doc.Date_change != repo.Get(doc.ParentId).Date_change)
+                if (doc.ParentId == 0 || doc.Date_change != repo.Get(doc.ParentId).Date_change || repo.Get(doc.ParentId).Type_change!="Delete")
                     return doc;
                 else
                     parentId = doc.ParentId;

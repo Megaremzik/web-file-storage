@@ -10,7 +10,7 @@
     <p>Selected folder "@Model.Name"</p>
 }
 
-<button type="button" class="btn btn-danger" onclick="FinalConfirmDelete(@Convert.ToString(" \"" + Model.Name + "\" "), @Convert.ToInt32(Model.IsFile))"><i class="glyphicon glyphicon-trash"></i>Удалить</button>
+    <button type="button" class="btn btn-danger" onclick="FinalConfirmDelete(@Convert.ToString(" \"" + Model.Name + "\" "), @Convert.ToInt32(Model.IsFile))"><i class="glyphicon glyphicon-trash"></i>Delete permanently</button>
 
 
 @Html.Partial("../Document/_FinalDeletModal.cshtml", Model);
