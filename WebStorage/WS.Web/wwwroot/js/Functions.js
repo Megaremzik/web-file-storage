@@ -15,6 +15,20 @@ function ShowFileOptions(doc) {
         }
     });
 }
+
+function ShowDeletedFileOptions(doc) {
+    $.ajax({
+        type: "Post",
+        url: '/Document/DeletedFileOptions',
+        data: {
+            id: doc
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#deleted-file-options').html(data);
+        }
+    });
+}
+
 function DoubleClickAction(isFile, id) {
     if (isFile === 0) {
         $('#backParentId').show();
@@ -359,6 +373,35 @@ function ConfirmDelete(name, isFile) {
     }
     $("#deleteMessege").text("Действительно удалить " + name + " из Foxbox?");
     $("#deleteModal").modal("show");
+}
+
+function FinalConfirmDelete(name, isFile) {
+    if (isFile === 1) {
+        $(".modal-title").text("Delete file permanently?")
+    }
+    else {
+        $(".modal-title").text("Delete folder permanently?")
+    }
+    $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
+    $("#finalDeleteModal").modal("show");
+}
+
+function FinalDeleteDoc() {
+    var id = $("#hiddenTaskId").val();
+    $.ajax({
+        type: "POST",
+        url: "/Document/FinalDelete",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#finalDeleteModal").modal("hide");
+                $("#" + id).remove();
+            }
+            else {
+                $("#finalDeleteModal").modal("hide");
+            }
+        }
+    })
 }
 
 function DeleteDoc() {

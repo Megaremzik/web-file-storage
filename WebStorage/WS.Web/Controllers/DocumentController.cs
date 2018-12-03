@@ -55,7 +55,7 @@ namespace WS.Web.Controllers
             IEnumerable<DocumentViewModel> documents;
             documents = _service.ConvertToViewModel(_service.GetAllDeletedFiles());
             var documentsSorted = documents.OrderBy(d => d.Document.Date_change);
-            return PartialView("_GetDocuments", documentsSorted);
+            return PartialView("_GetDeletedDocuments", documentsSorted);
         }
         public IActionResult DeletedFiles(int id = 0)
         {
@@ -65,6 +65,11 @@ namespace WS.Web.Controllers
             var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
             ViewBag.ParentId = id;
             return View(documents);
+        }
+        public IActionResult DeletedFileOptions(int id)
+        {
+            var doc = _service.Get(id);
+            return PartialView("_DeletedFileOptions", doc);
         }
 
         public IActionResult ReturnParent(int id)
@@ -166,6 +171,16 @@ namespace WS.Web.Controllers
             {
                 DateTime moveDate = DateTime.Now;
                 _service.MoveToTrash(id, moveDate);
+                result = true;
+            }
+            return Json(result);
+        }
+        public JsonResult FinalDelete(int? id)
+        {
+            bool result = false;
+            if (id != null)
+            {
+                _service.Delete(id);
                 result = true;
             }
             return Json(result);

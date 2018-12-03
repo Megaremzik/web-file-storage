@@ -70,6 +70,12 @@ namespace WS.Data
             var documents= db.Document.Where(d => d.ParentId == id).ToList();
             return documents;
         }
+        public IEnumerable<Document> GetAllChildrenDeletedWithIt(int? id)
+        {
+            var doc = Get(id);
+            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change=="Delete" && d.Date_change== doc.Date_change).ToList();
+            return documents;
+        }
         public IEnumerable<Document> GetAllRootElements(string userId)
         {
             var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId).ToList();

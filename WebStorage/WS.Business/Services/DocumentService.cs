@@ -174,7 +174,7 @@ namespace WS.Business.Services
 
         public void DeleteFolder(int? id)
         {
-            var documents = repo.GetAllChildren(id);
+            var documents = repo.GetAllChildrenDeletedWithIt(id);
             foreach (var doc in documents)
             {
                 Delete(doc.Id);
