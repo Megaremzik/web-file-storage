@@ -326,7 +326,7 @@ namespace WS.Business.Services
             }
             else if (extention[extention.Length - 1] == "zip" || extention[extention.Length - 1] == "rar")
             {
-                return "fa fa-file-archieve fa-2x";
+                return "fa fa-file-archive fa-2x";
             }
             else if ( extention[extention.Length - 1] == "js" || extention[extention.Length - 1] == "html"|| extention[extention.Length - 1] == "cs"|| extention[extention.Length - 1] == "py")
             {

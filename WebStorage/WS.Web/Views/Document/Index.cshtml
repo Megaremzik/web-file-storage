@@ -32,6 +32,8 @@
         flex-wrap: wrap;
         cursor: pointer;
         position: relative;
+        overflow-y:auto;
+        max-height:820px;
     }
 
     .dropzone-drop-area.over {
@@ -40,8 +42,29 @@
     }
     tr.selected{
         background-color: #95e9ee;
-        /*color: #fff;*/
     }
+    #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+        max-height:200px;
+    }
+
+        #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
 </style>
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
@@ -65,9 +88,13 @@
     }
     $(document).ready(function () {
         var zone = document.querySelector('.dropzone-drop-area');
+        var row = $('.filerow');
         zone.addEventListener('dragenter', handleDragEnter, false);
         zone.addEventListener('dragover', handleDragOver, false);
         zone.addEventListener('dragleave', handleDragLeave, false);
+        //row.addEventListener('dragenter', handleDragEnter, false);
+        //row.addEventListener('dragover', handleDragOver, false);
+        //row.addEventListener('dragleave', handleDragLeave, false);
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#createModal').modal({ show: false });
@@ -113,6 +140,7 @@
         clickable: true,
         uploadMultiple: false,
         parallelUploads: 1,
+        previewsContainer: ".dropzone-previews",
         autoProcessQueue: true,
         init: function () {
             this.on("sending", function (file, xhr, data) {
@@ -128,7 +156,9 @@
                 data.append("parentId", GetParentId());
             });
             this.on("queuecomplete", function (file) {
-                 $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
+                var x = document.getElementById("snackbar");
+                x.className = x.className.replace("show", ""); 
+                $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
             });
         }
     };
@@ -136,17 +166,17 @@
 <div class="row form-control-static">
     <div class="form-group">
         <div class="col-md-2">
-            <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
-            <br />
-            <br />
-            <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
+            <div class="btn-group-vertical">
+                <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
+                <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
+            </div>
         </div>
     </div>
     <div class="col-md-8">
         <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
-                <div id="dropzone-drop-area" class="dropzone-drop-area">
+                <div id="dropzone-drop-area" class="dropzone-drop-area" >
                 </div>
                 <div id="dropzone-message-area" class="dz-message">
                 </div>
@@ -157,6 +187,9 @@
         <div id="file-options">
         </div>
     </div>
+</div>
+<div id="snackbar" class="dropzone-previews">
+  
 </div>
 @{
     Html.RenderPartial("_Rename", new DocumentView());

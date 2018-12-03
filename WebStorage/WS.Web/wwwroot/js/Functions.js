@@ -10,11 +10,6 @@ function ShowFileOptions(doc) {
     var tr = document.getElementById(doc)
     $('.filerow').removeClass('selected'); // "Unselect" all the rows
     $('#'+doc).addClass('selected'); // Select the one clicked
-    //if (tr.hasClass("selected") == false) {
-    //    var selected = document.getElementsByClassName("selected");
-    //    selected.removeClass("selected");
-    //    tr.addClass("selected");
-    //}
 
     $.ajax({
         type: "Post",
@@ -381,17 +376,9 @@ function ChooseFiles() {
     $('.dropzone').trigger('click');
 }
 function TriggerMenu() {
-    $('.filerow').trigger("contextmenu");
+    //$('.filerow').trigger("contextmenu");
+    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
 }
-$(function () {
-    // make button open the menu
-    $('#menuButton').on('click', function (e) {
-        e.preventDefault();
-        //$('.filerow').contextMenu();
-        $('.filerow').trigger("contextmenu");
-        // or $('.context-menu-one').contextMenu({x: 100, y: 100});
-    });
-})
 function CreateFolder() {
     var id = GetParentId();
     $("#createModal #CreateParentId").val(id);
@@ -424,4 +411,8 @@ function Download(id) {
             window.location = '/Download/Get?documentId='+id;
         }
     }); 
+}
+function ShowSnack() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
 }
