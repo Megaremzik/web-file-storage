@@ -27,9 +27,14 @@ namespace WS.Data
         {
             return db.Document.Where(d=>d.User.Id==id).ToList();
         }
+        public IEnumerable<Document> GetAllWithotDeleted(string id)
+        {
+            return db.Document.Where(d => d.User.Id == id && d.Type_change != "Delete" && d.Type_change != "SaveForFile").ToList();
+        }
+
         public void Create(Document document)
         {
-            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId);
+            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change!="Delete");
             if (doc.Count() == 0)
             {
                 db.Document.Add(document);
@@ -42,7 +47,7 @@ namespace WS.Data
         }
         public int GetIdByName(string userId,string name, int parentId)
         {
-            return db.Document.FirstOrDefault(d => d.Name == name && d.ParentId == parentId && d.UserId == userId).Id;
+            return db.Document.LastOrDefault(d => d.Name == name && d.ParentId == parentId && d.UserId == userId && d.Type_change!="Delete").Id;
         }
         public Document Get(string id1, int? id2)
         {
@@ -65,9 +70,39 @@ namespace WS.Data
             var documents= db.Document.Where(d => d.ParentId == id).ToList();
             return documents;
         }
+        public IEnumerable<Document> GetAllChildrenDeletedWithIt(int? id)
+        {
+            var doc = Get(id);
+            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change=="Delete" && d.Date_change== doc.Date_change).ToList();
+            return documents;
+        }
+        public IEnumerable<Document> GetAllWirtualChildrenDeletedWithIt(int? id)
+        {
+            var doc = Get(id);
+            var documents = db.Document.Where(d => d.ParentId == id && (d.Type_change == "Delete"|| d.Type_change == "SaveForFile") && d.Date_change == doc.Date_change).ToList();
+            return documents;
+        }
         public IEnumerable<Document> GetAllRootElements(string userId)
         {
             var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId).ToList();
+            return documents;
+        }
+
+        public IEnumerable<Document> GetAllChildrenWithoutDeleted(int? id)
+        {
+            var documents = db.Document.Where(d => d.ParentId == id && (d.Type_change != "Delete" && d.Type_change != "SaveForFile")).ToList();
+            return documents;
+        }
+        public IEnumerable<Document> GetAllRootElementsWithoutDeleted(string userId)
+        {
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId && (d.Type_change != "Delete" && d.Type_change != "SaveForFile")).ToList();
+            return documents;
+        }
+
+        public IEnumerable<Document> GetAllDeletedFiles()
+        {
+            var documents = db.Document.Where(d => d.Type_change == "Delete").ToList();
+
             return documents;
         }
     }

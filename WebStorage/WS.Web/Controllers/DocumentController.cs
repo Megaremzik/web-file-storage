@@ -35,7 +35,7 @@ namespace WS.Web.Controllers
             string userId = _userManager.GetUserId(User);
             if (userId == null) return RedirectToAction("Login", "Account");
             _pathProvider.MapId(userId);
-            var documents = _service.ConvertToViewModel(_service.GetAll(userId)); ;
+            var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
             ViewBag.ParentId = id;
             return View(documents);
         }
@@ -43,11 +43,35 @@ namespace WS.Web.Controllers
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<DocumentViewModel> documents;
-            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildren(parentId));
-            else documents = _service.ConvertToViewModel(_service.GetAllRootElements(userId));
+            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildrenWithoutDeleted(parentId));
+            else documents = _service.ConvertToViewModel(_service.GetAllRootElementsWithoutDeleted(userId));
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);
         }
+
+        public IActionResult ReturnDeleted()
+        {
+            string userId = _userManager.GetUserId(User);
+            IEnumerable<DocumentViewModel> documents;
+            documents = _service.ConvertToViewModel(_service.GetAllDeletedFiles());
+            var documentsSorted = documents.OrderBy(d => d.Document.Date_change);
+            return PartialView("_GetDeletedDocuments", documentsSorted);
+        }
+        public IActionResult DeletedFiles(int id = 0)
+        {
+            string userId = _userManager.GetUserId(User);
+            if (userId == null) return RedirectToAction("Login", "Account");
+            _pathProvider.MapId(userId);
+            var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
+            ViewBag.ParentId = id;
+            return View(documents);
+        }
+        public IActionResult DeletedFileOptions(int id)
+        {
+            var doc = _service.Get(id);
+            return PartialView("_DeletedFileOptions", doc);
+        }
+
         public IActionResult ReturnParent(int id)
         {
             var parentId = _service.Get(id).ParentId;
@@ -71,7 +95,7 @@ namespace WS.Web.Controllers
             }
             return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
         }
-        public IActionResult Rename(int id, string name)
+        public IActionResult Rename(int id, string name = "RRr")
         {
             var userId = _userManager.GetUserId(User);
             _service.RenameFile(id, name);
@@ -128,11 +152,23 @@ namespace WS.Web.Controllers
             bool result = false;
             if (id != null)
             {
-                _service.MoveToTrash(id);
+                DateTime moveDate = DateTime.Now;
+                _service.MoveToTrash(id, moveDate);
                 result = true;
             }
             return Json(result);
         }
+        public JsonResult FinalDelete(int? id)
+        {
+            bool result = false;
+            if (id != null)
+            {
+                _service.FirstStepDelete(id);
+                result = true;
+            }
+            return Json(result);
+        }
+
         public IActionResult ViewFile(int id)
         {
             var doc = _service.Get(id);

@@ -9,7 +9,7 @@
 
 .hr-label {
   margin-top: 10px;
-  margin-bottom: 5px; }
+  margin-bottom: 10px; }
 
 .hr-label::before, .hr-label::after {
   content: '';
@@ -21,7 +21,7 @@
   vertical-align: middle; }
 
 .btn-square {
-  background: #1d8c47;
+  background: #4a8c55;
   color: #fff;
   font-size: 16px;
   line-height: 30px;
@@ -46,6 +46,30 @@
 .non-margin {
   margin-bottom: 0px; }
 
+.field-icon {
+  float: right;
+  left: -4px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  color: #8c7d7d; }
+
+.password-field {
+  padding-right: 5px; }
+
+.password-field1 {
+  padding-right: 5px; }
+
+.password-field2 {
+  padding-right: 5px; }
+
+.navbar {
+  background-color: #34d3f9; }
+
+footer {
+  bottom: 0; }
+
+.accessRow1 {
 /* Large Devices, Wide Screens */
 /* Medium Devices, Desktops */
 /* Small Devices, Tablets */

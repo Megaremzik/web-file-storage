@@ -1,0 +1,16 @@
+﻿@using WS.Business.ViewModels
+@model DocumentView
+<input type="hidden" id="hiddenTaskId" value="@Model.Id" />
+@if (Model.IsFile)
+{
+    <p>Selected file "@Model.Name"</p>
+}
+@if (!Model.IsFile)
+{
+    <p>Selected folder "@Model.Name"</p>
+}
+
+    <button type="button" class="btn btn-danger" onclick="FinalConfirmDelete(@Convert.ToString(" \"" + Model.Name + "\" "), @Convert.ToInt32(Model.IsFile))"><i class="glyphicon glyphicon-trash"></i>Delete permanently</button>
+
+
+@Html.Partial("../Document/_FinalDeletModal.cshtml", Model);
