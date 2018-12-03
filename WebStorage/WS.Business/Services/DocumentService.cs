@@ -332,7 +332,15 @@ namespace WS.Business.Services
             else
             {
                 finishPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, finishPath);
-                startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath, doc.Name);
+                if (startPath == "")
+                {
+                    startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId,path);
+                }
+                else
+                {
+                    startPath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, startPath, doc.Name);
+                }
+                
                 File.Move(startPath, finishPath);
             }
         }
