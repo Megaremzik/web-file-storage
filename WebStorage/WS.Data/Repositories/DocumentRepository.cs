@@ -90,12 +90,12 @@ namespace WS.Data
 
         public IEnumerable<Document> GetAllChildrenWithoutDeleted(int? id)
         {
-            var documents = db.Document.Where(d => d.ParentId == id && (d.Type_change != "Delete" && d.Type_change != "SaveForFile")).ToList();
+            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change != "Delete" && d.Type_change != "SaveForFile").ToList();
             return documents;
         }
         public IEnumerable<Document> GetAllRootElementsWithoutDeleted(string userId)
         {
-            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId && (d.Type_change != "Delete" && d.Type_change != "SaveForFile")).ToList();
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId && d.Type_change != "Delete" && d.Type_change != "SaveForFile").ToList();
             return documents;
         }
 
