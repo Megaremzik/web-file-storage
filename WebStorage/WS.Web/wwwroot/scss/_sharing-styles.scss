@@ -1,4 +1,26 @@
-﻿
+﻿/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+    .accessRow1 {
+        padding-right: 15px;
+    }
+
+    .accessRow2 {
+        padding-left: 15px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+}
+
 
 .accessRow1 {
     padding-right: 0;
@@ -40,45 +62,71 @@
 
 .download-message {
     border-radius: 20px;
-
     width: 300px;
     height: 150px;
-    background-color:#ddd;
+    background-color: #ddd;
     text-align: center;
     margin: 0 auto;
-
-    padding:19px;
+    padding: 19px;
 }
 
 .downnload-div {
     height: 82vh;
-
 }
 
 
 .download-button {
- 
     margin: 15px auto 0 auto;
 }
-/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
+
+.result {
+    width: 400px;
+    position: absolute;
+    z-index: 999;
+    -webkit-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
+    box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
 }
 
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-}
+.search-item {
+   
+    padding: 10px;
+    background: #fff;
 
-/* Small Devices, Tablets */
-@media only screen and (max-width : 767px) {
-    .accessRow1 {
-        padding-right: 15px;
+
+    &:hover {
+        background: #f7f9fa;
+        cursor: pointer;
     }
-
-    .accessRow2 {
-        padding-left: 15px;
-    }
+}
+.search-error {
+    padding: 10px;
+    background: #fff;
+}
+.folder-path {
+    color: #7b8994;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    padding: 0;
+}
+.file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    padding: 0;
+}
+.file-icon {
+    margin: 3px 6px 0 0;
+    font-size: 30px;
+    color: #92ceff;
 }
 
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
+.folder-icon {
+    margin: 7px 13px 0 0;
+    font-size: 24px;
+    color: #ffcf49;
 }

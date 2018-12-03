@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using WS.Business.ViewModels;
 using WS.Data;
 using WS.Data.Repositories;
@@ -13,8 +14,10 @@ namespace WS.Business.Services
     {
         private UserRepository repo;
         IMapper mapper;
-        public UserService(IMapper map, UserRepository r)
+        private UserManager<User> _userManager;
+        public UserService(IMapper map, UserRepository r, UserManager<User> userManager)
         {
+            _userManager = userManager;
             mapper = map;
             repo = r;
         }
@@ -22,16 +25,20 @@ namespace WS.Business.Services
         {
             return repo.GetUserIdByDocumentId(documentId);
         }
-        public UserView GetUserByName(string userName)
+        public UserView GetUserByUserClaims(ClaimsPrincipal userClaims)
         {
-            User user = repo.GetUserByName(userName);
+            User user = repo.GetUserByName(userClaims.Identity.Name);
             return mapper.Map<User, UserView>(user);
         }
-        public bool IsUserTheOwnerOfTheDocument(string userName, int documentId)
+        public bool IsUserTheOwnerOfTheDocument(ClaimsPrincipal user, int documentId)
         {
             string userId = GetUserIdByDocumentId(documentId);
-            string userId2 = GetUserByName(userName).Id;
+            string userId2 = _userManager.GetUserId(user);
             return userId == userId2;
+        }
+        public string GetUserId(ClaimsPrincipal user)
+        {
+            return _userManager.GetUserId(user);
         }
     }
 }

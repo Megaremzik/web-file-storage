@@ -44,7 +44,7 @@ function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
 function GoBack() {
-    var parentId = GetParentId();    
+    var parentId = GetParentId();
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
@@ -122,8 +122,8 @@ function sendInvite(docId) {
         }
     })
 }
-function updateAccessForUser(docId, email, tag) {
-    var isEdit = $(tag).val();
+function updateAccessForUser(docId, email, tagIsEdit) {
+    var isEdit = $(tagIsEdit).val();
     $.ajax({
         method: 'GET',
         url: '/Share/AddAccessForUser',
@@ -133,7 +133,7 @@ function updateAccessForUser(docId, email, tag) {
             isEditable: isEdit
         },
         success: function (data) {
-            console.log("test");
+            console.log(data);
         }
     })
 }
@@ -260,7 +260,7 @@ function SetParentId(id) {
     if (id == 0) {
         $('#backParentId').hide();
     }
-    sessionStorage.setItem("parentId",id)
+    sessionStorage.setItem("parentId", id)
 }
 function ContextResult(action, id) {
     if (action == "delete") {
@@ -278,7 +278,7 @@ function ContextResult(action, id) {
         var parent = sessionStorage.getItem("parentId");
         var type = sessionStorage.getItem("type");
         var item = sessionStorage.getItem("copy");
-        sessionStorage.setItem("copy","")
+        sessionStorage.setItem("copy", "")
         $.ajax({
             type: "Post",
             url: '/Document/Paste',
@@ -290,7 +290,7 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "rename") {
         var row = document.getElementById(id);
@@ -340,6 +340,9 @@ function ViewFile(id) {
         }
     }
 }
+function GetClientReport() {
+    window.open('/Document/ViewFile', "_blank");
+};
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
@@ -415,4 +418,42 @@ function Download(id) {
 function ShowSnack() {
     var x = document.getElementById("snackbar");
     x.className = "show";
+}
+function SearchTop() {
+    $(".result").show();
+    var searchPattern = $('#pattern').val()
+    $.ajax({
+        url: "/search/FindTop",
+        data: {
+            pattern: searchPattern,
+            count: 4
+        },
+        success: function (data) {
+            $(".result").html("");
+            if (!data.length && searchPattern) {
+                $(".result").html("<div class='search-error'>Ничего не найдено<div>");
+            }
+            for (var i = 0; i < data.length; i++) {
+                var icon;
+                if (data[i].isFile) {
+                    icon = '<i class="glyphicon glyphicon-file pull-left file-icon"></i>'
+                }
+                else {
+                    icon = '<i class="glyphicon glyphicon-folder-open pull-left folder-icon"></i>'
+                }
+                var index = data[i].name.toLowerCase().indexOf(searchPattern.toLowerCase());
+                var ptrn = data[i].name.slice(index, index + searchPattern.length);
+                var name = data[i].name.slice(0, index) + `<b>${ptrn}</b>` + data[i].name.slice(index + ptrn.length);
+                var path = data[i].path;
+
+                $(".result").append(
+                    `<div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
+                    <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p></div></div>`);
+            }
+        }
+    });
+}
+
+function HideResults() {
+    $(".result").hide();
 }

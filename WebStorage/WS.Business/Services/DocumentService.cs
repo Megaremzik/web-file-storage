@@ -9,6 +9,7 @@ using AutoMapper;
 using WS.Business.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 
 namespace WS.Business.Services
@@ -19,8 +20,10 @@ namespace WS.Business.Services
         private DocumentRepository repo;
         private readonly IMapper mapper;
         private PathProvider pathprovider;
-        public DocumentService(IMapper map, DocumentRepository r, PathProvider p)
+        private UserService _userService;
+        public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService)
         {
+            _userService = userService;
             mapper = map;
             repo = r;
             pathprovider = p;
@@ -37,12 +40,41 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return mapper.Map<Document, DocumentView>(document);
         }
+        public ICollection<DocumentView> GetAllChildrensForFolder(int folderId)
+        {
+            List<DocumentView> filesList = new List<DocumentView>();
+
+            var childs = GetAllChildren(folderId);
+            foreach (var p in childs)
+            {
+                filesList.Add(Get(p.Id));
+                if (!p.IsFile)
+                {
+                    filesList.AddRange(GetAllChildrensForFolder(p.Id));
+                }
+            }
+            return filesList;
+        }
+
+
         public Document GetExactlyDocument(int? id)
         {
             Document document = repo.Get(id);
             return document;
         }
-
+        public ICollection<DocumentView> GetParentFolders(int id)
+        {
+            var docs = new List<DocumentView>();
+            var doc = Get(id);
+            int parentId = doc.ParentId;
+            while (parentId != 0)
+            {
+                doc = Get(parentId);
+                docs.Add(doc);
+                parentId = doc.ParentId;
+            }
+            return docs;
+        }
         public void Create(IFormFile file, string userId, int parentId = 0)
         {
             Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName, Extention = file.ContentType, UserId = userId, ParentId = parentId, Date_change = DateTime.Now };
@@ -213,6 +245,19 @@ namespace WS.Business.Services
             {
                 path = Path.Combine(GetParentFolder(ref parentId), path);
             } while (parentId != 0);
+            return path;
+        }
+        public string GetPathToFile(int id)
+        {
+            string path = string.Empty;
+            var doc = Get(id);
+            int parentId = doc.ParentId;
+            while (parentId != 0)
+            {
+                doc = Get(parentId);
+                path += "\\" + doc.Name;
+                parentId = doc.ParentId;
+            }
             return path;
         }
         public string GetParentFolder(ref int id)
