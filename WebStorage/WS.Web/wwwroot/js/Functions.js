@@ -531,6 +531,5 @@ function HideResults() {
 function StoreUserToSession() {
     sessionStorage.setItem("user", document.getElementById("email").value)
 }
-
 window.currentProcessingItem = 0;
 window.ProcessingItems = 0;
