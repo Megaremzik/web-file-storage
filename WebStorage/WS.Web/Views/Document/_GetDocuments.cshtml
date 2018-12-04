@@ -1,13 +1,13 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentViewModel>
-<script src='~/lib/tablesort-gh-pages/tablesort.js'></script>
 
-<script src='~/lib/tablesort-gh-pages/sorts/tablesort.number.js'></script>
-<script src='~/lib/tablesort-gh-pages/sorts/tablesort.date.js'></script>
+<script src="~/lib/sortable-0.8.0/js/sortable.min.js"></script>
+<link rel="stylesheet" href="~/lib/sortable-0.8.0/css/sortable-theme-bootstrap.css" />
+
 <script>
     SetParentId(@ViewBag.ParentId);
 </script>
-<table class="table filerow" id="filetable">
+<table class="table filerow sortable-theme-bootstrap" id="filetable" data-sortable>
     <thead><tr><th>Name</th><th>Size</th><th>Date of change</th><th>IsFile</th></tr></thead>
     <tbody>
         @for (int i = 0; i < Model.Count(); i++)
@@ -22,14 +22,11 @@
                 {
                     <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i>@Model.ElementAt(i).Document.Name</td>
                 }
-                <td class="table_file_size">@Model.ElementAt(i).Size</td>
-                <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
+                <td class="table_file_size" data-value="@Model.ElementAt(i).IntSize">@Model.ElementAt(i).Size</td>
+                <td class="table_file_date_change" data-value="@Model.ElementAt(i).Document.Date_change.Ticks">@Model.ElementAt(i).Document.Date_change</td>
                 <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
                 <td><span class="menuButton"><i class="fa fa-bars"></i></span></td>
             </tr>
         }
     </tbody>
 </table>
-<script>
-    new Tablesort(document.getElementById('filetable'));
-</script>

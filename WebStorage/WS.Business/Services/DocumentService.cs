@@ -502,14 +502,10 @@ namespace WS.Business.Services
         }
         public IEnumerable<DocumentViewModel> ConvertToViewModel(IEnumerable<DocumentView> document)
         {
-            DocumentView a;
-            string b;
-            bool c;
-            string d;
             List<DocumentViewModel> documents = new List<DocumentViewModel>();
             foreach (var doc in document)
             {
-                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc), IsShared(doc.Id), IconForFile(doc)));
+                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc), doc.Size, IsShared(doc.Id), IconForFile(doc)));
             }
             return documents;
         }

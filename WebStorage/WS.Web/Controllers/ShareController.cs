@@ -10,6 +10,7 @@ using WS.Business;
 using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
+using WS.Web.Extensions;
 
 namespace WS.Web.Controllers
 {
@@ -40,9 +41,7 @@ namespace WS.Web.Controllers
         {
             string guid = _sharingService.OpenLimitedAccesToFile(documentId, isEditable, User, guestEmail);
             string link = Request.Host.Value + "/Share/Get?id=" + guid + "&adm=lim";
-            string subject = "Пользователь " + User.Identity.Name + " поделился с вами файлом";
-            string message = "<p>Пользователь " + User.Identity.Name +  $" поделился с вами файлом по следующей ссылке {link}</p>";
-            await _emailSender.SendEmailAsync(guestEmail, subject, message);
+            await _emailSender.SendEmailInvitationForSharedFileAsync(guestEmail, User.Identity.Name, link);
             return Content(link);
         }
 
