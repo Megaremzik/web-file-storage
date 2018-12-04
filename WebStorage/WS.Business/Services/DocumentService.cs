@@ -21,8 +21,10 @@ namespace WS.Business.Services
         private readonly IMapper mapper;
         private PathProvider pathprovider;
         private UserService _userService;
+        SharingService _sharingService;
         public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService)
         {
+           
             _userService = userService;
             mapper = map;
             repo = r;
@@ -34,7 +36,10 @@ namespace WS.Business.Services
             IEnumerable<Document> documents = repo.GetAll(id);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
-
+        public bool IsShared(int documentId)
+        {
+           return repo.IsShared(documentId);
+        }
         public IEnumerable<DocumentView> GetAllWithotDeleted(string id)
         {
             IEnumerable<Document> documents = repo.GetAllWithotDeleted(id);
@@ -68,19 +73,7 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return document;
         }
-        public ICollection<DocumentView> GetParentFolders(int id)
-        {
-            var docs = new List<DocumentView>();
-            var doc = Get(id);
-            int parentId = doc.ParentId;
-            while (parentId != 0)
-            {
-                doc = Get(parentId);
-                docs.Add(doc);
-                parentId = doc.ParentId;
-            }
-            return docs;
-        }
+       
         public void Create(IFormFile file, string userId, int parentId = 0)
         {
             Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName, Extention = file.ContentType, UserId = userId, ParentId = parentId, Date_change = DateTime.Now };
@@ -500,7 +493,7 @@ namespace WS.Business.Services
             List<DocumentViewModel> documents = new List<DocumentViewModel>();
             foreach (var doc in document)
             {
-                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc),false,IconForFile(doc)));
+                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc), IsShared(doc.Id), IconForFile(doc)));
             }
             return documents;
         }
