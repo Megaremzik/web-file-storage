@@ -69,16 +69,6 @@
 footer {
   bottom: 0; }
 
-/* Large Devices, Wide Screens */
-/* Medium Devices, Desktops */
-/* Small Devices, Tablets */
-@media only screen and (max-width: 767px) {
-  .accessRow1 {
-    padding-right: 15px; }
-  .accessRow2 {
-    padding-left: 15px; } }
-
-/* Extra Small Devices, Phones */
 .accessRow1 {
   padding-right: 0; }
 
@@ -194,7 +184,10 @@ footer {
   color: #fff;
   padding: 12px;
   background: #323232;
-  font-size: 16px; }
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 
 #download-processing-number {
   padding: 12px;
@@ -213,3 +206,14 @@ footer {
 
 #download-processing-header {
   position: relative; }
+
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .accessRow1 {
+    padding-right: 15px; }
+  .accessRow2 {
+    padding-left: 15px; } }
+
+/* Extra Small Devices, Phones */

@@ -1,13 +1,17 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentViewModel>
+<script src='~/lib/tablesort-gh-pages/tablesort.js'></script>
+
+<script src='~/lib/tablesort-gh-pages/sorts/tablesort.number.js'></script>
+<script src='~/lib/tablesort-gh-pages/sorts/tablesort.date.js'></script>
 <script>
     SetParentId(@ViewBag.ParentId);
 </script>
-    <table class="table filerow" id="filetable">
-        <thead><tr><th>Name</th><th>Size</th><th>Date of change</th><th>IsFile</th></tr></thead>
-        <tbody>
-            @for (int i = 0; i < Model.Count(); i++)
-            {
+<table class="table filerow" id="filetable">
+    <thead><tr><th>Name</th><th>Size</th><th>Date of change</th><th>IsFile</th></tr></thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
             <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
                 @*<td><img src=@Model.ElementAt(i).Type width="5" height="5" alt="Type" /></td>*@
                 @if (Model.ElementAt(i).IsShared)
@@ -23,6 +27,9 @@
                 <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
                 <td><span class="menuButton"><i class="fa fa-bars"></i></span></td>
             </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
+<script>
+    new Tablesort(document.getElementById('filetable'));
+</script>

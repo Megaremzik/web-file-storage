@@ -21,19 +21,31 @@ namespace WS.Business.Services
         private readonly IMapper mapper;
         private PathProvider pathprovider;
         private UserService _userService;
-        SharingService _sharingService;
         public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService)
         {
-           
             _userService = userService;
             mapper = map;
             repo = r;
             pathprovider = p;
         }
-
+        public void UpdateSharedDocumentList(ClaimsPrincipal user)
+        {
+            string userId = _userService.GetUserId(user);
+          
+        }
         public IEnumerable<DocumentView> GetAll(string id)
         {
             IEnumerable<Document> documents = repo.GetAll(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public IEnumerable<DocumentView> GetParentFolders(int id)
+        {
+            IEnumerable<Document> documents = repo.GetParentFolders(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public IEnumerable<DocumentView> GetAll()
+        {
+            IEnumerable<Document> documents = repo.GetAll();
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
         public bool IsShared(int documentId)
@@ -490,6 +502,10 @@ namespace WS.Business.Services
         }
         public IEnumerable<DocumentViewModel> ConvertToViewModel(IEnumerable<DocumentView> document)
         {
+            DocumentView a;
+            string b;
+            bool c;
+            string d;
             List<DocumentViewModel> documents = new List<DocumentViewModel>();
             foreach (var doc in document)
             {

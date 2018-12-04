@@ -123,8 +123,8 @@ function sendInvite(docId) {
             $('#accessLevelHeader').show();
             $('#closeLAccess').show();
 
-            var selectOptions = isEdit == "true" ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+            var selectOptions = isEdit == "true" ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                '<option value="false">View</option><option value="true">Edit</option>';
             $('.EmailsList').append('<li class="list-group-item">'
                 + email +
                 '<a href="#"  onclick="deleteUser(' +
@@ -162,8 +162,8 @@ function GetAllUser(docId) {
         success: function (data) {
             $('.EmailsList').children().remove();
             for (var i = 0; i < data.length; i++) {
-                var selectOptions = data[i].isEditable == true ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                    '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+                var selectOptions = data[i].isEditable == true ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                    '<option value="false">View</option><option value="true">Edit</option>';
                 $('.EmailsList').append('<li class="list-group-item">'
                     + data[i].guestEmail +
                     '<a href="#"  onclick="deleteUser(' +

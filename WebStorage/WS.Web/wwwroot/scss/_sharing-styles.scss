@@ -1,26 +1,4 @@
-﻿/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width : 767px) {
-    .accessRow1 {
-        padding-right: 15px;
-    }
-
-    .accessRow2 {
-        padding-left: 15px;
-    }
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
-}
-
+﻿
 
 .accessRow1 {
     padding-right: 0;
@@ -166,6 +144,9 @@
     padding: 12px;
     background: #323232;
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #download-processing-number {
@@ -187,3 +168,28 @@
 #download-processing-header {
     position: relative;
 }
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 767px) {
+    .accessRow1 {
+        padding-right: 15px;
+    }
+
+    .accessRow2 {
+        padding-left: 15px;
+    }
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+}
+
+
