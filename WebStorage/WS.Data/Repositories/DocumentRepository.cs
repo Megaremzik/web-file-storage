@@ -14,39 +14,10 @@ namespace WS.Data
 {
     public class DocumentRepository
     {
-        private DocumentLinkRepository _documentLinkRepository;
-        private UserDocumentRepository _userDocumentRepository;
         private ApplicationDbContext db;
-        public DocumentRepository(ApplicationDbContext context, DocumentLinkRepository documentLinkRepository, UserDocumentRepository userDocumentRepository)
+        public DocumentRepository(ApplicationDbContext context)
         {
-            _documentLinkRepository = documentLinkRepository;
-            _userDocumentRepository = userDocumentRepository;
             db = context;
-        }
-
-
-        public bool IsShared(int documentId)
-        {
-            return IsSharedEcactlyFile(documentId) || GetParentFolders(documentId).Any(n => IsSharedEcactlyFile(n.Id));
-        }
-        private bool IsSharedEcactlyFile(int documentId)
-        {
-            var docLink = _documentLinkRepository.Get(documentId);
-            var userDocs = _userDocumentRepository.GetAll().Where(n => n.DocumentId == documentId);
-            return docLink != null || userDocs.Count() != 0;
-        }
-        public ICollection<Document> GetParentFolders(int id)
-        {
-            var docs = new List<Document>();
-            var doc = Get(id);
-            int parentId = doc.ParentId;
-            while (parentId != 0)
-            {
-                doc = Get(parentId);
-                docs.Add(doc);
-                parentId = doc.ParentId;
-            }
-            return docs;
         }
         public IEnumerable<Document> GetAll()
         {
