@@ -8,6 +8,8 @@
 
     .dropzone-container {
         width: 90%;
+        margin-left:5px;
+        margin-right:5px;
     }
 
     .dropzone-drop-area {
@@ -31,8 +33,8 @@
         background-color: white;
         border: dashed 2px silver;
     }
-    tr.selected{
-        background-color: #95e9ee;
+    tr.selected {
+        background-color: #99CCFF;
     }
     #snackbar {
         visibility: hidden;
@@ -155,29 +157,32 @@
     };
 </script>
 <div class="row form-control-static">
-    <div class="form-group">
-        <div class="col-md-2">
-            <div class="btn-group-vertical">
-                <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
-                <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
-            </div>
+    <div class="col-md-12">
+        <div class="row">
+            <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
+            <form class="navbar-form navbar-left" action="/search/find" method="post">
+                <div class="input-group">
+                    <input type="text" name="pattern" id="pattern" class="form-control" oninput="SearchTop();" onfocus="SearchTop();" onblur="HideResults();" autocomplete="off" placeholder="Search">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+                <div class="result"></div>
+            </form>
         </div>
-    </div>
-    <div class="col-md-8">
-        <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
-                <div id="dropzone-drop-area" class="dropzone-drop-area" >
+                <div id="dropzone-drop-area" class="dropzone-drop-area">
                 </div>
                 <div id="dropzone-message-area" class="dz-message">
                 </div>
             </form>
         </div>
     </div>
-    <div class="col-md-2">
+    @*<div class="col-md-2">
         <div id="file-options">
         </div>
-    </div>
+    </div>*@
 </div>
 <div id="snackbar" class="dropzone-previews">
   

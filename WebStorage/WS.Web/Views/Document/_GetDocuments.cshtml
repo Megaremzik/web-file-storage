@@ -12,11 +12,11 @@
                 @*<td><img src=@Model.ElementAt(i).Type width="5" height="5" alt="Type" /></td>*@
                 @if (Model.ElementAt(i).IsShared)
                 {
-                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i>@Model.ElementAt(i).Document.Name<i class="fa fa-users fa-2x" aria-hidden="true"></i></td>
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name<i class="fa fa-users fa-lg" aria-hidden="true"></i></td>
                 }
                 else
                 {
-                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i>@Model.ElementAt(i).Document.Name</td>
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name</td>
                 }
                 <td class="table_file_size">@Model.ElementAt(i).Size</td>
                 <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
