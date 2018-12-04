@@ -45,6 +45,9 @@ table{
 .fa-file-archive {
     color: grey;
 }
+.btn-group-vertical{
+    font-size:18px;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

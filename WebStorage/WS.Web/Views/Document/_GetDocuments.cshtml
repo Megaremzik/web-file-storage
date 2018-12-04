@@ -21,7 +21,22 @@
                 <td class="table_file_size">@Model.ElementAt(i).Size</td>
                 <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
                 <td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>
-                <td><span class="menuButton"><i class="fa fa-bars"></i></span></td>
+                <td>
+                    <button class="btn btn-default dropdown-toggle menuButton" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fa fa-bars"></i>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li>Download</li>
+                        <li><a href="#">Share</a></li>
+                        <li><a href="#">View</a></li>
+                        <li onclick="">Rename</li>
+                        <li><a href="#">Cut</a></li>
+                        <li><a href="#">Copy</a></li>
+                        <li onclick="">Paste</li>
+                        <li><a href="#">Delete</a></li>
+                    </ul>
+                </td>
             </tr>
             }
         </tbody>

@@ -53,9 +53,9 @@
     </div>
     <div class="row">
         <ul class="nav nav-pills nav-stacked col-md-1">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">Profile</a></li>
-            <li role="presentation"><a href="#">Messages</a></li>
+            <li role="presentation" class="active">@Html.ActionLink("My documents","Index","Document")</li>
+            <li role="presentation">@Html.ActionLink("Shared documents", "Index", "Document")</li>
+            <li role="presentation">@Html.ActionLink("Deleted files", "DeletedFiles", "Document")</li>
         </ul>
         <div class="container-fluid body-content col-md-10">
             @RenderBody()
@@ -63,6 +63,7 @@
         <div class="col-md-1">
             <div class="btn-group-vertical">
                 <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
+                <br /><br />
                 <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
             </div>
         </div>

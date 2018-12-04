@@ -449,10 +449,10 @@ function DeleteDoc() {
 function ChooseFiles() {
     $('.dropzone').trigger('click');
 }
-function TriggerMenu() {
-    //$('.filerow').trigger("contextmenu");
-    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
-}
+//function TriggerMenu() {
+//    //$('.filerow').trigger("contextmenu");
+//    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
+//}
 function CreateFolder() {
     var id = GetParentId();
     $("#createModal #CreateParentId").val(id);
