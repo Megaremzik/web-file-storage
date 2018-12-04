@@ -69,7 +69,6 @@
 footer {
   bottom: 0; }
 
-.accessRow1 {
 /* Large Devices, Wide Screens */
 /* Medium Devices, Desktops */
 /* Small Devices, Tablets */
@@ -131,6 +130,18 @@ footer {
   -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75); }
 
+#pattern {
+  width: 100%; }
+
+#searching {
+  margin: 0 auto;
+  max-width: 400px;
+  margin-top: 20px; }
+
+.form-search {
+  width: 100%;
+  display: block; }
+
 .search-item {
   padding: 10px;
   background: #fff; }
@@ -167,3 +178,24 @@ footer {
   margin: 7px 13px 0 0;
   font-size: 24px;
   color: #ffcf49; }
+
+#download-processing-modal {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  -webkit-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  border-radius: 7px; }
+
+#download-processing-name {
+  color: #fff;
+  padding: 12px;
+  background: #323232;
+  font-size: 16px; }
+
+#download-processing-number {
+  padding: 12px;
+  font-size: 16px; }
