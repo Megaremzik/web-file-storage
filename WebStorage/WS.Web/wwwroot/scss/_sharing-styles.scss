@@ -128,7 +128,7 @@
 }
 
 #download-processing-modal {
-    display: none;
+    /*display: none;*/
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -136,7 +136,6 @@
     -webkit-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
     box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
-    border-radius: 7px;
 }
 
 #download-processing-name {
@@ -152,21 +151,23 @@
 #download-processing-number {
     padding: 12px;
     font-size: 16px;
+
 }
 
 #cencel-downloading {
     color: #fff;
     font-size: 30px;
-    display: inline-block;
     padding: 0;
     border: none;
-    float: right;
-    margin: 0 15px 0 0;
     background: #323232;
     outline: none;
+    position: absolute;
+    right:15px;
+    top: 2px;
 }
 #download-processing-header {
     position: relative;
+ 
 }
 
 /* Large Devices, Wide Screens */
