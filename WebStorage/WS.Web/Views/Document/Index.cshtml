@@ -3,7 +3,7 @@
 <style>
     #file-options {
         background-color: white;
-        font-size: 15px;
+        font-size:15px;
     }
 
     .dropzone-container {
@@ -23,19 +23,17 @@
         flex-wrap: wrap;
         cursor: pointer;
         position: relative;
-        overflow-y: auto;
-        max-height: 820px;
+        overflow-y:auto;
+        max-height:820px;
     }
 
-        .dropzone-drop-area.over {
-            background-color: white;
-            border: dashed 2px silver;
-        }
-
-    tr.selected {
+    .dropzone-drop-area.over {
+        background-color: white;
+        border: dashed 2px silver;
+    }
+    tr.selected{
         background-color: #95e9ee;
     }
-
     #snackbar {
         visibility: hidden;
         min-width: 250px;
@@ -50,7 +48,7 @@
         left: 50%;
         bottom: 30px;
         font-size: 17px;
-        max-height: 200px;
+        max-height:200px;
     }
 
         #snackbar.show {
@@ -91,7 +89,7 @@
         $('#renameModal').modal({ show: false });
         $('#myModal').modal({ show: false });
         $('#createModal').modal({ show: false });
-        $('#viewErrorModal').modal({ show: false });
+        $('#viewErrorModal').modal({ show: false });   
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
         $('#menuButton').on('click', function (e) {
@@ -142,23 +140,6 @@
                 }
                 data.append("parentId", GetParentId());
             });
-            this.on("drop", function () {
-                $("#download-processing-modal").show();
-            });
-            this.on("addedfile", function () {
-                window.ProcessingItems = window.ProcessingItems + 1;
-            });
-            this.on("processing", function (file) {
-                $("#current-downloading-item").html(file.name);
-                window.currentProcessingItem = window.currentProcessingItem + 1;
-                $("#download-processing-current").html(window.currentProcessingItem);
-                $("#download-processing-entire").html(window.ProcessingItems);
-            });
-            this.on("queuecomplete", function () {
-                $("#download-processing-modal").hide();
-                window.currentProcessingItem = 0;
-                window.ProcessingItems = 0;
-            });
             this.on("dropfile", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
@@ -167,23 +148,12 @@
             });
             this.on("queuecomplete", function (file) {
                 var x = document.getElementById("snackbar");
-                x.className = x.className.replace("show", "");
+                x.className = x.className.replace("show", ""); 
                 $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document")');
             });
         }
     };
 </script>
-<div id="searching">
-    <form class="form-search" action="/search/find" method="post">
-        <div class="input-group">
-            <input type="text" name="pattern" id="pattern" class="form-control" oninput="SearchTop();" onfocus="SearchTop();" onblur="HideResults();" autocomplete="off" placeholder="Search">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-            </span>
-        </div>
-        <div class="result"></div>
-    </form>
-</div>
 <div class="row form-control-static">
     <div class="form-group">
         <div class="col-md-2">
@@ -197,7 +167,7 @@
         <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
         <div class="dropzone-container" id="dropzone">
             <form action="/Document/UploadFiles" id="uploader" class="dropzone">
-                <div id="dropzone-drop-area" class="dropzone-drop-area">
+                <div id="dropzone-drop-area" class="dropzone-drop-area" >
                 </div>
                 <div id="dropzone-message-area" class="dz-message">
                 </div>
@@ -210,7 +180,7 @@
     </div>
 </div>
 <div id="snackbar" class="dropzone-previews">
-
+  
 </div>
 @{
     Html.RenderPartial("_Rename", new DocumentView());
@@ -219,7 +189,3 @@
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 
-<div id="download-processing-modal">
-    <div id="download-processing-name">Downloading <span id="current-downloading-item"></span></div>
-    <div id="download-processing-number">Processing <span id="download-processing-current"></span> from <span id="download-processing-entire"></span></div>
-</div>

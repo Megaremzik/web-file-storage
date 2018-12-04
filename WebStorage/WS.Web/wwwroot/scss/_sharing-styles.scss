@@ -88,20 +88,8 @@
     box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
 }
 
-#pattern {
-    width: 100%;
-}
-
-#searching {
-    margin: 0 auto;
-    max-width: 400px;
-    margin-top: 20px;
-}
-.form-search{
-    width:100%;
-    display: block;
-}
 .search-item {
+   
     padding: 10px;
     background: #fff;
 
@@ -111,12 +99,10 @@
         cursor: pointer;
     }
 }
-
 .search-error {
     padding: 10px;
     background: #fff;
 }
-
 .folder-path {
     color: #7b8994;
     font-size: 12px;
@@ -126,7 +112,6 @@
     margin: 0;
     padding: 0;
 }
-
 .file-name {
     white-space: nowrap;
     overflow: hidden;
@@ -134,7 +119,6 @@
     margin: 0;
     padding: 0;
 }
-
 .file-icon {
     margin: 3px 6px 0 0;
     font-size: 30px;
@@ -145,29 +129,4 @@
     margin: 7px 13px 0 0;
     font-size: 24px;
     color: #ffcf49;
-}
-
-#download-processing-modal {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 400px;
-    -webkit-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
-    -moz-box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
-    box-shadow: 6px 6px 22px -4px rgba(0,0,0,0.75);
-    border-radius: 7px;
-}
-
-#download-processing-name {
-    color: #fff;
-    padding: 12px;
-    background: #323232;
-    font-size: 16px;
-}
-
-#download-processing-number {
-    padding: 12px;
-    font-size: 16px;
-   
 }
