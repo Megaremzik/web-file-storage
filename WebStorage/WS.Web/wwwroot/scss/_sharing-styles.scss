@@ -97,10 +97,12 @@
     max-width: 400px;
     margin-top: 20px;
 }
-.form-search{
-    width:100%;
+
+.form-search {
+    width: 100%;
     display: block;
 }
+
 .search-item {
     padding: 10px;
     background: #fff;
@@ -169,5 +171,19 @@
 #download-processing-number {
     padding: 12px;
     font-size: 16px;
-   
+}
+
+#cencel-downloading {
+    color: #fff;
+    font-size: 30px;
+    display: inline-block;
+    padding: 0;
+    border: none;
+    float: right;
+    margin: 0 15px 0 0;
+    background: #323232;
+    outline: none;
+}
+#download-processing-header {
+    position: relative;
 }

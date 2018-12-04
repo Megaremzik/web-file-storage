@@ -136,6 +136,12 @@
         previewsContainer: ".dropzone-previews",
         autoProcessQueue: true,
         init: function () {
+            var _thiss = this;
+            // Setup the observer for the button.
+            $("#cencel-downloading").on("click", function () {
+                // Using "_this" here, because "this" doesn't point to the dropzone anymore
+                _thiss.removeAllFiles(true);
+            });
             this.on("sending", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
@@ -220,6 +226,9 @@
 }
 
 <div id="download-processing-modal">
-    <div id="download-processing-name">Downloading <span id="current-downloading-item"></span></div>
+    <div id="download-processing-header">
+        <button id="cencel-downloading">&times;</button>
+        <div id="download-processing-name">Downloading<span id="current-downloading-item"></span></div>
+    </div>
     <div id="download-processing-number">Processing <span id="download-processing-current"></span> from <span id="download-processing-entire"></span></div>
 </div>
