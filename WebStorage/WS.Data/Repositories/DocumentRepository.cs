@@ -27,7 +27,8 @@ namespace WS.Data
 
         public bool IsShared(int documentId)
         {
-            return IsSharedEcactlyFile(documentId) || GetParentFolders(documentId).Any(n => IsSharedEcactlyFile(n.Id));
+            return false;
+            //return IsSharedEcactlyFile(documentId) || GetParentFolders(documentId).Any(n => IsSharedEcactlyFile(n.Id));
         }
         private bool IsSharedEcactlyFile(int documentId)
         {
