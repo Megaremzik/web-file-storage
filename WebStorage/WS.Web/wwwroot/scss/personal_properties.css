@@ -120,18 +120,6 @@ footer {
   -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75); }
 
-#pattern {
-  width: 100%; }
-
-#searching {
-  margin: 0 auto;
-  max-width: 400px;
-  margin-top: 20px; }
-
-.form-search {
-  width: 100%;
-  display: block; }
-
 .search-item {
   padding: 10px;
   background: #fff; }
@@ -206,8 +194,28 @@ footer {
 #download-processing-header {
   position: relative; }
 
+#filetable td:nth-child(1) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
 /* Large Devices, Wide Screens */
 /* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+  #dateTimeColumn {
+    display: none; }
+  #filetable td:nth-child(3) {
+    display: none; }
+  #filetable td:nth-child(1) {
+    max-width: 150px; }
+  body {
+    padding-left: 5px;
+    padding-right: 5px; }
+  #dropzone {
+    margin-right: 0;
+    margin-left: 0;
+    margin: auto; } }
+
 /* Small Devices, Tablets */
 @media only screen and (max-width: 767px) {
   .accessRow1 {

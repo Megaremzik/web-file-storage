@@ -1,6 +1,6 @@
 ﻿@using WS.Business.ViewModels;
-
-<div id="myModal" class="modal fade" role="dialog">
+@model DocumentView
+<div id="shareModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -10,6 +10,7 @@
                     <div class="col-sm-5">
                         <h4 class="modal-title">Sharing settings</h4>
                     </div>
+                    @Html.EditorFor(Model => Model.Id, new { htmlAttributes = new { @type = "hidden", @id = "SharingId" } })
                     <div class="col-sm-7">
                         <button class="pull-right btn btn-default" id="closePAccess" onclick="closePublicAccess(@Model.Id);">Disable access by link</button>
                         <button class="pull-right btn btn-default" id="openPAccess" onclick="openPublicAccess(@Model.Id);">Enable access by link</button>

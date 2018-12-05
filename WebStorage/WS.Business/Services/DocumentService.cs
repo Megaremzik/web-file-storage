@@ -85,19 +85,6 @@ namespace WS.Business.Services
             Document document = repo.Get(id);
             return document;
         }
-        public ICollection<DocumentView> GetParentFolders(int id)
-        {
-            var docs = new List<DocumentView>();
-            var doc = Get(id);
-            int parentId = doc.ParentId;
-            while (parentId != 0)
-            {
-                doc = Get(parentId);
-                docs.Add(doc);
-                parentId = doc.ParentId;
-            }
-            return docs;
-        }
         public void Create(IFormFile file, string userId, int parentId = 0)
         {
             Document doc = new Document { IsFile = true, Size = (int)file.Length, Name = file.FileName, Extention = file.ContentType, UserId = userId, ParentId = parentId, Date_change = DateTime.Now };

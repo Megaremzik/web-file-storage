@@ -73,8 +73,8 @@ function GoBack() {
 
 
 
-function GetLinks(docId) {
-
+function GetLinks() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/GetPublicAccessLink',
@@ -85,6 +85,8 @@ function GetLinks(docId) {
             if (data.link == "") {
                 $('#publicLink').hide();
                 $('#closePAccess').hide();
+                $('#openPAccess').show();
+                
             }
             else {
                 $('#openPAccess').hide();
@@ -92,6 +94,8 @@ function GetLinks(docId) {
                     $('#sel1').get(0).selectedIndex = 1;
 
                 }
+                $('#closePAccess').show();
+                $('#publicLink').show();
                 $('#openPAccess').hide();
                 $('#pl').val(data.link);
                 $('#pl').select();
@@ -106,7 +110,8 @@ function CopyToClipboard() {
     document.execCommand("copy");
 }
 
-function sendInvite(docId) {
+function sendInvite() {
+    var docId = document.getElementById("SharingId").value
     var email = $("#privateEmail").val();
     $("#privateEmail").val("");
     var isEdit = $('#sel3').val();
@@ -136,7 +141,8 @@ function sendInvite(docId) {
         }
     })
 }
-function updateAccessForUser(docId, email, tagIsEdit) {
+function updateAccessForUser(docIdd, email, tagIsEdit) {
+    var docId = document.getElementById("SharingId").value
     var isEdit = $(tagIsEdit).val();
     $.ajax({
         method: 'GET',
@@ -152,7 +158,8 @@ function updateAccessForUser(docId, email, tagIsEdit) {
     })
 }
 
-function GetAllUser(docId) {
+function GetAllUser() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/GetAllUsersForSharedDocument',
@@ -180,8 +187,8 @@ function GetAllUser(docId) {
         }
     })
 }
-function openPublicAccess(docId) {
-
+function openPublicAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/OpenPublicAccess',
@@ -200,8 +207,9 @@ function openPublicAccess(docId) {
     })
 }
 
-function changeAccessLevel(docId) {
+function changeAccessLevel() {
     var isEdit = $('#sel1').val();
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/OpenPublicAccess',
@@ -219,8 +227,8 @@ function changeAccessLevel(docId) {
     })
 }
 
-function closePublicAccess(docId) {
-
+function closePublicAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/ClosePublicAccess',
@@ -237,7 +245,8 @@ function closePublicAccess(docId) {
     })
 }
 
-function deleteUser(docId, user, tag) {
+function deleteUser(docIds, user, tag) {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/DeleteAccessForUser',
@@ -255,7 +264,8 @@ function deleteUser(docId, user, tag) {
     })
 }
 
-function closeLimitedAccess(docId) {
+function closeLimitedAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/CloseLimitedAccess',
@@ -317,8 +327,9 @@ function ContextResult(action, id) {
         Download(id);
     }
     else if (action == "share") {
+        $("#shareModal #SharingId").val(id);
         GetLinks(id);
-        $('#myModal').modal('show');
+        $('#shareModal').modal('show');
     }
     else if (action == "view") {
         ViewFile(id);

@@ -16,9 +16,14 @@ namespace WS.Data
     {
         private ApplicationDbContext db;
         private List<int> _sharedDocumentsId = null;
+        private DocumentLinkRepository _documentLinkRepository;
+        private UserDocumentRepository _userDocumentRepository;
         public DocumentRepository(ApplicationDbContext context, DocumentLinkRepository documentLinkRepository, UserDocumentRepository userDocumentRepository)
         {
             db = context;
+         
+            _documentLinkRepository = documentLinkRepository;
+           _userDocumentRepository = userDocumentRepository;
             UpdateSharedDocumentList();
         }
         public void UpdateSharedDocumentList()

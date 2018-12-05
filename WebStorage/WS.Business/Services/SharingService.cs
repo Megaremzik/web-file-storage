@@ -175,16 +175,7 @@ namespace WS.Business.Services
             _documentService.UpdateSharedDocumentList(owner);
             return guid;
         }
-        public bool IsShared(int documentId)
-        {
-            return IsSharedEcactlyFile(documentId) || _documentService.GetParentFolders(documentId).Any(n => IsSharedEcactlyFile(n.Id));
-        }
-        private bool IsSharedEcactlyFile(int documentId)
-        {
-            var docLink = _documentLinkService.Get(documentId);
-            var userDocs = _userDocumentService.GetAll().Where(n => n.DocumentId == documentId);
-            return docLink != null || userDocs.Count() != 0;
-        }
+
         public void RemoveAccessForUser(int documentId, ClaimsPrincipal owner, string guestName)
         {
             if (!_documentService.IsDocumentExist(documentId))

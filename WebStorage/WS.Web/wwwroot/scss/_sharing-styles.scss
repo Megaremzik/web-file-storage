@@ -151,15 +151,39 @@
     position: relative;
  
 }
-
+#filetable td:nth-child(1) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
-}
+    #dateTimeColumn {
+        display: none;
+    }
 
+    #filetable td:nth-child(3) {
+        display: none;
+    }
+
+    #filetable td:nth-child(1) {
+       max-width:150px;
+    }
+    body {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+#dropzone{
+    
+    margin-right: 0px;
+    margin-left: 0px;
+    margin: auto;
+
+}
 /* Small Devices, Tablets */
 @media only screen and (max-width : 767px) {
     .accessRow1 {
