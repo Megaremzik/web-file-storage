@@ -169,6 +169,23 @@ namespace WS.Web.Controllers
             return Json(result);
         }
 
+        public JsonResult Restore(int id)
+        {
+            bool result = true;
+            var path = _service.GetFilePath(id);
+            var doc = _service.Get(id);
+            var docPath = Path.Combine(_pathProvider.GetRootPath(), doc.UserId, path);
+            if (doc.IsFile && System.IO.File.Exists(docPath))
+            {
+                result = false;
+            }
+            else
+            {
+                _service.FirstRestore(id);
+            }
+            return Json(result);
+        }
+
         public IActionResult ViewFile(int id)
         {
             var doc = _service.Get(id);

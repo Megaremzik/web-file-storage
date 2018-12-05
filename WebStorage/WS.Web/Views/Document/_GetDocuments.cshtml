@@ -8,7 +8,7 @@
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-            <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
+            <tr class="filerow" id="@Model.ElementAt(i).Document.Id" name="@Convert.ToString(" \"" + Model.ElementAt(i).Document.Name + "\" ")" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
                 @*<td><img src=@Model.ElementAt(i).Type width="5" height="5" alt="Type" /></td>*@
                 @if (Model.ElementAt(i).IsShared)
                 {

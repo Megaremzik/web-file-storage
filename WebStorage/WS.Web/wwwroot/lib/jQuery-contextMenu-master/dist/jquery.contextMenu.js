@@ -1,5 +1,6 @@
 /**
- * jQuery contextMenu v2.7.0 - Plugin for simple contextMenu handling
+ * jQuery 
+ * v2.7.0 - Plugin for simple contextMenu handling
  *
  * Version: v2.7.0
  *

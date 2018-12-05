@@ -11,6 +11,7 @@ function ShowFileOptions(doc) {
     $('.filerow').removeClass('selected'); // "Unselect" all the rows
     $('#'+doc).addClass('selected'); // Select the one clicked
 
+
     $.ajax({
         type: "Post",
         url: '/Document/FileOptions',
@@ -276,11 +277,11 @@ function SetParentId(id) {
     }
     sessionStorage.setItem("parentId", id)
 }
-function ContextResult(action, id) {
-    if (action == "delete") {
-        Url.Action("Delete", "Document", id);
-    }
-    else if (action == "copy") {
+function ContextResult(action, id, name) {
+    //if (action == "delete") {
+    //    Url.Action("Delete", "Document", id);
+    //}
+    if(action == "copy") {
         sessionStorage.setItem("copy", id);
         sessionStorage.setItem("type", "copy");
     }
@@ -321,6 +322,9 @@ function ContextResult(action, id) {
     }
     else if (action == "view") {
         ViewFile(id);
+    }
+    else if (action == "delete") {
+        ConfirmDelete(name, id)
     }
 }
 function Rename() {
@@ -389,14 +393,10 @@ function ConfirmReset() {
     });
 }
 
-function ConfirmDelete(name, isFile) {
-    if (isFile === 1) {
-        $(".modal-title").text("Удалить файл?")
-    }
-    else {
-        $(".modal-title").text("Удалить папку?")
-    }
-    $("#deleteMessege").text("Действительно удалить " + name + " из Foxbox?");
+function ConfirmDelete(name, id) {
+    $(".modal-title").text("Delete document?")
+    $("#hiddenTaskId").val(id);
+    $("#deleteMessege").text("Delete document " + name + " from Foxbox?");
     $("#deleteModal").modal("show");
 }
 
@@ -409,6 +409,28 @@ function FinalConfirmDelete(name, isFile) {
     }
     $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
     $("#finalDeleteModal").modal("show");
+}
+
+function Restore(name, isFile) {
+    $("#restoreModal").modal("show");
+}
+
+function RestoreDoc() {
+    var id = $("#hiddenTaskId").val();
+    $.ajax({
+        type: "POST",
+        url: "/Document/Restore",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#restoreModal").modal("hide");
+                $("#" + id).remove();
+            }
+            else {
+                $("#restoreModal").modal("hide");
+            }
+        }
+    })
 }
 
 function FinalDeleteDoc() {

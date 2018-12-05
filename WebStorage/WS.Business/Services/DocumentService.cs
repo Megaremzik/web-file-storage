@@ -141,7 +141,16 @@ namespace WS.Business.Services
                 var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
                 var extension = doc.Name.Split('.');
                 var time = doc.Date_change.GetHashCode() + "." + extension[extension.Length-1];
-                var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetNewFilePath(id, time));
+                var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, "bin", GetNewFilePath(id, time));
+
+                var splitParh = finishpath.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                string createDirectory = "";
+                for (int q=0; q < splitParh.Length - 1; q++)
+                {
+                    createDirectory += splitParh[q] + "\\";
+                }
+                Directory.CreateDirectory(createDirectory);
+
                 File.Move(startpath, finishpath);
             }
 
@@ -149,10 +158,34 @@ namespace WS.Business.Services
         public void RenameFolderInFileSysytem(int id)
         {
             var doc = repo.Get(id);
-            var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+            var filetpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetFilePath(id));
+
+            if (Directory.Exists(filetpath))
+                {
+                    try
+                    {
+                        Directory.Delete(filetpath);
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                    }
+                }
+
+            var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, "bin", GetNewFolderFilePath(id));
             var time = doc.Date_change.GetHashCode().ToString();
-            var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, GetNewFilePath(id, time));
+            var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, "bin", GetNewFilePath(id, time));
             Directory.Move(startpath, finishpath);
+        }
+
+        public string GetNewFolderFilePath(int id)
+        {
+            string path = "";
+            int parentId = id;
+            do
+            {
+                path = Path.Combine(GetParentFolder(ref parentId), path);
+            } while (parentId != 0 && GetExactlyDocument(parentId).Type_change == "Delete");
+            return path;
         }
 
         public string GetNewFilePath(int id, string time)
@@ -161,7 +194,7 @@ namespace WS.Business.Services
             int parentId = id;
             path = Path.Combine(Convert.ToString(parentId + " " + time), path);
             GetParentFolder(ref parentId);
-            while (parentId != 0)
+            while (parentId != 0 && GetExactlyDocument(parentId).Type_change=="Delete")
             {
                 path = Path.Combine(GetParentFolder(ref parentId), path);
             }
@@ -186,9 +219,7 @@ namespace WS.Business.Services
 
         public void FirstStepDelete(int? id)
         {
-            Document document = GetExactlyDocument(id);
-            if (document.IsFile == true)
-                document = FindVirtualParent(Convert.ToInt32(id));
+            var document = FindVirtualParent(Convert.ToInt32(id));
             Delete(document.Id);
         }
 
@@ -197,7 +228,7 @@ namespace WS.Business.Services
             Document document = GetExactlyDocument(id);
             if (document.IsFile == true)
             {
-                var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
+                var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, "bin", GetNewFilePath(Convert.ToInt32(id)));
                 if (File.Exists(filetpath))
                 {
                     try
@@ -229,28 +260,28 @@ namespace WS.Business.Services
                 Delete(doc.Id);
             }
             documents = repo.GetAllChildren(id);
+            var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, "bin", GetNewFilePath(Convert.ToInt32(id)));
+            if (Directory.Exists(filetpath))
+            {
+                try
+                {
+                    Directory.Delete(filetpath);
+                }
+                catch (System.IO.IOException e)
+                {
+                }
+            }
             if (documents.Count() == 0)
             {
-                var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
-                if (File.Exists(filetpath))
-                {
-                    try
-                    {
-                        File.Delete(filetpath);
-                    }
-                    catch (System.IO.IOException e)
-                    {
-                    }
-                }
                 repo.Delete(id);
             }
             else
             {
-                var startpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32( id)));
+                //var startpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32( id)));
                 document.Date_change = documents.First().Date_change;
                 document.Type_change = "SaveForFile";
-                var finishpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
-                Directory.Move(startpath, finishpath);
+                //var finishpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, GetNewFilePath(Convert.ToInt32(id)));
+                //Directory.Move(startpath, finishpath);
                 repo.Update(document);
             }
         }
@@ -259,19 +290,14 @@ namespace WS.Business.Services
         {
             var doc = repo.Get(id);
             id = doc.ParentId;
-            if (doc.Type_change != "Delete" && doc.Type_change != "SaveForFile")
-                return doc.Name;
+            if (!doc.IsFile)
+            {
+                return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString());
+            }
             else
             {
-                if (!doc.IsFile)
-                {
-                    return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString());
-                }
-                else
-                {
-                    var extension = doc.Name.Split('.');
-                    return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString() + "." + extension[extension.Length - 1]) ;
-                }
+                var extension = doc.Name.Split('.');
+                return Convert.ToString(doc.Id + " " + doc.Date_change.GetHashCode().ToString() + "." + extension[extension.Length - 1]);
             }
         }
 
@@ -279,11 +305,14 @@ namespace WS.Business.Services
         {
             string path = "";
             int parentId = id;
-            path = Path.Combine(GetNewParentFolder(ref parentId), path);
-            while (parentId != 0)
+            do
             {
+                var child = parentId;
                 path = Path.Combine(GetNewParentFolder(ref parentId), path);
-            }
+                if (parentId == 0 || GetExactlyDocument(parentId).Date_change != GetExactlyDocument(child).Date_change)
+                    break;
+            } while (parentId != 0 && GetExactlyDocument(parentId).Type_change == "Delete");
+
             return path;
         }
 
@@ -320,6 +349,56 @@ namespace WS.Business.Services
             }
             return parentId;
         }
+
+        public void FirstRestore(int id) {
+            var path = GetFilePath(id);
+            var document = GetExactlyDocument(id);
+            if (document.IsFile)
+            {
+                pathprovider.AddFoldersWhenCopyFile(path, document.UserId);
+                UpdateVirtualParent(id, DateTime.Now);
+            }
+            Restore(id);
+        }
+
+        public void Restore(int id)
+        {
+            var path = GetFilePath(id);
+            var document = GetExactlyDocument(id);
+            var newPath = Path.Combine(pathprovider.GetRootPath(), document.UserId, path);
+            var oldpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, "bin", GetNewFilePath(Convert.ToInt32(id)));
+
+            if (document.IsFile)
+            {
+                File.Move(oldpath, newPath);
+                document.Date_change = DateTime.Now;
+                document.Type_change = "Restore";
+                repo.Update(document);
+            }
+
+        }
+
+        public void UpdateVirtualParent(int id, DateTime date)
+        {
+            int parentId = id;
+            Document doc;
+            do
+            {
+                doc = repo.Get(parentId);
+                if (doc.ParentId == 0 || repo.Get(doc.ParentId).Type_change != "SaveForFile")
+                    break;
+                else
+                {
+                    parentId = doc.ParentId;
+                    doc = GetExactlyDocument(parentId);
+                    doc.Type_change = "Restore";
+                    doc.Date_change = date;
+                    repo.Update(doc);
+                }
+
+            } while (true);
+        }
+
         public void UpdateParentId(int id, int parentId, string startPath = "")
         {
             var path = GetFilePath(id);
