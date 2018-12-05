@@ -423,11 +423,10 @@ function RestoreDoc() {
         data: { id: id },
         success: function (result) {
             if (result) {
-                $("#restoreModal").modal("hide");
                 $("#" + id).remove();
             }
             else {
-                $("#restoreModal").modal("hide");
+                $("#restoreModal").modal("show");
             }
         }
     })

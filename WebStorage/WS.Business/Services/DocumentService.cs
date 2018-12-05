@@ -353,11 +353,9 @@ namespace WS.Business.Services
         public void FirstRestore(int id) {
             var path = GetFilePath(id);
             var document = GetExactlyDocument(id);
-            if (document.IsFile)
-            {
-                pathprovider.AddFoldersWhenCopyFile(path, document.UserId);
-                UpdateVirtualParent(id, DateTime.Now);
-            }
+            pathprovider.AddFoldersWhenCopyFile(path, document.UserId);
+            UpdateVirtualParent(id, DateTime.Now);
+
             Restore(id);
         }
 
@@ -375,7 +373,39 @@ namespace WS.Business.Services
                 document.Type_change = "Restore";
                 repo.Update(document);
             }
+            else
+            {
+                RestoreFolder(id);
+            }
 
+        }
+
+        public void RestoreFolder(int id)
+        {
+            var path = GetFilePath(id);
+            var document = GetExactlyDocument(id);
+            var newPath = Path.Combine(pathprovider.GetRootPath(), document.UserId, path);
+            Directory.CreateDirectory(newPath);
+            var documents = repo.GetAllChildrenDeletedWithIt(id);
+            foreach (var item in documents)
+            {
+                Restore(item.Id);
+            }
+            var filetpath = Path.Combine(pathprovider.GetRootPath(), document.UserId, "bin", GetNewFilePath(Convert.ToInt32(id)));
+            if (Directory.Exists(filetpath))
+            {
+                try
+                {
+                    Directory.Delete(filetpath);
+                }
+                catch (System.IO.IOException e)
+                {
+                }
+            }
+            //impotant
+            document.Date_change = DateTime.Now;
+            document.Type_change = "Restore";
+            repo.Update(document);
         }
 
         public void UpdateVirtualParent(int id, DateTime date)
@@ -385,9 +415,9 @@ namespace WS.Business.Services
             do
             {
                 doc = repo.Get(parentId);
-                if (doc.ParentId == 0 || repo.Get(doc.ParentId).Type_change != "SaveForFile")
+                if (doc.ParentId == 0 )
                     break;
-                else
+                else if (repo.Get(doc.ParentId).Type_change == "SaveForFile")
                 {
                     parentId = doc.ParentId;
                     doc = GetExactlyDocument(parentId);
@@ -395,6 +425,12 @@ namespace WS.Business.Services
                     doc.Date_change = date;
                     repo.Update(doc);
                 }
+                //else
+                //{
+                //    parentId = doc.ParentId;
+                //    doc = GetExactlyDocument(parentId);
+                //    repo.Create(doc);
+                //}
 
             } while (true);
         }
@@ -647,6 +683,11 @@ namespace WS.Business.Services
                     parentId = doc.ParentId;
 
             } while (true);
+        }
+        public IEnumerable<DocumentView> GetAllDeletedWithIt(int? id)
+        {
+            IEnumerable<Document> documents = repo.GetAllDeletedWithIt(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
     }
 }

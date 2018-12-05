@@ -175,14 +175,42 @@ namespace WS.Web.Controllers
             var path = _service.GetFilePath(id);
             var doc = _service.Get(id);
             var docPath = Path.Combine(_pathProvider.GetRootPath(), doc.UserId, path);
-            if (doc.IsFile && System.IO.File.Exists(docPath))
+
+            List<DocumentView> repetedDcocs = new List<DocumentView>();
+
+            if (doc.IsFile)
             {
-                result = false;
+                if (System.IO.File.Exists(docPath))
+                {
+                    result = false;
+                    repetedDcocs.Add(doc);
+                }
+                    
+                else
+                    _service.FirstRestore(id);
             }
             else
             {
-                _service.FirstRestore(id);
+                var documents = _service.GetAllDeletedWithIt(id);
+
+                foreach (var document in documents)
+                {
+                    if (document.IsFile)
+                    {
+                        if (System.IO.File.Exists(Path.Combine(_pathProvider.GetRootPath(), document.UserId, _service.GetFilePath(document.Id))))
+                        {
+                            result = false;
+                            repetedDcocs.Add(document);
+                        }
+                    }
+                }
+                if (repetedDcocs.Count == 0)
+                    _service.FirstRestore(id);
             }
+            if (repetedDcocs.Count == 0)
+                ViewBag.RepetedFiles = null;
+            else
+                ViewBag.RepetedFiles = repetedDcocs;
             return Json(result);
         }
 
