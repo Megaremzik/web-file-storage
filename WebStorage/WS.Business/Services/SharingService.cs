@@ -78,7 +78,6 @@ namespace WS.Business.Services
             }
             string guid = Guid.NewGuid().ToString();
             _documentLinkService.Create(new DocumentLinkView { Id = documentId, IsEditable = isEditable, Link = guid });
-            _documentService.UpdateSharedDocumentList(user);
             return guid;
         }
 
@@ -110,7 +109,6 @@ namespace WS.Business.Services
             {
                 _documentLinkService.Delete(documentId);
             }
-            _documentService.UpdateSharedDocumentList(user);
         }
 
         public DocumentView GetPublicSharedDocument(string guid, ClaimsPrincipal user, out bool isEditable)
@@ -172,7 +170,6 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = guid, GuestEmail = guestEmail, IsEditable = isEditable });
             }
-            _documentService.UpdateSharedDocumentList(owner);
             return guid;
         }
 
@@ -191,7 +188,6 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(guestName, documentId);
             }
-            _documentService.UpdateSharedDocumentList(owner);
         }
         public void CloseLimitedAccesToFileEntire(int documentId, ClaimsPrincipal user)
         {
@@ -206,7 +202,6 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
-            _documentService.UpdateSharedDocumentList(user);
         }
     }
 }
