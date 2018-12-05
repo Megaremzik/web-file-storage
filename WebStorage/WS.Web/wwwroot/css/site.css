@@ -46,6 +46,7 @@ table{
     color: grey;
 }
 .btn-group-vertical{
+    padding-top: 30px;
     font-size:18px;
 }
 /* Hide/rearrange for smaller screens */

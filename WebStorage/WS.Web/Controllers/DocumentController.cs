@@ -43,7 +43,10 @@ namespace WS.Web.Controllers
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<DocumentViewModel> documents;
-            if (parentId != 0) documents = _service.ConvertToViewModel(_service.GetAllChildrenWithoutDeleted(parentId));
+            if (parentId != 0) {
+                if (_service.IsYourFile(parentId, userId)) documents = _service.ConvertToViewModel(_service.GetAllChildrenWithoutDeleted(parentId));
+                else return RedirectToAction("Index");
+            } 
             else documents = _service.ConvertToViewModel(_service.GetAllRootElementsWithoutDeleted(userId));
             ViewBag.ParentId = parentId;
             return PartialView("_GetDocuments",documents);

@@ -8,13 +8,13 @@
 
     .dropzone-container {
         width: 90%;
-        margin-left:5px;
-        margin-right:5px;
+        margin-left: 15px;
+        margin-right: 5px;
     }
 
     .dropzone-drop-area {
         background-color: white;
-        width: 90%;
+        width: 100%;
         min-height: 350px;
         box-sizing: border-box;
         padding: 2px;
@@ -157,7 +157,7 @@
     };
 </script>
 <div class="row form-control-static">
-    <div class="col-md-12">
+    <div class="col-md-11">
         <div class="row">
             <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
             <form class="navbar-form navbar-left" action="/search/find" method="post">
@@ -179,10 +179,17 @@
             </form>
         </div>
     </div>
-    @*<div class="col-md-2">
-        <div id="file-options">
+    <div class="col-md-1">
+        <div class="btn-group-vertical">
+            <input type="submit" class="btn btn-primary" id="uploadFilesButton" onclick="ChooseFiles()" value="Upload" />
+            <br />
+            <input type="submit" class="btn btn-primary" id="createfolderButton" onclick="CreateFolder()" value="Create folder" />
         </div>
-    </div>*@
+    </div>
+    @*<div class="col-md-2">
+            <div id="file-options">
+            </div>
+        </div>*@
 </div>
 <div id="snackbar" class="dropzone-previews">
   

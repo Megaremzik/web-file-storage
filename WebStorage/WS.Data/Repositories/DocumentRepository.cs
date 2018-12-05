@@ -105,5 +105,10 @@ namespace WS.Data
 
             return documents;
         }
+        public bool IsYourFile(int id, string userId)
+        {
+            var document = db.Document.FirstOrDefault(d => d.Id == id);
+            return document.UserId == userId;
+        }
     }
 }

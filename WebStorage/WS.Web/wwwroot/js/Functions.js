@@ -531,3 +531,7 @@ function HideResults() {
 function StoreUserToSession() {
     sessionStorage.setItem("user", document.getElementById("email").value)
 }
+$(".nav-left_pan").click(function () {
+    $('.nav-left_pan').removeClass('active'); // "Unselect" all the rows
+    $(this).addClass('active'); // Select the one clicked
+});

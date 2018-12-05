@@ -569,5 +569,9 @@ namespace WS.Business.Services
 
             } while (true);
         }
+        public bool IsYourFile(int id,string userId)
+        {
+            return repo.IsYourFile(id, userId);
+        }
     }
 }
