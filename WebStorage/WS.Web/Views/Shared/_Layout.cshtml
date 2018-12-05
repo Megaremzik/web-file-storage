@@ -44,7 +44,17 @@
         <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://unpkg.com/popper.js"></script>
     </environment>
+    <script>
+        $(document).ready(function () {
+            $('.nav-left_pan').removeClass('active');
+            var activeNav = sessionStorage.getItem("navNumber");
+            if (activeNav == "2") $("#nav-left-2").addClass('active');
+            else if (activeNav == "3") $("#nav-left-3").addClass('active');
+            else $("#nav-left-1").addClass('active');
+        })
+    </script>
     @RenderSection("Scripts", required: false)
 </head>
 <body>
@@ -53,9 +63,9 @@
     </div>
     <div class="row">
         <ul class="nav nav-pills nav-stacked col-md-1">
-            <li role="presentation" class="nav-left_pan active">@Html.ActionLink("My documents","Index","Document")</li>
-            <li role="presentation"class="nav-left_pan">@Html.ActionLink("Shared documents", "Index", "Document")</li>
-            <li role="presentation"class="nav-left_pan">@Html.ActionLink("Deleted files", "DeletedFiles", "Document")</li>
+            <li id="nav-left-1" class="nav-left_pan active" onclick="SetNumber(1)">@Html.ActionLink("My documents","Index","Document")</li>
+            <li id="nav-left-2" class="nav-left_pan" onclick="SetNumber(2)">@Html.ActionLink("Shared documents", "Index", "Document")</li>
+            <li id="nav-left-3" class="nav-left_pan" onclick="SetNumber(3)">@Html.ActionLink("Deleted files", "DeletedFiles", "Document")</li>
         </ul>
         <div class="container-fluid body-content col-md-11">
             @RenderBody()

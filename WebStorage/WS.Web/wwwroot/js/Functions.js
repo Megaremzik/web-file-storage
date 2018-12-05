@@ -317,6 +317,7 @@ function ContextResult(action, id) {
         Download(id);
     }
     else if (action == "share") {
+        GetLinks(id);
         $('#myModal').modal('show');
     }
     else if (action == "view") {
@@ -342,7 +343,7 @@ function Rename() {
 function ViewFile(id) {
     var row = document.getElementById(id);
     var name = row.children[0].textContent;
-    var isfile = row.children[3].textContent;
+    var isfile = row.value;
     if (isfile == "True") {
         var extention = name.split('.');
         if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
@@ -531,7 +532,9 @@ function HideResults() {
 function StoreUserToSession() {
     sessionStorage.setItem("user", document.getElementById("email").value)
 }
-$(".nav-left_pan").click(function () {
-    $('.nav-left_pan').removeClass('active'); // "Unselect" all the rows
-    $(this).addClass('active'); // Select the one clicked
-});
+//$(".nav-left_pan").click(function () {
+//    sessionStorage.setItem("navNumber",$(this).value)
+//});
+function SetNumber(number) {
+    sessionStorage.setItem("navNumber", number)
+}
