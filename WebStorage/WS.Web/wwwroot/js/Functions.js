@@ -550,3 +550,57 @@ function StoreUserToSession() {
 function SetNumber(number) {
     sessionStorage.setItem("navNumber", number)
 }
+function AdddropdownClickEvents() {
+    [].forEach.call($('.dropdownload'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('download', id);
+        })
+    });
+    [].forEach.call($('.dropshare'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('share', id);
+        })
+    });
+    [].forEach.call($('.dropview'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('view', id);
+        })
+    });
+    [].forEach.call($('.droprename'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('rename', id);
+        })
+    });
+    [].forEach.call($('.dropcut'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('cut', id);
+        })
+    });
+    [].forEach.call($('.droppaste'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('paste', id);
+        })
+    });
+    [].forEach.call($('.dropcopy'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('copy', id);
+        })
+    });
+    [].forEach.call($('.dropdelete'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('delete', id);
+        })
+    });
+}
+//$('.dropdownload').addEventlistener("click",function () {
+//    var id = $(this).parent().parent().parent().parent().id;
+//    ContextResult('download', id);
+//})
