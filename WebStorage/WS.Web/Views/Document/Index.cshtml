@@ -1,5 +1,7 @@
 ﻿@using WS.Business.ViewModels
 @model IEnumerable<DocumentViewModel>
+
+
 <style>
     #file-options {
         background-color: white;
@@ -136,11 +138,34 @@
         previewsContainer: ".dropzone-previews",
         autoProcessQueue: true,
         init: function () {
+            var _thiss = this;
+            // Setup the observer for the button.
+            $("#cencel-downloading").on("click", function () {
+                // Using "_this" here, because "this" doesn't point to the dropzone anymore
+                _thiss.removeAllFiles(true);
+            });
             this.on("sending", function (file, xhr, data) {
                 if (file.fullPath) {
                     data.append("fullPath", file.fullPath);
                 }
                 data.append("parentId", GetParentId());
+            });
+            this.on("drop", function () {
+                $("#download-processing-modal").show();
+            });
+            this.on("addedfile", function () {
+                window.ProcessingItems = window.ProcessingItems + 1;
+            });
+            this.on("processing", function (file) {
+                $("#current-downloading-item").html(file.name);
+                window.currentProcessingItem = window.currentProcessingItem + 1;
+                $("#download-processing-current").html(window.currentProcessingItem);
+                $("#download-processing-entire").html(window.ProcessingItems);
+            });
+            this.on("queuecomplete", function () {
+                $("#download-processing-modal").hide();
+                window.currentProcessingItem = 0;
+                window.ProcessingItems = 0;
             });
             this.on("dropfile", function (file, xhr, data) {
                 if (file.fullPath) {
@@ -201,3 +226,13 @@
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 
+<div id="download-processing-modal">
+    <div id="download-processing-header">
+
+        <div id="download-processing-name">
+            <button id="cencel-downloading">&times;</button> Downloading 
+            <span id="current-downloading-item"></span>
+        </div>
+    </div>
+    <div id="download-processing-number">Processing <span id="download-processing-current"></span> from <span id="download-processing-entire"></span></div>
+</div>

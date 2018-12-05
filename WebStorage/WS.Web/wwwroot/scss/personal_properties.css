@@ -70,17 +70,6 @@ footer {
   bottom: 0; }
 
 .accessRow1 {
-/* Large Devices, Wide Screens */
-/* Medium Devices, Desktops */
-/* Small Devices, Tablets */
-@media only screen and (max-width: 767px) {
-  .accessRow1 {
-    padding-right: 15px; }
-  .accessRow2 {
-    padding-left: 15px; } }
-
-/* Extra Small Devices, Phones */
-.accessRow1 {
   padding-right: 0; }
 
 .accessRow2 {
@@ -131,6 +120,18 @@ footer {
   -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
   box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75); }
 
+#pattern {
+  width: 100%; }
+
+#searching {
+  margin: 0 auto;
+  max-width: 400px;
+  margin-top: 20px; }
+
+.form-search {
+  width: 100%;
+  display: block; }
+
 .search-item {
   padding: 10px;
   background: #fff; }
@@ -167,3 +168,51 @@ footer {
   margin: 7px 13px 0 0;
   font-size: 24px;
   color: #ffcf49; }
+
+#download-processing-modal {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  -webkit-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 6px 22px -4px rgba(0, 0, 0, 0.75); }
+
+#download-processing-name {
+  color: #fff;
+  padding: 12px;
+  background: #323232;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+#download-processing-number {
+  padding: 12px;
+  font-size: 16px; }
+
+#cencel-downloading {
+  color: #fff;
+  font-size: 30px;
+  padding: 0;
+  border: none;
+  background: #323232;
+  outline: none;
+  position: absolute;
+  right: 15px;
+  top: 2px; }
+
+#download-processing-header {
+  position: relative; }
+
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .accessRow1 {
+    padding-right: 15px; }
+  .accessRow2 {
+    padding-left: 15px; } }
+
+/* Extra Small Devices, Phones */

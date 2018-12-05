@@ -39,6 +39,19 @@ namespace WS.Business.Services
             }
             return _documentLinkService.Get(documentId);
         }
+        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(string userId)
+        {
+            UserView user = _userService.GetUserById(userId);
+            
+            var sharedIds =  _userDocumentService.GetAll()
+                .Where(n => n.GuestEmail == user.Email)
+                .Select(n=>n.DocumentId)
+                .ToList();
+            return _documentService.ConvertToViewModel(_documentService
+                .GetAll(userId)
+                .Where(n => sharedIds.Contains(n.Id)))
+                .ToList();
+        }
         public string OpenPublicAccesToFile(int documentId, bool isEditable, ClaimsPrincipal user)
         {
 
@@ -65,6 +78,7 @@ namespace WS.Business.Services
             }
             string guid = Guid.NewGuid().ToString();
             _documentLinkService.Create(new DocumentLinkView { Id = documentId, IsEditable = isEditable, Link = guid });
+            _documentService.UpdateSharedDocumentList(user);
             return guid;
         }
 
@@ -96,6 +110,7 @@ namespace WS.Business.Services
             {
                 _documentLinkService.Delete(documentId);
             }
+            _documentService.UpdateSharedDocumentList(user);
         }
 
         public DocumentView GetPublicSharedDocument(string guid, ClaimsPrincipal user, out bool isEditable)
@@ -157,6 +172,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = guid, GuestEmail = guestEmail, IsEditable = isEditable });
             }
+            _documentService.UpdateSharedDocumentList(owner);
             return guid;
         }
         public bool IsShared(int documentId)
@@ -184,7 +200,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(guestName, documentId);
             }
-
+            _documentService.UpdateSharedDocumentList(owner);
         }
         public void CloseLimitedAccesToFileEntire(int documentId, ClaimsPrincipal user)
         {
@@ -199,7 +215,7 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
-
+            _documentService.UpdateSharedDocumentList(user);
         }
     }
 }

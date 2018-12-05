@@ -123,8 +123,8 @@ function sendInvite(docId) {
             $('#accessLevelHeader').show();
             $('#closeLAccess').show();
 
-            var selectOptions = isEdit == "true" ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+            var selectOptions = isEdit == "true" ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                '<option value="false">View</option><option value="true">Edit</option>';
             $('.EmailsList').append('<li class="list-group-item">'
                 + email +
                 '<a href="#"  onclick="deleteUser(' +
@@ -162,8 +162,8 @@ function GetAllUser(docId) {
         success: function (data) {
             $('.EmailsList').children().remove();
             for (var i = 0; i < data.length; i++) {
-                var selectOptions = data[i].isEditable == true ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                    '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+                var selectOptions = data[i].isEditable == true ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                    '<option value="false">View</option><option value="true">Edit</option>';
                 $('.EmailsList').append('<li class="list-group-item">'
                     + data[i].guestEmail +
                     '<a href="#"  onclick="deleteUser(' +
@@ -343,8 +343,9 @@ function Rename() {
 function ViewFile(id) {
     var row = document.getElementById(id);
     var name = row.children[0].textContent;
-    var isfile = row.value;
-    if (isfile == "True") {
+    var isFolder = row.children[0].innerHTML.includes("fa-folder");
+
+    if (!isFolder) {
         var extention = name.split('.');
         if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
             window.open('/Document/ViewFile/?id=' + id, "_blank");
@@ -450,10 +451,10 @@ function DeleteDoc() {
 function ChooseFiles() {
     $('.dropzone').trigger('click');
 }
-//function TriggerMenu() {
-//    //$('.filerow').trigger("contextmenu");
-//    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
-//}
+function TriggerMenu() {
+    //$('.filerow').trigger("contextmenu");
+    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
+}
 function CreateFolder() {
     var id = GetParentId();
     $("#createModal #CreateParentId").val(id);

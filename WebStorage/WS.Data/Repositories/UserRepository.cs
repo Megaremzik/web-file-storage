@@ -22,5 +22,9 @@ namespace WS.Data.Repositories
         {
             return db.Users.FirstOrDefault(n => n.UserName == userName);
         }
+        public User GetUserById(string userId)
+        {
+            return db.Users.FirstOrDefault(n => n.Id==userId);
+        }
     }
 }

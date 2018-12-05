@@ -15,9 +15,64 @@ namespace WS.Data
     public class DocumentRepository
     {
         private ApplicationDbContext db;
-        public DocumentRepository(ApplicationDbContext context)
+        private List<int> _sharedDocumentsId = null;
+        public DocumentRepository(ApplicationDbContext context, DocumentLinkRepository documentLinkRepository, UserDocumentRepository userDocumentRepository)
         {
             db = context;
+            UpdateSharedDocumentList();
+        }
+        public void UpdateSharedDocumentList()
+        {
+            IEnumerable<DocumentLink> docLinks = _documentLinkRepository.GetAll();
+            IEnumerable<UserDocument> userDocs = _userDocumentRepository.GetAll();
+            IEnumerable<Document> documents = GetAll();
+            _sharedDocumentsId = documents.Where(n => IsSharedEcactlyFile(n.Id, docLinks, userDocs, documents) || IsExistSharedParent(n.Id, docLinks, userDocs, documents)).Select(n => n.Id).ToList();
+        }
+
+        public bool IsShared(int documentId)
+        {
+            return _sharedDocumentsId.Contains(documentId);
+        }
+        private bool IsExistSharedParent(int documentId, IEnumerable<DocumentLink> docLinks, IEnumerable<UserDocument> userDocs, IEnumerable<Document> documents)
+        {
+            return GetParentFoldersFromSent(documentId, documents).Any(n => IsSharedEcactlyFile(n.Id, docLinks, userDocs, documents));
+        }
+        private bool IsSharedEcactlyFile(int documentId, IEnumerable<DocumentLink> docLinks, IEnumerable<UserDocument> userDocs, IEnumerable<Document> documents)
+        {
+            var docLink = docLinks.FirstOrDefault(n => n.Id == documentId);
+            if (docLink != null)
+            {
+                return true;
+            }
+            var UserDocNumber = userDocs.Where(n => n.DocumentId == documentId).Count();
+            return UserDocNumber > 0;
+        }
+
+        public ICollection<Document> GetParentFolders(int id)
+        {
+            var docs = new List<Document>();
+            var doc = Get(id);
+            int parentId = doc.ParentId;
+            while (parentId != 0)
+            {
+                doc = Get(parentId);
+                docs.Add(doc);
+                parentId = doc.ParentId;
+            }
+            return docs;
+        }
+        public ICollection<Document> GetParentFoldersFromSent(int id, IEnumerable<Document> documents)
+        {
+            var docs = new List<Document>();
+            var doc = documents.FirstOrDefault(n => n.Id == id);
+            int parentId = doc.ParentId;
+            while (parentId != 0)
+            {
+                doc = documents.FirstOrDefault(n => n.Id ==parentId);
+                docs.Add(doc);
+                parentId = doc.ParentId;
+            }
+            return docs;
         }
         public IEnumerable<Document> GetAll()
         {
@@ -25,7 +80,7 @@ namespace WS.Data
         }
         public IEnumerable<Document> GetAll(string id)
         {
-            return db.Document.Where(d=>d.User.Id==id).ToList();
+            return db.Document.Where(d => d.User.Id == id).ToList();
         }
         public IEnumerable<Document> GetAllWithotDeleted(string id)
         {
@@ -34,20 +89,20 @@ namespace WS.Data
 
         public void Create(Document document)
         {
-            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change!="Delete");
+            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change != "Delete");
             if (doc.Count() == 0)
             {
                 db.Document.Add(document);
                 db.SaveChanges();
-            } 
+            }
         }
         public Document Get(int? id)
         {
             return db.Document.FirstOrDefault(p => p.Id == id);
         }
-        public int GetIdByName(string userId,string name, int parentId)
+        public int GetIdByName(string userId, string name, int parentId)
         {
-            return db.Document.LastOrDefault(d => d.Name == name && d.ParentId == parentId && d.UserId == userId && d.Type_change!="Delete").Id;
+            return db.Document.LastOrDefault(d => d.Name == name && d.ParentId == parentId && d.UserId == userId && d.Type_change != "Delete").Id;
         }
         public Document Get(string id1, int? id2)
         {
@@ -67,24 +122,24 @@ namespace WS.Data
         }
         public IEnumerable<Document> GetAllChildren(int? id)
         {
-            var documents= db.Document.Where(d => d.ParentId == id).ToList();
+            var documents = db.Document.Where(d => d.ParentId == id).ToList();
             return documents;
         }
         public IEnumerable<Document> GetAllChildrenDeletedWithIt(int? id)
         {
             var doc = Get(id);
-            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change=="Delete" && d.Date_change== doc.Date_change).ToList();
+            var documents = db.Document.Where(d => d.ParentId == id && d.Type_change == "Delete" && d.Date_change == doc.Date_change).ToList();
             return documents;
         }
         public IEnumerable<Document> GetAllWirtualChildrenDeletedWithIt(int? id)
         {
             var doc = Get(id);
-            var documents = db.Document.Where(d => d.ParentId == id && (d.Type_change == "Delete"|| d.Type_change == "SaveForFile") && d.Date_change == doc.Date_change).ToList();
+            var documents = db.Document.Where(d => d.ParentId == id && (d.Type_change == "Delete" || d.Type_change == "SaveForFile") && d.Date_change == doc.Date_change).ToList();
             return documents;
         }
         public IEnumerable<Document> GetAllRootElements(string userId)
         {
-            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId==userId).ToList();
+            var documents = db.Document.Where(d => d.ParentId == 0 && d.UserId == userId).ToList();
             return documents;
         }
 

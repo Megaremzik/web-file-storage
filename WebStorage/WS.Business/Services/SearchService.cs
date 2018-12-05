@@ -17,6 +17,7 @@ namespace WS.Business.Services
             _documentService = documentService;
             _userService = userService;
         }
+      
         public ICollection<DocumentView> FindTopByPattern(string pattern, int count, ClaimsPrincipal user)
         {
           

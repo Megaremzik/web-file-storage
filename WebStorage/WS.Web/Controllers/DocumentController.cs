@@ -28,10 +28,12 @@ namespace WS.Web.Controllers
             _service = service;
             _pathProvider = pathProvider;
             _userManager = userManager;
+          
         }
         [HttpGet]
         public IActionResult Index(int id=0)
         {
+            _service.UpdateSharedDocumentList(User);
             string userId = _userManager.GetUserId(User);
             if (userId == null) return RedirectToAction("Login", "Account");
             _pathProvider.MapId(userId);

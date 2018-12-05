@@ -28,13 +28,30 @@ namespace WS.Business.Services
             repo = r;
             pathprovider = p;
         }
-
+        public void UpdateSharedDocumentList(ClaimsPrincipal user)
+        {
+            string userId = _userService.GetUserId(user);
+          
+        }
         public IEnumerable<DocumentView> GetAll(string id)
         {
             IEnumerable<Document> documents = repo.GetAll(id);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
-
+        public IEnumerable<DocumentView> GetParentFolders(int id)
+        {
+            IEnumerable<Document> documents = repo.GetParentFolders(id);
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public IEnumerable<DocumentView> GetAll()
+        {
+            IEnumerable<Document> documents = repo.GetAll();
+            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        }
+        public bool IsShared(int documentId)
+        {
+           return repo.IsShared(documentId);
+        }
         public IEnumerable<DocumentView> GetAllWithotDeleted(string id)
         {
             IEnumerable<Document> documents = repo.GetAllWithotDeleted(id);
@@ -500,7 +517,7 @@ namespace WS.Business.Services
             List<DocumentViewModel> documents = new List<DocumentViewModel>();
             foreach (var doc in document)
             {
-                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc),false,IconForFile(doc)));
+                documents.Add(new DocumentViewModel(doc, MakeSizeView(doc), doc.Size, IsShared(doc.Id), IconForFile(doc)));
             }
             return documents;
         }
