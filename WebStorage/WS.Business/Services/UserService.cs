@@ -21,6 +21,11 @@ namespace WS.Business.Services
             mapper = map;
             repo = r;
         }
+        public UserView GetUserById(string userId)
+        {
+            User user = repo.GetUserById(userId);
+            return mapper.Map< User, UserView > (user);
+        }
         public string GetUserIdByDocumentId(int documentId)
         {
             return repo.GetUserIdByDocumentId(documentId);
