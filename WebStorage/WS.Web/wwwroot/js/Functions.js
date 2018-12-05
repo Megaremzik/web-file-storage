@@ -537,7 +537,8 @@ function SearchTop() {
         }
     });
 }
-
+window.currentProcessingItem = 0;
+window.ProcessingItems = 0;
 function HideResults() {
     $(".result").hide();
 }
