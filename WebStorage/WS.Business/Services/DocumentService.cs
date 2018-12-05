@@ -174,6 +174,7 @@ namespace WS.Business.Services
             var startpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, "bin", GetNewFolderFilePath(id));
             var time = doc.Date_change.GetHashCode().ToString();
             var finishpath = Path.Combine(pathprovider.GetRootPath(), doc.UserId, "bin", GetNewFilePath(id, time));
+            Directory.CreateDirectory(startpath);
             Directory.Move(startpath, finishpath);
         }
 
@@ -402,7 +403,6 @@ namespace WS.Business.Services
                 {
                 }
             }
-            //impotant
             document.Date_change = DateTime.Now;
             document.Type_change = "Restore";
             repo.Update(document);
@@ -425,12 +425,19 @@ namespace WS.Business.Services
                     doc.Date_change = date;
                     repo.Update(doc);
                 }
-                //else
-                //{
-                //    parentId = doc.ParentId;
-                //    doc = GetExactlyDocument(parentId);
-                //    repo.Create(doc);
-                //}
+                else if (repo.Get(doc.ParentId).Type_change == "Delete")
+                {
+                    var newparentId = doc.ParentId;
+                    var newDoc = GetExactlyDocument(newparentId);
+                    Document neNewDoc = new Document { IsFile = newDoc.IsFile, Size = newDoc.Size, Name = newDoc.Name, Extention = newDoc.Extention, UserId = newDoc.UserId, ParentId = newDoc.ParentId, Date_change = date, Type_change="Restore" };
+                    parentId = repo.Create(neNewDoc);
+                    doc.ParentId = parentId;
+                    repo.Update(doc);
+                }
+                else
+                {
+                    break;
+                }
 
             } while (true);
         }

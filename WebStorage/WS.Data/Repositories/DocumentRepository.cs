@@ -32,14 +32,16 @@ namespace WS.Data
             return db.Document.Where(d => d.User.Id == id && d.Type_change != "Delete" && d.Type_change != "SaveForFile").ToList();
         }
 
-        public void Create(Document document)
+        public int Create(Document document)
         {
             var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change!="Delete");
             if (doc.Count() == 0)
             {
-                db.Document.Add(document);
+                var finDoc = db.Document.Add(document);
                 db.SaveChanges();
-            } 
+                return finDoc.Entity.Id;
+            }
+            return 0;
         }
         public Document Get(int? id)
         {
