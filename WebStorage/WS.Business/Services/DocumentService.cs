@@ -40,11 +40,11 @@ namespace WS.Business.Services
             IEnumerable<Document> documents = repo.GetAll(id);
             return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
         }
-        public IEnumerable<DocumentView> GetParentFolders(int id)
-        {
-            IEnumerable<Document> documents = repo.GetParentFolders(id);
-            return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
-        }
+        //public IEnumerable<DocumentView> GetParentFolders(int id)
+        //{
+        //    IEnumerable<Document> documents = repo.GetParentFolders(id);
+        //    return mapper.Map<IEnumerable<Document>, IEnumerable<DocumentView>>(documents);
+        //}
         public IEnumerable<DocumentView> GetAll()
         {
             IEnumerable<Document> documents = repo.GetAll();
@@ -404,7 +404,14 @@ namespace WS.Business.Services
 
             if (document.IsFile)
             {
-                File.Move(oldpath, newPath);
+                try
+                {
+                    File.Move(oldpath, newPath);
+                }
+                catch
+                {
+
+                }
                 document.Date_change = DateTime.Now;
                 document.Type_change = "Restore";
                 repo.Update(document);

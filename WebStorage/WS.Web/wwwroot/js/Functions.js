@@ -348,7 +348,7 @@ function ContextResult(action, id, name) {
         ViewFile(id);
     }
     else if (action == "delete") {
-        ConfirmDelete(name, id)
+        ConfirmDelete(id)
     }
 }
 function Rename() {
@@ -418,10 +418,10 @@ function ConfirmReset() {
     });
 }
 
-function ConfirmDelete(name, id) {
+function ConfirmDelete(id) {
     $(".modal-title").text("Delete document?")
     $("#hiddenTaskId").val(id);
-    $("#deleteMessege").text("Delete document " + name + " from Foxbox?");
+    $("#deleteMessege").text("Delete document from Foxbox?");
     $("#deleteModal").modal("show");
 }
 
