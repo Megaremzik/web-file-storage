@@ -199,6 +199,9 @@ footer {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+#mobile-menu {
+  display: none; }
+
 /* Large Devices, Wide Screens */
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 992px) {
@@ -214,7 +217,11 @@ footer {
   #dropzone {
     margin-right: 0px;
     margin-left: 0px;
-    margin: auto; } }
+    margin: auto; }
+  #desktop-menu {
+    display: none; }
+  #mobile-menu {
+    display: inline-block; } }
 
 /* Small Devices, Tablets */
 @media only screen and (max-width: 767px) {
