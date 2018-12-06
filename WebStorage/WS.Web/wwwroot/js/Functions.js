@@ -292,7 +292,7 @@ function SetParentId(id) {
 
 function DeleteContextResult(action, id, name) {
     if (action == "delete permanently") {
-        FinalConfirmDelete(name, id)
+        FinalConfirmDelete(id)
     }
     else if (action == "restore") {
         RestoreDoc(id)
@@ -425,7 +425,8 @@ function ConfirmDelete(id) {
     $("#deleteModal").modal("show");
 }
 
-function FinalConfirmDelete(name, isFile) {
+function FinalConfirmDelete(id) {
+    $("#hiddenTaskId").val(id);
     $(".modal-title").text("Delete document?")
     $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
     $("#finalDeleteModal").modal("show");
@@ -451,8 +452,8 @@ function RestoreDoc(id) {
     })
 }
 
-function FinalDeleteDoc() {
-    var id = $("#hiddenTaskId").val();
+function FinalDeleteDoc(id) {
+    id = $("#hiddenTaskId").val();
     $.ajax({
         type: "POST",
         url: "/Document/FinalDelete",
