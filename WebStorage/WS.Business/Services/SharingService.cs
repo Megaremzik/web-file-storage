@@ -39,12 +39,12 @@ namespace WS.Business.Services
             }
             return _documentLinkService.Get(documentId);
         }
-        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(string userId)
+        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(ClaimsPrincipal claim)
         {
-            UserView user = _userService.GetUserById(userId);
+            var userId = _userService.GetUserId(claim);
             
             var sharedIds =  _userDocumentService.GetAll()
-                .Where(n => n.GuestEmail == user.Email)
+                .Where(n => n.GuestEmail == _userService.GetUserById(userId).Email)
                 .Select(n=>n.DocumentId)
                 .ToList();
             return _documentService.ConvertToViewModel(_documentService
