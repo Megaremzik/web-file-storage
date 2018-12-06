@@ -18,21 +18,27 @@
         $('#backParentId').hide();
         $('#dropzone-drop-area').load('@Url.Action("ReturnDeleted", "Document", new {parentId=ViewBag.ParentId })');
     });
+    $.contextMenu({
+        selector: '.filerow',
+        callback: function (key, options) {
+            DeleteContextResult(key, $(this).attr("id"), $(this).attr("name"))
+        },
+        items: {
+            "delete permanently": { name: "Delete permanently", icon: "delete" },
+            "restore": { name: "Restore", icon: "fas fa-backward" },
+        }
+    });
 </script>
 <div class="row form-control-static">
     <div class="form-group">
 
     </div>
-    <div class="col-md-8">
-        <h2>Your files</h2>
+    <div class="col-md-12">
+        <h2>Deleted Files</h2>
         <form action="/Document/UploadFiles" id="uploader">
-            <div id="dropzone-drop-area">
+            <div id="dropzone-drop-area" style="cursor:pointer">
             </div>
         </form>
-    </div>
-    <div class="col-md-2">
-        <div id="deleted-file-options">
-        </div>
     </div>
 </div>
 @{

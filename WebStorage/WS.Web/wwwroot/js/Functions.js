@@ -277,6 +277,16 @@ function SetParentId(id) {
     }
     sessionStorage.setItem("parentId", id)
 }
+
+function DeleteContextResult(action, id, name) {
+    if (action == "delete permanently") {
+        FinalConfirmDelete(name, id)
+    }
+    else if (action == "restore") {
+        RestoreDoc(id)
+    }
+}
+
 function ContextResult(action, id, name) {
     //if (action == "delete") {
     //    Url.Action("Delete", "Document", id);
@@ -401,12 +411,7 @@ function ConfirmDelete(name, id) {
 }
 
 function FinalConfirmDelete(name, isFile) {
-    if (isFile === 1) {
-        $(".modal-title").text("Delete file permanently?")
-    }
-    else {
-        $(".modal-title").text("Delete folder permanently?")
-    }
+    $(".modal-title").text("Delete document?")
     $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
     $("#finalDeleteModal").modal("show");
 }
@@ -415,8 +420,7 @@ function Restore(name, isFile) {
     $("#restoreModal").modal("show");
 }
 
-function RestoreDoc() {
-    var id = $("#hiddenTaskId").val();
+function RestoreDoc(id) {
     $.ajax({
         type: "POST",
         url: "/Document/Restore",

@@ -55,6 +55,14 @@ namespace WS.Web.Controllers
             IEnumerable<DocumentViewModel> documents;
             documents = _service.ConvertToViewModel(_service.GetAllDeletedFiles());
             var documentsSorted = documents.OrderBy(d => d.Document.Date_change);
+            string[] pathes = new string[documentsSorted.Count()];
+            int i= 0;
+            foreach(var doc in documentsSorted)
+            {
+                pathes[i] = "FoxBox" + _service.GetPathToFile(doc.Document.Id);
+                i++;
+            }
+            ViewBag.Pathes = pathes;
             return PartialView("_GetDeletedDocuments", documentsSorted);
         }
         public IActionResult DeletedFiles(int id = 0)
@@ -185,33 +193,40 @@ namespace WS.Web.Controllers
                     result = false;
                     repetedDcocs.Add(doc);
                 }
-                    
+
                 else
 
                     _service.FirstRestore(id);
             }
             else
             {
-                var documents = _service.GetAllDeletedWithIt(id);
-
-                foreach (var document in documents)
+                if (Directory.Exists(docPath))
                 {
-                    if (document.IsFile)
-                    {
-                        if (System.IO.File.Exists(Path.Combine(_pathProvider.GetRootPath(), document.UserId, _service.GetFilePath(document.Id))))
-                        {
-                            result = false;
-                            repetedDcocs.Add(document);
-                        }
-                    }
+                    result = false;
                 }
-                if (repetedDcocs.Count == 0)
+                else
                     _service.FirstRestore(id);
             }
-            if (repetedDcocs.Count == 0)
-                ViewBag.RepetedFiles = null;
-            else
-                ViewBag.RepetedFiles = repetedDcocs;
+            //    var documents = _service.GetAllDeletedWithIt(id);
+
+            //    foreach (var document in documents)
+            //    {
+            //        if (document.IsFile)
+            //        {
+            //            if (System.IO.File.Exists(Path.Combine(_pathProvider.GetRootPath(), document.UserId, _service.GetFilePath(document.Id))))
+            //            {
+            //                result = false;
+            //                repetedDcocs.Add(document);
+            //            }
+            //        }
+            //    }
+            //    if (repetedDcocs.Count == 0)
+            //        _service.FirstRestore(id);
+            //}
+            //if (repetedDcocs.Count == 0)
+            //    ViewBag.RepetedFiles = null;
+            //else
+            //    ViewBag.RepetedFiles = repetedDcocs;
             return Json(result);
         }
 
