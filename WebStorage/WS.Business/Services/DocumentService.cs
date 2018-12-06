@@ -355,9 +355,23 @@ namespace WS.Business.Services
             var path = GetFilePath(id);
             var document = GetExactlyDocument(id);
             pathprovider.AddFoldersWhenCopyFile(path, document.UserId);
-            var pId = UpdateVirtualParent(document.ParentId, DateTime.Now);
-            document.ParentId = pId;
-            repo.Update(document);
+            int pId;
+            if (document.ParentId == 0)
+            {
+                //var Sameid = repo.FindSame(document);
+                //if (Sameid == -1)
+                //{
+                //    Document neNewDoc = new Document { IsFile = document.IsFile, Size = document.Size, Name = document.Name, Extention = document.Extention, UserId = document.UserId, ParentId = document.ParentId, Date_change = DateTime.Now, Type_change = "Restore" };
+                //    var newId = repo.Create(neNewDoc);
+                //    document = GetExactlyDocument(newId);
+                //}
+            }
+            else
+            {
+                pId = UpdateVirtualParent(document.ParentId, DateTime.Now);
+                document.ParentId = pId;
+                repo.Update(document);
+            }
 
             Restore(id);
         }
@@ -424,15 +438,17 @@ namespace WS.Business.Services
                 }
                 return Sameid;
             }
-            else if (repo.Get(doc.ParentId).Type_change == "SaveForFile")
+            else if (repo.Get(doc.Id).Type_change == "SaveForFile")
             {
                 var parentId = UpdateVirtualParent(doc.ParentId, date);
-                doc = GetExactlyDocument(doc.ParentId);
+                doc = GetExactlyDocument(doc.Id);
+                doc.ParentId = parentId;
                 doc.Type_change = "Restore";
                 doc.Date_change = date;
                 repo.Update(doc);
+                return doc.Id;
             }
-            else if (repo.Get(doc.ParentId).Type_change == "Delete")
+            else if (repo.Get(doc.Id).Type_change == "Delete")
             {
                 var parentId = UpdateVirtualParent(doc.ParentId, date);
                 Document neNewDoc = new Document { IsFile = doc.IsFile, Size = doc.Size, Name = doc.Name, Extention = doc.Extention, UserId = doc.UserId, ParentId = parentId, Date_change = date, Type_change = "Restore" };
@@ -448,8 +464,11 @@ namespace WS.Business.Services
                     return Sameid;
             }
             else
-                return UpdateVirtualParent(doc.ParentId, date);
-            return -1;
+            {
+                var parid = UpdateVirtualParent(doc.ParentId, date);
+                return doc.Id;
+            }
+                
         }
 
         public void dUpdateVirtualParent(int id, DateTime date)
