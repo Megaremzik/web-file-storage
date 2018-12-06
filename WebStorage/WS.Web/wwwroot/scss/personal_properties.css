@@ -69,6 +69,16 @@
 footer {
   bottom: 0; }
 
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
+  .accessRow1 {
+    padding-right: 15px; }
+  .accessRow2 {
+    padding-left: 15px; } }
+
+/* Extra Small Devices, Phones */
 .accessRow1 {
   padding-right: 0; }
 

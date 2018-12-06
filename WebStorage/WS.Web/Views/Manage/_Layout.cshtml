@@ -1,81 +1,23 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WS.Web</title>
-    <meta name='viewport'
-          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
-    <environment include="Development">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+﻿@{ 
+    Layout = "/Views/Shared/_Layout0.cshtml";
+}
 
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-social.css" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <link rel="stylesheet" href="~/scss/personal_properties.css" />
-        <link rel="stylesheet" href="~/scss/_sharing-styles.css">
+<h2>Manage your account</h2>
 
-        <link rel="stylesheet" href="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.css">
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
-    <environment include="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="~/js/dropzone.js"></script>
-        <script src="~/js/Functions.js"></script>
-
-        <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.min.js"></script>
-        <script src="~/lib/jQuery-contextMenu-master/dist/jquery.ui.position.js"></script>
-        <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="https://unpkg.com/popper.js"></script>
-    </environment>
-    <script>
-        $(document).ready(function () {
-            $('.nav-left_pan').removeClass('active');
-            var activeNav = sessionStorage.getItem("navNumber");
-            if (activeNav == "2") $("#nav-left-2").addClass('active');
-            else if (activeNav == "3") $("#nav-left-3").addClass('active');
-            else $("#nav-left-1").addClass('active');
-        })
-    </script>
-    @RenderSection("Scripts", required: false)
-</head>
-<body>
-    <h2>Manage your account</h2>
-
-    <div>
-        <h4>Change your account settings</h4>
-        <hr />
-        <div class="row">
-            <div class="col-md-3">
-                @await Html.PartialAsync("_ManageNav")
-            </div>
-            <div class="col-md-9">
-                @RenderBody()
-            </div>
+<div>
+    <h4>Change your account settings</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            @await Html.PartialAsync("_ManageNav")
+        </div>
+        <div class="col-md-8">
+            @RenderBody()
         </div>
     </div>
-</body>
-</html>
+</div>
 
-
-
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+        

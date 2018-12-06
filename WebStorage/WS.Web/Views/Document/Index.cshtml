@@ -113,7 +113,7 @@
     $.contextMenu({
         selector: '.filerow',
         callback: function (key, options) {
-            ContextResult(key, $(this).attr("id"))
+            ContextResult(key, $(this).attr("id"), $(this).attr("name"))
         },
         items: {
             "download": { name: "Download"},
@@ -230,6 +230,7 @@
     Html.RenderPartial("_Rename", new DocumentView());
     Html.RenderPartial("_FileViewErrorResult", new DocumentView());
     Html.RenderPartial("_CreateFolder", new DocumentView());
+    Html.RenderPartial("_DeleteModal", new DocumentView());
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 

@@ -63,6 +63,14 @@ namespace WS.Web.Controllers
             IEnumerable<DocumentViewModel> documents;
             documents = _service.ConvertToViewModel(_service.GetAllDeletedFiles());
             var documentsSorted = documents.OrderBy(d => d.Document.Date_change);
+            string[] pathes = new string[documentsSorted.Count()];
+            int i= 0;
+            foreach(var doc in documentsSorted)
+            {
+                pathes[i] = "FoxBox" + _service.GetPathToFile(doc.Document.Id);
+                i++;
+            }
+            ViewBag.Pathes = pathes;
             return PartialView("_GetDeletedDocuments", documentsSorted);
         }
         public IActionResult DeletedFiles(int id = 0)
@@ -185,6 +193,59 @@ namespace WS.Web.Controllers
                 _service.FirstStepDelete(id);
                 result = true;
             }
+            return Json(result);
+        }
+
+        public JsonResult Restore(int id)
+        {
+            bool result = true;
+            var path = _service.GetFilePath(id);
+            var doc = _service.Get(id);
+            var docPath = Path.Combine(_pathProvider.GetRootPath(), doc.UserId, path);
+
+            List<DocumentView> repetedDcocs = new List<DocumentView>();
+
+            if (doc.IsFile)
+            {
+                if (System.IO.File.Exists(docPath))
+                {
+                    result = false;
+                    repetedDcocs.Add(doc);
+                }
+
+                else
+
+                    _service.FirstRestore(id);
+            }
+            else
+            {
+                if (Directory.Exists(docPath))
+                {
+                    result = false;
+                }
+                else
+                    _service.FirstRestore(id);
+            }
+            //    var documents = _service.GetAllDeletedWithIt(id);
+
+            //    foreach (var document in documents)
+            //    {
+            //        if (document.IsFile)
+            //        {
+            //            if (System.IO.File.Exists(Path.Combine(_pathProvider.GetRootPath(), document.UserId, _service.GetFilePath(document.Id))))
+            //            {
+            //                result = false;
+            //                repetedDcocs.Add(document);
+            //            }
+            //        }
+            //    }
+            //    if (repetedDcocs.Count == 0)
+            //        _service.FirstRestore(id);
+            //}
+            //if (repetedDcocs.Count == 0)
+            //    ViewBag.RepetedFiles = null;
+            //else
+            //    ViewBag.RepetedFiles = repetedDcocs;
             return Json(result);
         }
 
