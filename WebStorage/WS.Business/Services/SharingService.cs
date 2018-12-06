@@ -39,19 +39,35 @@ namespace WS.Business.Services
             }
             return _documentLinkService.Get(documentId);
         }
+
         public ICollection<DocumentViewModel> GetSharedDocumentsForUser(string userId)
         {
             UserView user = _userService.GetUserById(userId);
-            
-            var sharedIds =  _userDocumentService.GetAll()
+
+            var sharedIds = _userDocumentService.GetAll()
                 .Where(n => n.GuestEmail == user.Email)
-                .Select(n=>n.DocumentId)
+                .Select(n => n.DocumentId)
                 .ToList();
-            return _documentService.ConvertToViewModel(_documentService
-                .GetAll(userId)
-                .Where(n => sharedIds.Contains(n.Id)))
+            var docs = _documentService
+                .GetAll()
+                .Where(n => sharedIds.Contains(n.Id))
                 .ToList();
+            for (int i = 0; i < docs.Count(); i++)
+            {
+                docs[i].ParentId = 0;
+            }
+            var docsChildren = new List<DocumentView>();
+            foreach (var p in docs)
+            {
+                if (!p.IsFile)
+                {
+                    docsChildren.AddRange(_documentService.GetAllChildrensForFolder(p.Id));
+                }
+            }
+            docs.AddRange(docsChildren);
+            return _documentService.ConvertToViewModel(docs).ToList();
         }
+
         public string OpenPublicAccesToFile(int documentId, bool isEditable, ClaimsPrincipal user)
         {
 
