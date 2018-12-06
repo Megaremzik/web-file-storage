@@ -21,13 +21,15 @@ namespace WS.Business.Services
         private readonly IMapper mapper;
         private PathProvider pathprovider;
         private UserService _userService;
-        public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService)
+        private UserDocumentService _userDocumentService;
+        public DocumentService(IMapper map, DocumentRepository r, PathProvider p, UserService userService, UserDocumentService userDocumentService)
         {
             _userService = userService;
             mapper = map;
             repo = r;
             pathprovider = p;
-        }
+            _userDocumentService=userDocumentService;
+    }
         public void UpdateSharedDocumentList(ClaimsPrincipal user)
         {
             string userId = _userService.GetUserId(user);
@@ -576,6 +578,18 @@ namespace WS.Business.Services
         public bool IsYourFile(int id,string userId)
         {
             return repo.IsYourFile(id, userId);
+        }
+        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(string userId)
+        {
+            var user = _userService.GetUserById(userId);
+
+            var sharedIds = _userDocumentService.GetAll()
+                .Where(n => n.GuestEmail == user.Email)
+                .Select(n => n.DocumentId)
+                .ToList();
+            return ConvertToViewModel(GetAll(userId)
+                .Where(n => sharedIds.Contains(n.Id)))
+                .ToList();
         }
     }
 }
