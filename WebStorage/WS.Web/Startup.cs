@@ -74,17 +74,17 @@ namespace WS.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+               // app.UseBrowserLink();
+              //  app.UseDeveloperExceptionPage();
+               // app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseExceptionHandler("/Error/500");
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseStaticFiles();
-
             app.UseAuthentication();
             
             app.UseMvc(routes =>
@@ -94,6 +94,7 @@ namespace WS.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
 
             });
+         
         }
     }
 }

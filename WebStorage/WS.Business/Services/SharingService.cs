@@ -47,11 +47,26 @@ namespace WS.Business.Services
                 .Where(n => n.GuestEmail == user.Email)
                 .Select(n=>n.DocumentId)
                 .ToList();
-            return _documentService.ConvertToViewModel(_documentService
+            var docs =  _documentService
                 .GetAll(userId)
-                .Where(n => sharedIds.Contains(n.Id)))
+                .Where(n => sharedIds.Contains(n.Id))
                 .ToList();
+            for(int i = 0; i < docs.Count(); i++)
+            {
+                docs[i].ParentId = 0;
+            }
+            var docsChildren = new List<DocumentView>();
+            foreach(var p in docs)
+            {
+                if (!p.IsFile)
+                {
+                    docsChildren.AddRange(_documentService.GetAllChildrensForFolder(p.Id));
+                }
+            }
+            docs.AddRange(docsChildren);
+            return _documentService.ConvertToViewModel(docs).ToList();
         }
+        
         public string OpenPublicAccesToFile(int documentId, bool isEditable, ClaimsPrincipal user)
         {
 
