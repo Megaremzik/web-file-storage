@@ -157,8 +157,23 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.mobile-menu {
+    display: none;
+}
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
+    #dateTimeColumn {
+        display: none;
+    }
+
+    #filetable td:nth-child(3) {
+        display: none;
+    }
+
+    #filetable td:nth-child(1) {
+        max-width: 150px;
+    }
 }
 
 /* Medium Devices, Desktops */
@@ -181,10 +196,36 @@
     }
 
     #dropzone {
-        margin-right: 0px;
-        margin-left: 0px;
-        margin: auto;
+        margin-right: 0;
+        margin-left: 0;
     }
+
+    .desktop-menu {
+        display: none;
+    }
+
+    .mobile-menu {
+        display: inline-block;
+    }
+
+    .headerLayout {
+        position: absolute;
+        right: 50px;
+        margin: 0 auto 0 auto;
+    }
+
+    .main-container {
+        padding: 0;
+    }
+    .input-group{
+    
+    }
+    .search-bar {
+        margin-top:20px;
+        margin-left: 20px;
+        width: 90%;
+    }
+ 
 }
 /* Small Devices, Tablets */
 @media only screen and (max-width : 767px) {

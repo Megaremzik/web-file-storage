@@ -11,6 +11,7 @@ function ShowFileOptions(doc) {
     $('.filerow').removeClass('selected'); // "Unselect" all the rows
     $('#'+doc).addClass('selected'); // Select the one clicked
 
+
     $.ajax({
         type: "Post",
         url: '/Document/FileOptions',
@@ -43,7 +44,8 @@ function DoubleClickAction(isFile, id) {
             type: "Post",
             url: '/Document/ReturnDocumentList',
             data: {
-                parentId: id
+                parentId: id,
+                type: sessionStorage.getItem("type")
             },
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
@@ -63,7 +65,8 @@ function GoBack() {
         type: "Post",
         url: '/Document/ReturnParent',
         data: {
-            id: parentId
+            id: parentId,
+            type: sessionStorage.getItem("type")
         },
         success: function (data, textStatus, jqXHR) {
             $('#dropzone-drop-area').html(data);
@@ -286,11 +289,21 @@ function SetParentId(id) {
     }
     sessionStorage.setItem("parentId", id)
 }
-function ContextResult(action, id) {
-    if (action == "delete") {
-        Url.Action("Delete", "Document", id);
+
+function DeleteContextResult(action, id, name) {
+    if (action == "delete permanently") {
+        FinalConfirmDelete(name, id)
     }
-    else if (action == "copy") {
+    else if (action == "restore") {
+        RestoreDoc(id)
+    }
+}
+
+function ContextResult(action, id, name) {
+    //if (action == "delete") {
+    //    Url.Action("Delete", "Document", id);
+    //}
+    if(action == "copy") {
         sessionStorage.setItem("copy", id);
         sessionStorage.setItem("type", "copy");
     }
@@ -333,6 +346,9 @@ function ContextResult(action, id) {
     }
     else if (action == "view") {
         ViewFile(id);
+    }
+    else if (action == "delete") {
+        ConfirmDelete(id)
     }
 }
 function Rename() {
@@ -402,26 +418,37 @@ function ConfirmReset() {
     });
 }
 
-function ConfirmDelete(name, isFile) {
-    if (isFile === 1) {
-        $(".modal-title").text("Удалить файл?")
-    }
-    else {
-        $(".modal-title").text("Удалить папку?")
-    }
-    $("#deleteMessege").text("Действительно удалить " + name + " из Foxbox?");
+function ConfirmDelete(id) {
+    $(".modal-title").text("Delete document?")
+    $("#hiddenTaskId").val(id);
+    $("#deleteMessege").text("Delete document from Foxbox?");
     $("#deleteModal").modal("show");
 }
 
 function FinalConfirmDelete(name, isFile) {
-    if (isFile === 1) {
-        $(".modal-title").text("Delete file permanently?")
-    }
-    else {
-        $(".modal-title").text("Delete folder permanently?")
-    }
+    $(".modal-title").text("Delete document?")
     $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
     $("#finalDeleteModal").modal("show");
+}
+
+function Restore(name, isFile) {
+    $("#restoreModal").modal("show");
+}
+
+function RestoreDoc(id) {
+    $.ajax({
+        type: "POST",
+        url: "/Document/Restore",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#" + id).remove();
+            }
+            else {
+                $("#restoreModal").modal("show");
+            }
+        }
+    })
 }
 
 function FinalDeleteDoc() {
@@ -495,6 +522,7 @@ function Download(id) {
             documentId: id
         },
         success: function (data) {
+            $("#viewErrorModal").modal("hide");
             window.location = '/Download/Get?documentId='+id;
         }
     }); 
@@ -551,3 +579,57 @@ function StoreUserToSession() {
 function SetNumber(number) {
     sessionStorage.setItem("navNumber", number)
 }
+function AdddropdownClickEvents() {
+    [].forEach.call($('.dropdownload'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('download', id);
+        })
+    });
+    [].forEach.call($('.dropshare'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('share', id);
+        })
+    });
+    [].forEach.call($('.dropview'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('view', id);
+        })
+    });
+    [].forEach.call($('.droprename'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('rename', id);
+        })
+    });
+    [].forEach.call($('.dropcut'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('cut', id);
+        })
+    });
+    [].forEach.call($('.droppaste'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('paste', id);
+        })
+    });
+    [].forEach.call($('.dropcopy'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('copy', id);
+        })
+    });
+    [].forEach.call($('.dropdelete'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('delete', id);
+        })
+    });
+}
+//$('.dropdownload').addEventlistener("click",function () {
+//    var id = $(this).parent().parent().parent().parent().id;
+//    ContextResult('download', id);
+//})

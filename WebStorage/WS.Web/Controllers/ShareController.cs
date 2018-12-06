@@ -20,13 +20,14 @@ namespace WS.Web.Controllers
         private SharingService _sharingService;
         private DocumentService _documentService;
         EmailSender _emailSender;
-
+        UserManager<User> _manager;
         public ShareController(SharingService sharingService, DocumentService documentService, EmailSender emailSender)
         {
             _sharingService = sharingService;
             _documentService = documentService;
             _emailSender = emailSender;
         }
+
         public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
             DocumentLinkView docLink = _sharingService.GetPublicAccessLink(documentId, User);
@@ -100,6 +101,7 @@ namespace WS.Web.Controllers
             var userdocs = _sharingService.GetAllUsersForSharedDocument(documentId, User);
             return userdocs;
         }
+        
     }
 
 }

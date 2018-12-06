@@ -31,6 +31,7 @@ namespace WS.Business
             {
                 rootpath = Path.Combine(rootpath, id);
                 CreateFolder(rootpath);
+                Directory.CreateDirectory(Path.Combine(rootpath, "bin"));
             }
 
         }
@@ -70,6 +71,19 @@ namespace WS.Business
             {
                 MapPath(str[i], folders);
                 folders += str[i] + "/";
+            }
+
+            return folders;
+        }
+        public string AddFoldersWhenCopyFile(string path, string userId)
+        {
+            //rootpath = Path.Combine(rootpath, userId);
+            string folders = userId + "\\";
+            var str = path.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < str.Length-1; i++)
+            {
+                MapPath(str[i], folders);
+                folders += str[i] + "\\";
             }
 
             return folders;

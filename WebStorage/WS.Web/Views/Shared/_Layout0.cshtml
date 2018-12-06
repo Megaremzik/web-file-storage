@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WS.Web</title>
-    <meta name='viewport'
-          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
 
     <environment include="Development">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -46,46 +44,16 @@
         <script src="~/lib/jQuery-contextMenu-master/dist/jquery.contextMenu.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="https://unpkg.com/popper.js"></script>
     </environment>
-    <script>
-        $(document).ready(function () {
-            $('.nav-left_pan').removeClass('active');
-            var activeNav = sessionStorage.getItem("navNumber");
-            if (activeNav == "2") $("#nav-left-2").addClass('active');
-            else if (activeNav == "3") $("#nav-left-3").addClass('active');
-            else $("#nav-left-1").addClass('active');
-        })
-    </script>
     @RenderSection("Scripts", required: false)
 </head>
 <body>
-    <div class="container-fluid main-container">
-        <div class=" row headerLayout">
-            @await Html.PartialAsync("_LoginPartial")
-        </div>
-
-
-        <div class="btn-group mobile-menu">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-bars"></i> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#" onclick="SetNumber(1)">@Html.ActionLink("My documents", "Index", "Document")</a></li>
-                <li><a href="#" onclick="SetNumber(2)">@Html.ActionLink("Shared documents", "GetSharedDocumentsForUser", "Document")</a></li>
-                <li><a href="#" onclick="SetNumber(3)">@Html.ActionLink("Deleted files", "DeletedFiles", "Document")</a></li>
-            </ul>
-        </div>
-
-        <div class="row">
-            <ul class="nav nav-pills nav-stacked col-md-1 desktop-menu">
-                <li id="nav-left-1" class="nav-left_pan active" onclick="SetNumber(1)">@Html.ActionLink("My documents", "Index", "Document")</li>
-                <li id="nav-left-2" class="nav-left_pan" onclick="SetNumber(2)">@Html.ActionLink("Shared documents", "GetSharedDocumentsForUser", "Document")</li>
-                <li id="nav-left-3" class="nav-left_pan" onclick="SetNumber(3)">@Html.ActionLink("Deleted files", "DeletedFiles", "Document")</li>
-            </ul>
-            <div class="body-content col-md-11">
-                @RenderBody()
-            </div>
+    <div class=" row headerLayout">
+        @await Html.PartialAsync("_LoginPartial")
+    </div>
+    <div class="row">
+        <div class="container-fluid body-content col-md-6 col-md-offset-3">
+            @RenderBody()
         </div>
     </div>
     <hr />

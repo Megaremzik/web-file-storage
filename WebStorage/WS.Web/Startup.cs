@@ -39,8 +39,8 @@ namespace WS.Web
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = "691453484585-kimp14ckahpch031mjo02jr7ae97fv2q.apps.googleusercontent.com";
-                googleOptions.ClientSecret = "NVBnviP-03riVYEuihjaqt7P";
+                googleOptions.ClientId = "691453484585-9i6kjel2pmoccfn5qrvbfuilpnu88h8j.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "9W-kuFKkfRp8LmuDCSFhKtV1";
             }).AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = "281006039204288";

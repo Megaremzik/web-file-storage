@@ -9,7 +9,7 @@
     }
 
     .dropzone-container {
-        width: 90%;
+        width: 100%;
         margin-left: 15px;
         margin-right: 5px;
     }
@@ -64,6 +64,7 @@
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
 <script>
+    sessionStorage.setItem("type",@ViewBag.Type)
     GetParentId();
     function handleDragOver(e) {
         if (e.preventDefault) {
@@ -95,7 +96,13 @@
         $('#createModal').modal({ show: false });
         $('#viewErrorModal').modal({ show: false });   
         $('#backParentId').hide();
-        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
+            if (@ViewBag.Type== 1 ) {
+                    $('#dropzone-drop-area').load('@Url.Action("SharedDocuments", "Document")');
+                }
+                else {
+                    $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
+                }
+        
         $('#menuButton').on('click', function (e) {
             e.preventDefault();
             //$('.filerow').contextMenu();
@@ -106,7 +113,7 @@
     $.contextMenu({
         selector: '.filerow',
         callback: function (key, options) {
-            ContextResult(key, $(this).attr("id"))
+            ContextResult(key, $(this).attr("id"), $(this).attr("name"))
         },
         items: {
             "download": { name: "Download"},
@@ -185,7 +192,7 @@
     <div class="col-md-11">
         <div class="row">
             <button id="backParentId" class="btn btn-secondary" onclick="GoBack()">Назад</button>
-            <form class="navbar-form navbar-left" action="/search/find" method="post">
+            <form class="navbar-form navbar-left search-bar" action="/search/find" method="post">
                 <div class="input-group">
                     <input type="text" name="pattern" id="pattern" class="form-control" oninput="SearchTop();" onfocus="SearchTop();" onblur="HideResults();" autocomplete="off" placeholder="Search">
                     <span class="input-group-btn">
@@ -223,6 +230,7 @@
     Html.RenderPartial("_Rename", new DocumentView());
     Html.RenderPartial("_FileViewErrorResult", new DocumentView());
     Html.RenderPartial("_CreateFolder", new DocumentView());
+    Html.RenderPartial("_DeleteModal", new DocumentView());
     @Html.Partial("../Share/_SharingModal.cshtml", new DocumentView());
 }
 
