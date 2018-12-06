@@ -497,6 +497,7 @@ function Download(id) {
             documentId: id
         },
         success: function (data) {
+            $("#viewErrorModal").modal("hide");
             window.location = '/Download/Get?documentId='+id;
         }
     }); 
