@@ -96,7 +96,7 @@
         $('#createModal').modal({ show: false });
         $('#viewErrorModal').modal({ show: false });   
         $('#backParentId').hide();
-        if (@ViewBag.Type== 1 && @Model.Count()>0) {
+            if (@ViewBag.Type== 1 ) {
                     $('#dropzone-drop-area').load('@Url.Action("SharedDocuments", "Document")');
                 }
                 else {
