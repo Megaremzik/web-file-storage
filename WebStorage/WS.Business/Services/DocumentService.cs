@@ -510,6 +510,11 @@ namespace WS.Business.Services
             }
             return documents;
         }
+        public DocumentViewModel ConvertToViewModel(DocumentView document)
+        {
+            DocumentViewModel documents = new DocumentViewModel(document, MakeSizeView(document), document.Size, IsShared(document.Id), IconForFile(document));
+            return documents;
+        }
         public string IconForFile(DocumentView document)
         {
             if(document.IsFile==false) return "fa fa-folder fa-2x";
@@ -579,17 +584,31 @@ namespace WS.Business.Services
         {
             return repo.IsYourFile(id, userId);
         }
-        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(string userId)
+        public IEnumerable<DocumentViewModel> GetSharedDocumentsForUser(string userId)
         {
-            var user = _userService.GetUserById(userId);
+            UserView user = _userService.GetUserById(userId);
 
             var sharedIds = _userDocumentService.GetAll()
                 .Where(n => n.GuestEmail == user.Email)
                 .Select(n => n.DocumentId)
                 .ToList();
-            return ConvertToViewModel(GetAll(userId)
-                .Where(n => sharedIds.Contains(n.Id)))
+            var docs = GetAll()
+                .Where(n => sharedIds.Contains(n.Id))
                 .ToList();
+            for (int i = 0; i < docs.Count(); i++)
+            {
+                docs[i].ParentId = 0;
+            }
+            var docsChildren = new List<DocumentView>();
+            foreach (var p in docs)
+            {
+                if (!p.IsFile)
+                {
+                    docsChildren.AddRange(GetAllChildrensForFolder(p.Id));
+                }
+            }
+            docs.AddRange(docsChildren);
+            return ConvertToViewModel(docs);
         }
     }
 }

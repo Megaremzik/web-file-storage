@@ -64,6 +64,7 @@
 @Html.Hidden("fullpath", "")
 @Html.Hidden("parentId", "")
 <script>
+    sessionStorage.setItem("type",@ViewBag.Type)
     GetParentId();
     function handleDragOver(e) {
         if (e.preventDefault) {
@@ -95,7 +96,13 @@
         $('#createModal').modal({ show: false });
         $('#viewErrorModal').modal({ show: false });   
         $('#backParentId').hide();
-        $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
+        if (@ViewBag.Type== 1 && @Model.Count()>0) {
+                    $('#dropzone-drop-area').load('@Url.Action("SharedDocuments", "Document")');
+                }
+                else {
+                    $('#dropzone-drop-area').load('@Url.Action("ReturnDocumentList", "Document", new {parentId=ViewBag.ParentId })');
+                }
+        
         $('#menuButton').on('click', function (e) {
             e.preventDefault();
             //$('.filerow').contextMenu();

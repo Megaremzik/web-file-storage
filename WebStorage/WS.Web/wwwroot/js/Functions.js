@@ -43,7 +43,8 @@ function DoubleClickAction(isFile, id) {
             type: "Post",
             url: '/Document/ReturnDocumentList',
             data: {
-                parentId: id
+                parentId: id,
+                type: sessionStorage.getItem("type")
             },
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
@@ -63,7 +64,8 @@ function GoBack() {
         type: "Post",
         url: '/Document/ReturnParent',
         data: {
-            id: parentId
+            id: parentId,
+            type: sessionStorage.getItem("type")
         },
         success: function (data, textStatus, jqXHR) {
             $('#dropzone-drop-area').html(data);

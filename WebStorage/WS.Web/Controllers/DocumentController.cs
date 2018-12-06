@@ -39,10 +39,13 @@ namespace WS.Web.Controllers
             _pathProvider.MapId(userId);
             var documents = _service.ConvertToViewModel(_service.GetAllWithotDeleted(userId)); ;
             ViewBag.ParentId = id;
+            ViewBag.Type = 0;
             return View(documents);
         }
-        public IActionResult ReturnDocumentList(int parentId=0)
+
+        public IActionResult ReturnDocumentList(int parentId=0, int type=0)
         {
+            if (type == 1) return RedirectToAction("SharedDocuments", new { parentId = parentId });
             string userId = _userManager.GetUserId(User);
             IEnumerable<DocumentViewModel> documents;
             if (parentId != 0) {
@@ -77,11 +80,23 @@ namespace WS.Web.Controllers
             return PartialView("_DeletedFileOptions", doc);
         }
 
-        public IActionResult ReturnParent(int id)
+        public IActionResult ReturnParent(int id, int type=0)
         {
             var parentId = _service.Get(id).ParentId;
-            return RedirectToAction("ReturnDocumentList","Document",new { parentId});
+            if (parentId == 0)
+            {
+                if (type == 1)
+                {
+                    return RedirectToAction("SharedDocuments", "Document", new { parentId });
+                }
+                else
+                {
+                    return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
+                }
+            }
+            return RedirectToAction("ReturnDocumentList", "Document", new { parentId });
         }
+            
         public IActionResult FileOptions(int id)
         {
             var doc = _service.Get(id);
@@ -89,7 +104,6 @@ namespace WS.Web.Controllers
         }
         public IActionResult Paste(int id, int parentId, string type)
         {
-            var userId = _userManager.GetUserId(User);
             if (type == "copy")
             {
                 _service.CreateACopy(id, parentId);
@@ -187,6 +201,23 @@ namespace WS.Web.Controllers
             } 
             return RedirectToAction("Index", doc.ParentId);
         }
-     
+        public IActionResult GetSharedDocumentsForUser(int parentId = 0)
+        {
+            string userId = _userManager.GetUserId(User);
+            var documents = _service.GetSharedDocumentsForUser(userId);
+            if (parentId != 0) documents = documents.Where(d => d.Document.ParentId == parentId);
+            ViewBag.ParentId = 0;
+            ViewBag.Type = 1;
+            return View("Index", documents);
+        }
+        public IActionResult SharedDocuments(int parentId = 0)
+        {
+            string userId = _userManager.GetUserId(User);
+            var documents = _service.GetSharedDocumentsForUser(userId);
+            documents = documents.Where(d => d.Document.ParentId == parentId);
+            ViewBag.ParentId = parentId;
+            ViewBag.Type = 1;
+            return PartialView("_GetDocuments", documents);
+        }
     }
 }
