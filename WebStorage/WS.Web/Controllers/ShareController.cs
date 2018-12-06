@@ -21,17 +21,13 @@ namespace WS.Web.Controllers
         private DocumentService _documentService;
         EmailSender _emailSender;
         UserManager<User> _manager;
-        public ShareController(SharingService sharingService, DocumentService documentService, EmailSender emailSender, UserManager<User> manager)
+        public ShareController(SharingService sharingService, DocumentService documentService, EmailSender emailSender)
         {
             _sharingService = sharingService;
             _documentService = documentService;
             _emailSender = emailSender;
-            _manager = manager;
         }
-        public ICollection<DocumentViewModel> Index()
-        {
-            return _sharingService.GetSharedDocumentsForUser(_manager.GetUserId(User));
-        }
+
         public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
             DocumentLinkView docLink = _sharingService.GetPublicAccessLink(documentId, User);

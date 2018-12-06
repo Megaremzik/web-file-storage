@@ -3,6 +3,8 @@
 <script src="~/lib/sortable-0.8.0/js/sortable.min.js"></script>
 <link rel="stylesheet" href="~/lib/sortable-0.8.0/css/sortable-theme-bootstrap.css" />
 <link rel="stylesheet" href="~/scss/_sharing-styles.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
 <script>
     SetParentId(@ViewBag.ParentId);
     $(document).ready(function () {
@@ -33,7 +35,7 @@
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-bars"></i> <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-right">
                             <li><a class="dropdownload" href="#">Download</a></li>
                             <li><a class="dropshare" href="#">Share</a></li>
                             <li><a class="dropview" href="#">View</a></li>
