@@ -13,7 +13,7 @@
 
 
 
-@Html.Partial("../Share/_SharingModal.cshtml", Model);
+@Html.Partial("../Share/_SharingModal.cshtml", Model)
 
 <button type="button" class="btn btn-danger" onclick="ConfirmDelete(@Convert.ToString(" \"" + Model.Name + "\" "), @Convert.ToInt32(Model.IsFile))"><i class="glyphicon glyphicon-trash"></i>Удалить</button>
 

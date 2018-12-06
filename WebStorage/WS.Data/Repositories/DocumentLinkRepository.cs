@@ -18,7 +18,9 @@ namespace WS.Data
         }
         public IEnumerable<DocumentLink> GetAll(string s=null)
         {
-            return db.DocumentLink.ToList();
+            var docLinks= db.DocumentLink.ToList();
+            db.SaveChanges();
+            return docLinks;
         }
         public void Create(DocumentLink documentLink)
         {
@@ -27,7 +29,9 @@ namespace WS.Data
         }
         public DocumentLink Get(int? id)
         {
-            return db.DocumentLink.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            var docLink = db.DocumentLink.FirstOrDefault(p => p.Id == id);
+            db.SaveChanges();
+            return docLink;
         }
         public void Update(DocumentLink documentLink)
         {

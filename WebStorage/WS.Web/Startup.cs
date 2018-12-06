@@ -39,8 +39,8 @@ namespace WS.Web
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = "691453484585-kimp14ckahpch031mjo02jr7ae97fv2q.apps.googleusercontent.com";
-                googleOptions.ClientSecret = "NVBnviP-03riVYEuihjaqt7P";
+                googleOptions.ClientId = "691453484585-9i6kjel2pmoccfn5qrvbfuilpnu88h8j.apps.googleusercontent.com";
+                googleOptions.ClientSecret = "9W-kuFKkfRp8LmuDCSFhKtV1";
             }).AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = "281006039204288";
@@ -62,7 +62,7 @@ namespace WS.Web
             services.AddTransient<DownloadService>();
             services.AddTransient<UserService>();
             services.AddTransient<PathProvider>();
-        
+            services.AddTransient<SearchService>();
             services.AddAutoMapper();
             services.AddSharing();
 
@@ -74,17 +74,17 @@ namespace WS.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+               // app.UseBrowserLink();
+              //  app.UseDeveloperExceptionPage();
+               // app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseExceptionHandler("/Error/500");
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseStaticFiles();
-
             app.UseAuthentication();
             
             app.UseMvc(routes =>
@@ -94,6 +94,7 @@ namespace WS.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
 
             });
+         
         }
     }
 }

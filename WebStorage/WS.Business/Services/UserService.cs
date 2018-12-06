@@ -21,6 +21,11 @@ namespace WS.Business.Services
             mapper = map;
             repo = r;
         }
+        public UserView GetUserById(string userId)
+        {
+            User user = repo.GetUserById(userId);
+            return mapper.Map< User, UserView > (user);
+        }
         public string GetUserIdByDocumentId(int documentId)
         {
             return repo.GetUserIdByDocumentId(documentId);
@@ -35,6 +40,10 @@ namespace WS.Business.Services
             string userId = GetUserIdByDocumentId(documentId);
             string userId2 = _userManager.GetUserId(user);
             return userId == userId2;
+        }
+        public string GetUserId(ClaimsPrincipal user)
+        {
+            return _userManager.GetUserId(user);
         }
     }
 }

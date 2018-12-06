@@ -1,0 +1,24 @@
+﻿@using WS.Business.ViewModels
+@model DocumentView
+<div class="modal" tabindex="-1" id="viewErrorModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">This file viewing is not supported</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.EditorFor(Model => Model.Id, new { htmlAttributes = new { @type = "hidden", @id = "DownloadFileId" } })
+                <p>You can't view this file</p>
+                <p>But if you want you can download it (just press the button "Download")</p>
+                <p>Or press the button "Close" to close this window</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="Download(document.getElementById('DownloadFileId').value)">Download</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

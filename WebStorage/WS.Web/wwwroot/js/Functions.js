@@ -1,9 +1,17 @@
 ﻿function GetParentId() {
     var parent = sessionStorage.getItem("parentId");
     document.querySelector('input[name=parentId]').value = parent;
+    if (parent != 0) {
+        $('#backParentId').show();
+    }
     return parent;
 }
 function ShowFileOptions(doc) {
+    var tr = document.getElementById(doc)
+    $('.filerow').removeClass('selected'); // "Unselect" all the rows
+    $('#'+doc).addClass('selected'); // Select the one clicked
+
+
     $.ajax({
         type: "Post",
         url: '/Document/FileOptions',
@@ -15,6 +23,20 @@ function ShowFileOptions(doc) {
         }
     });
 }
+
+function ShowDeletedFileOptions(doc) {
+    $.ajax({
+        type: "Post",
+        url: '/Document/DeletedFileOptions',
+        data: {
+            id: doc
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#deleted-file-options').html(data);
+        }
+    });
+}
+
 function DoubleClickAction(isFile, id) {
     if (isFile === 0) {
         $('#backParentId').show();
@@ -22,7 +44,8 @@ function DoubleClickAction(isFile, id) {
             type: "Post",
             url: '/Document/ReturnDocumentList',
             data: {
-                parentId: id
+                parentId: id,
+                type: sessionStorage.getItem("type")
             },
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
@@ -30,19 +53,20 @@ function DoubleClickAction(isFile, id) {
         });
     }
     else {
-        //Просмотр файла
+        ViewFile(id);
     }
 }
 function TurnOnDeletionMode() {
     sessionStorage.setItem("mode", "del");
 }
 function GoBack() {
-    var parentId = GetParentId();    
+    var parentId = GetParentId();
     $.ajax({
         type: "Post",
         url: '/Document/ReturnParent',
         data: {
-            id: parentId
+            id: parentId,
+            type: sessionStorage.getItem("type")
         },
         success: function (data, textStatus, jqXHR) {
             $('#dropzone-drop-area').html(data);
@@ -52,8 +76,8 @@ function GoBack() {
 
 
 
-function GetLinks(docId) {
-
+function GetLinks() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/GetPublicAccessLink',
@@ -64,6 +88,8 @@ function GetLinks(docId) {
             if (data.link == "") {
                 $('#publicLink').hide();
                 $('#closePAccess').hide();
+                $('#openPAccess').show();
+                
             }
             else {
                 $('#openPAccess').hide();
@@ -71,6 +97,8 @@ function GetLinks(docId) {
                     $('#sel1').get(0).selectedIndex = 1;
 
                 }
+                $('#closePAccess').show();
+                $('#publicLink').show();
                 $('#openPAccess').hide();
                 $('#pl').val(data.link);
                 $('#pl').select();
@@ -85,7 +113,8 @@ function CopyToClipboard() {
     document.execCommand("copy");
 }
 
-function sendInvite(docId) {
+function sendInvite() {
+    var docId = document.getElementById("SharingId").value
     var email = $("#privateEmail").val();
     $("#privateEmail").val("");
     var isEdit = $('#sel3').val();
@@ -102,8 +131,8 @@ function sendInvite(docId) {
             $('#accessLevelHeader').show();
             $('#closeLAccess').show();
 
-            var selectOptions = isEdit == "true" ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+            var selectOptions = isEdit == "true" ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                '<option value="false">View</option><option value="true">Edit</option>';
             $('.EmailsList').append('<li class="list-group-item">'
                 + email +
                 '<a href="#"  onclick="deleteUser(' +
@@ -115,8 +144,9 @@ function sendInvite(docId) {
         }
     })
 }
-function updateAccessForUser(docId, email, tag) {
-    var isEdit = $(tag).val();
+function updateAccessForUser(docIdd, email, tagIsEdit) {
+    var docId = document.getElementById("SharingId").value
+    var isEdit = $(tagIsEdit).val();
     $.ajax({
         method: 'GET',
         url: '/Share/AddAccessForUser',
@@ -126,12 +156,13 @@ function updateAccessForUser(docId, email, tag) {
             isEditable: isEdit
         },
         success: function (data) {
-            console.log("test");
+            console.log(data);
         }
     })
 }
 
-function GetAllUser(docId) {
+function GetAllUser() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/GetAllUsersForSharedDocument',
@@ -141,8 +172,8 @@ function GetAllUser(docId) {
         success: function (data) {
             $('.EmailsList').children().remove();
             for (var i = 0; i < data.length; i++) {
-                var selectOptions = data[i].isEditable == true ? '<option value="false">Просматривать</option><option value="true" selected>Редактировать</option>' :
-                    '<option value="false">Просматривать</option><option value="true">Редактировать</option>';
+                var selectOptions = data[i].isEditable == true ? '<option value="false">View</option><option value="true" selected>Edit</option>' :
+                    '<option value="false">View</option><option value="true">Edit</option>';
                 $('.EmailsList').append('<li class="list-group-item">'
                     + data[i].guestEmail +
                     '<a href="#"  onclick="deleteUser(' +
@@ -159,8 +190,8 @@ function GetAllUser(docId) {
         }
     })
 }
-function openPublicAccess(docId) {
-
+function openPublicAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/OpenPublicAccess',
@@ -179,8 +210,9 @@ function openPublicAccess(docId) {
     })
 }
 
-function changeAccessLevel(docId) {
+function changeAccessLevel() {
     var isEdit = $('#sel1').val();
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/OpenPublicAccess',
@@ -198,8 +230,8 @@ function changeAccessLevel(docId) {
     })
 }
 
-function closePublicAccess(docId) {
-
+function closePublicAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/ClosePublicAccess',
@@ -216,7 +248,8 @@ function closePublicAccess(docId) {
     })
 }
 
-function deleteUser(docId, user, tag) {
+function deleteUser(docIds, user, tag) {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/DeleteAccessForUser',
@@ -234,7 +267,8 @@ function deleteUser(docId, user, tag) {
     })
 }
 
-function closeLimitedAccess(docId) {
+function closeLimitedAccess() {
+    var docId = document.getElementById("SharingId").value
     $.ajax({
         method: 'GET',
         url: '/Share/CloseLimitedAccess',
@@ -253,13 +287,23 @@ function SetParentId(id) {
     if (id == 0) {
         $('#backParentId').hide();
     }
-    sessionStorage.setItem("parentId",id)
+    sessionStorage.setItem("parentId", id)
 }
-function ContextResult(action, id) {
-    if (action == "delete") {
-        Url.Action("Delete", "Document", id);
+
+function DeleteContextResult(action, id, name) {
+    if (action == "delete permanently") {
+        FinalConfirmDelete(id)
     }
-    else if (action == "copy") {
+    else if (action == "restore") {
+        RestoreDoc(id)
+    }
+}
+
+function ContextResult(action, id, name) {
+    //if (action == "delete") {
+    //    Url.Action("Delete", "Document", id);
+    //}
+    if(action == "copy") {
         sessionStorage.setItem("copy", id);
         sessionStorage.setItem("type", "copy");
     }
@@ -271,7 +315,7 @@ function ContextResult(action, id) {
         var parent = sessionStorage.getItem("parentId");
         var type = sessionStorage.getItem("type");
         var item = sessionStorage.getItem("copy");
-        sessionStorage.setItem("copy","")
+        sessionStorage.setItem("copy", "")
         $.ajax({
             type: "Post",
             url: '/Document/Paste',
@@ -283,7 +327,7 @@ function ContextResult(action, id) {
             success: function (data, textStatus, jqXHR) {
                 $('#dropzone-drop-area').html(data);
             }
-        }); 
+        });
     }
     else if (action == "rename") {
         var row = document.getElementById(id);
@@ -291,58 +335,139 @@ function ContextResult(action, id) {
         $("#renameModal #ModelId").val(id);
         $("#renameModal #ModelName").val(cell);
         $('#renameModal').modal('show');
-        //$.ajax({
-        //    type: "Post",
-        //    url: '/Document/Rename',
-        //    data: {
-        //        id: id,
-        //    },
-        //    success: function (data, textStatus, jqXHR) {
-        //        $('#dropzone-drop-area').html(data);
-        //    }
-        //}); 
     }
     else if (action == "download") {
-        $.ajax({
-            type: "Post",
-            url: '/Download/Get',
-            data: {
-                id: id
-            },
-            success: function (data, textStatus, jqXHR) {
-                $('#dropzone-drop-area').html(data);
-            }
-        }); 
+        Download(id);
     }
     else if (action == "share") {
-        $('#myModal').modal('show');
+        $("#shareModal #SharingId").val(id);
+        GetLinks(id);
+        $('#shareModal').modal('show');
     }
     else if (action == "view") {
-        $.ajax({
-            type: "Post",
-            url: '/Document/ViewFile',
-            data: {
-                id: id
-            }
-            //success: function (data, textStatus, jqXHR) {
-            //    $('#dropzone-drop-area').html(data);
-            //}
-        }); 
+        ViewFile(id);
+    }
+    else if (action == "delete") {
+        ConfirmDelete(id)
     }
 }
+function Rename() {
+    var id = document.getElementById("ModelId").value;
+    var name = document.getElementById("ModelName").value;
+    $.ajax({
+            type: "Post",
+            url: '/Document/Rename',
+            data: {
+                id: id,
+                name: name
+            },
+        success: function (data, textStatus, jqXHR) {
+                $('#renameModal').modal('hide');
+                $('#dropzone-drop-area').html(data);
+            }
+        });
+};
+function ViewFile(id) {
+    var row = document.getElementById(id);
+    var name = row.children[0].textContent;
+    var isFolder = row.children[0].innerHTML.includes("fa-folder");
+
+    if (!isFolder) {
+        var extention = name.split('.');
+        if (extention[extention.length - 1] == "txt" || extention[extention.length - 1] == "mp3" || extention[extention.length - 1] == "png" || extention[extention.length - 1] == "pdf" || extention[extention.length - 1] == "mp4" || extention[extention.length - 1] == "js" || extention[extention.length - 1] == "bmp" || extention[extention.length - 1] == "jpg") {
+            window.open('/Document/ViewFile/?id=' + id, "_blank");
+        }
+        else {
+            $("#viewErrorModal #DownloadFileId").val(id);
+            $("#viewErrorModal").modal("show");     
+        }
+    }
+}
+function GetClientReport() {
+    window.open('/Document/ViewFile', "_blank");
+};
 function CheckIfItIsABlankSpace(id) {
     if (id == "filetable") return true;
     return false;
 }
-function ConfirmDelete(name, isFile) {
-    if (isFile === 1) {
-        $(".modal-title").text("Удалить файл?")
-    }
-    else {
-        $(".modal-title").text("Удалить папку?")
-    }
-    $("#deleteMessege").text("Действительно удалить " + name + " из Foxbox?");
+
+function SendEmail(email) {
+    var model = {
+        'Email': email
+    };
+    $.ajax({
+        type: "POST",
+        url: "/Account/ForgotPassword",
+        data: JSON.stringify(model),
+        contentType: 'application/json',
+        success: function () {
+            $("#forgotModal").modal("hide");
+        }
+    })
+}
+
+function ConfirmForgot() {
+    $(window).load(function () {
+        $('#forgotModal').modal('show');
+    });
+}
+
+function ConfirmReset() {
+    $(window).load(function () {
+        $('#resetModal').modal('show');
+    });
+}
+
+function ConfirmDelete(id) {
+    $(".modal-title").text("Delete document?")
+    $("#hiddenTaskId").val(id);
+    $("#deleteMessege").text("Delete document from Foxbox?");
     $("#deleteModal").modal("show");
+}
+
+function FinalConfirmDelete(id) {
+    $("#hiddenTaskId").val(id);
+    $(".modal-title").text("Delete document?")
+    $("#deleteMessege").text("File " + name + " will be permanently deleted from Foxbox and you will not be able to restore it.");
+    $("#finalDeleteModal").modal("show");
+}
+
+function Restore(name, isFile) {
+    $("#restoreModal").modal("show");
+}
+
+function RestoreDoc(id) {
+    $.ajax({
+        type: "POST",
+        url: "/Document/Restore",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#" + id).remove();
+            }
+            else {
+                $("#restoreModal").modal("show");
+            }
+        }
+    })
+}
+
+function FinalDeleteDoc(id) {
+    id = $("#hiddenTaskId").val();
+    $.ajax({
+        type: "POST",
+        url: "/Document/FinalDelete",
+        data: { id: id },
+        success: function (result) {
+            if (result) {
+                $("#finalDeleteModal").modal("hide");
+                $("#" + id).remove();
+            }
+            else {
+                $("#finalDeleteModal").modal("hide");
+            }
+        }
+    })
 }
 
 function DeleteDoc() {
@@ -362,3 +487,150 @@ function DeleteDoc() {
         }
     })
 }
+function ChooseFiles() {
+    $('.dropzone').trigger('click');
+}
+function TriggerMenu() {
+    //$('.filerow').trigger("contextmenu");
+    $('.filerow').contextMenu({ x: event.pageX, y: event.pageY });
+}
+function CreateFolder() {
+    var id = GetParentId();
+    $("#createModal #CreateParentId").val(id);
+    $("#createModal").modal("show");
+}
+function SendCreateFolderRequest() {
+    var id = document.getElementById("CreateParentId").value;
+    var name = document.getElementById("CreateName").value;
+    $.ajax({
+        type: "Post",
+        url: '/Document/CreateFolder',
+        data: {
+            parentId: id,
+            name: name
+        },
+        success: function (data, textStatus, jqXHR) {
+            $('#createModal').modal('hide');
+            $('#dropzone-drop-area').html(data);
+        }
+    });
+}
+function Download(id) {
+    $.ajax({
+        type: "GET",
+        url: '/Download/Get',
+        data: {
+            documentId: id
+        },
+        success: function (data) {
+            $("#viewErrorModal").modal("hide");
+            window.location = '/Download/Get?documentId='+id;
+        }
+    }); 
+}
+function ShowSnack() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+}
+function SearchTop() {
+    $(".result").show();
+    var searchPattern = $('#pattern').val()
+    $.ajax({
+        url: "/search/FindTop",
+        data: {
+            pattern: searchPattern,
+            count: 4
+        },
+        success: function (data) {
+            $(".result").html("");
+            if (!data.length && searchPattern) {
+                $(".result").html("<div class='search-error'>Ничего не найдено<div>");
+            }
+            for (var i = 0; i < data.length; i++) {
+                var icon;
+                if (data[i].isFile) {
+                    icon = '<i class="glyphicon glyphicon-file pull-left file-icon"></i>'
+                }
+                else {
+                    icon = '<i class="glyphicon glyphicon-folder-open pull-left folder-icon"></i>'
+                }
+                var index = data[i].name.toLowerCase().indexOf(searchPattern.toLowerCase());
+                var ptrn = data[i].name.slice(index, index + searchPattern.length);
+                var name = data[i].name.slice(0, index) + `<b>${ptrn}</b>` + data[i].name.slice(index + ptrn.length);
+                var path = data[i].path;
+
+                $(".result").append(
+                    `<div class="search-item" onmousedown="return location.href = '/Search/GetDocument?documentId=${data[i].id}'">${icon}<div>
+                    <p class="file-name">${name}</p><p class="folder-path">В папке: ${path}</p></div></div>`);
+            }
+        }
+    });
+}
+window.currentProcessingItem = 0;
+window.ProcessingItems = 0;
+function HideResults() {
+    $(".result").hide();
+}
+function StoreUserToSession() {
+    sessionStorage.setItem("user", document.getElementById("email").value)
+}
+//$(".nav-left_pan").click(function () {
+//    sessionStorage.setItem("navNumber",$(this).value)
+//});
+function SetNumber(number) {
+    sessionStorage.setItem("navNumber", number)
+}
+function AdddropdownClickEvents() {
+    [].forEach.call($('.dropdownload'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('download', id);
+        })
+    });
+    [].forEach.call($('.dropshare'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('share', id);
+        })
+    });
+    [].forEach.call($('.dropview'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('view', id);
+        })
+    });
+    [].forEach.call($('.droprename'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('rename', id);
+        })
+    });
+    [].forEach.call($('.dropcut'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('cut', id);
+        })
+    });
+    [].forEach.call($('.droppaste'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('paste', id);
+        })
+    });
+    [].forEach.call($('.dropcopy'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('copy', id);
+        })
+    });
+    [].forEach.call($('.dropdelete'), function (el) {
+        el.addEventListener('click', function (e) {
+            var id = el.parentElement.parentElement.parentElement.parentElement.parentElement.id;
+            ContextResult('delete', id);
+        })
+    });
+}
+//$('.dropdownload').addEventlistener("click",function () {
+//    var id = $(this).parent().parent().parent().parent().id;
+//    ContextResult('download', id);
+//})

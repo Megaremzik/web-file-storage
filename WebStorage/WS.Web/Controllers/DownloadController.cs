@@ -34,11 +34,10 @@ namespace WS.Web.Controllers
                 return PhysicalFile(path, contentType, doc.Name);
             }
             string zipName = _downloadService.CreateZip(path);
-            return PhysicalFile(Path.Combine( _downloadService.GetPathForZip(), zipName), "application/zip" , doc.Name + ".zip");
-        }
-
       
-
-
+            byte[] archive = System.IO.File.ReadAllBytes(Path.Combine(_downloadService.GetPathForZip(), zipName));
+            System.IO.File.Delete(Path.Combine(_downloadService.GetPathForZip(), zipName));
+            return File(archive, "application/zip" , doc.Name + ".zip");
+        }
     }
 }

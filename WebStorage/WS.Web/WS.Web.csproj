@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="compilerconfig.json" />
   </ItemGroup>
 
@@ -39,12 +46,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4lib_4jQuery-contextMenu-master_4dist_4jquery_1contextMenu_1min_1css_1map__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -37,6 +37,7 @@ namespace WS.Business.Services
         {
             DocumentLink documentLink = mapper.Map<DocumentLinkView, DocumentLink>(documentLinkView);
             repo.Create(documentLink);
+            
         }
 
         public void Update (DocumentLinkView documentLinkView)

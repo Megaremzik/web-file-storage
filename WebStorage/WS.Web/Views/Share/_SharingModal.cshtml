@@ -1,6 +1,6 @@
 ﻿@using WS.Business.ViewModels;
-
-<div id="myModal" class="modal fade" role="dialog">
+@model DocumentView
+<div id="shareModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -8,11 +8,12 @@
             <div class="modal-header">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h4 class="modal-title">Совместный доступ</h4>
+                        <h4 class="modal-title">Sharing settings</h4>
                     </div>
+                    @Html.EditorFor(Model => Model.Id, new { htmlAttributes = new { @type = "hidden", @id = "SharingId" } })
                     <div class="col-sm-7">
-                        <button class="pull-right btn btn-default" id="closePAccess" onclick="closePublicAccess(@Model.Id);">Выключить доступ по ссылке</button>
-                        <button class="pull-right btn btn-default" id="openPAccess" onclick="openPublicAccess(@Model.Id);">Включить доступ по ссылке</button>
+                        <button class="pull-right btn btn-default" id="closePAccess" onclick="closePublicAccess(@Model.Id);">Disable access by link</button>
+                        <button class="pull-right btn btn-default" id="openPAccess" onclick="openPublicAccess(@Model.Id);">Enable access by link</button>
 
                     </div>
                 </div>
@@ -22,41 +23,41 @@
                     <div class="row">
                         <div class="col-sm-8 accessRow1">
                             <select class="form-control" onchange="changeAccessLevel(@Model.Id)" id="sel1">
-                                <option value="false">Просматривать могут все, у кого есть ссылка</option>
-                                <option value="true">Редактировать могут все, у кого есть ссылка</option>
+                                <option value="false">Anyone who has a link can view</option>
+                                <option value="true">Anyone who has a link can edit</option>
                             </select>
                         </div>
                         <div class="col-sm-4 accessRow2">
-                            <button id="copy-btn" class="btn btn-default btn-block" onclick="CopyToClipboard();">Копировать ссылку</button>
+                            <button id="copy-btn" class="btn btn-default btn-block" onclick="CopyToClipboard();">Copy Link</button>
                         </div>
                     </div>
                     <p><input id="pl" readonly class="form-control" type="text"></p>
                     <p><hr></p>
                 </div>
                 <div class="privateLink">
-                    <h5>Люди</h5>
+                    <h5>Invite people:</h5>
                     <div class="row">
                         <div class="col-sm-8 accessRow1">
-                            <input id="privateEmail" placeholder="Введите эл. почту" class="form-control" type="text">
+                            <input id="privateEmail" placeholder="Enter email" class="form-control" type="text">
                         </div>
                         <div class="col-sm-4 accessRow2">
                             <select class="form-control" id="sel3">
-                                <option value="false">Просматривать</option>
-                                <option value="true">Редактировать</option>
+                                <option value="false">View</option>
+                                <option value="true">Edit</option>
                             </select>
                         </div>
                     </div>
                     <p class="addEmail">
-                        <button onclick="sendInvite(@Model.Id);" class="btn btn-default">Добавить</button>
-                        <button class="pull-right btn btn-default" id="closeLAccess" onclick="closeLimitedAccess(@Model.Id);">Выключить ограниченный доступ по ссылке</button>
+                        <button onclick="sendInvite(@Model.Id);" class="btn btn-default">Add</button>
+                        <button class="pull-right btn btn-default" id="closeLAccess" onclick="closeLimitedAccess(@Model.Id);">Disable restricted access by link</button>
                     </p>
 
-                    <h5 id="accessLevelHeader">Уровни доступа</h5>
+                    <h5 id="accessLevelHeader">Who has access</h5>
                     <ul class="list-group EmailsList"></ul>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Готово</button>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Done</button>
             </div>
         </div>
 

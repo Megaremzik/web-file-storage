@@ -1,0 +1,28 @@
+﻿@using WS.Business.ViewModels
+@model IEnumerable<DocumentViewModel>
+<script>
+    SetParentId(@ViewBag.ParentId);
+</script>
+<table class="table filerow" id="filetable">
+    <thead><tr><th>Name</th><th>Size</th><th>Date of change</th><th>Path</th></tr></thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+        <tr class="filerow" id="@Model.ElementAt(i).Document.Id" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
+            @if (Model.ElementAt(i).IsShared)
+            {
+                <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name<i class="fa fa-users fa-lg" aria-hidden="true"></i></td>
+            }
+            else
+            {
+                <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name</td>
+            }
+            <td class="table_file_size">@Model.ElementAt(i).Size</td>
+            <td class="table_file_date_change">@Model.ElementAt(i).Document.Date_change</td>
+            <td class="table_file_path">
+                <p class="folder-path">В папке: @ViewBag.Pathes[i]</p>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

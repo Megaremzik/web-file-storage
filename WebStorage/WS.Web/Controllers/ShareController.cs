@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -10,6 +11,7 @@ using WS.Business;
 using WS.Business.Services;
 using WS.Business.ViewModels;
 using WS.Data;
+using WS.Web.Extensions;
 
 namespace WS.Web.Controllers
 {
@@ -18,16 +20,16 @@ namespace WS.Web.Controllers
         private SharingService _sharingService;
         private DocumentService _documentService;
         EmailSender _emailSender;
-
+        UserManager<User> _manager;
         public ShareController(SharingService sharingService, DocumentService documentService, EmailSender emailSender)
         {
             _sharingService = sharingService;
             _documentService = documentService;
             _emailSender = emailSender;
         }
+
         public DocumentLinkJsonView GetPublicAccessLink(int documentId)
         {
-
             DocumentLinkView docLink = _sharingService.GetPublicAccessLink(documentId, User);
 
             if (docLink == null)
@@ -41,9 +43,7 @@ namespace WS.Web.Controllers
         {
             string guid = _sharingService.OpenLimitedAccesToFile(documentId, isEditable, User, guestEmail);
             string link = Request.Host.Value + "/Share/Get?id=" + guid + "&adm=lim";
-            string subject = "Пользователь " + User.Identity.Name + " поделился с вами файлом";
-            string message = "<p>Пользователь " + User.Identity.Name +  $" поделился с вами файлом по следующей ссылке {link}</p>";
-            await _emailSender.SendEmailAsync(guestEmail, subject, message);
+            await _emailSender.SendEmailInvitationForSharedFileAsync(guestEmail, User.Identity.Name, link);
             return Content(link);
         }
 
@@ -68,7 +68,7 @@ namespace WS.Web.Controllers
             _sharingService.CloseLimitedAccesToFileEntire(documentId, User);
             return Ok();
         }
-
+        [AllowAnonymous]
         public IActionResult Get(string id, string adm)
         {
             DocumentView doc = null;
@@ -91,15 +91,8 @@ namespace WS.Web.Controllers
             }
             else
             {
-
                 var docs = _documentService.GetAllChildrensForFolder(doc.Id);
-
                 return RedirectToAction("Index", "Document", new { id = doc.Id });
-
-
-                //var docs = _documentService.GetAllChildren(doc.Id);
-                //ViewBag.FolderName = doc.Name;
-                //return View("GetFolder", docs);
             }
 
         }
@@ -108,6 +101,7 @@ namespace WS.Web.Controllers
             var userdocs = _sharingService.GetAllUsersForSharedDocument(documentId, User);
             return userdocs;
         }
+        
     }
 
 }

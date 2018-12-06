@@ -1,0 +1,58 @@
+﻿@mixin dimension($diameter) {
+    height: $diameter;
+    width: $diameter *5/3;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    padding: 50px 0;
+}
+
+
+.postCompozition {
+    background-size: cover;
+}
+
+
+/*@media screen and (max-width: 479px) {
+    #notebook {
+        min-width: 10%;
+    }
+}*/
+
+@media only screen and (max-width: 479px) {
+    .loginAdd #notebook {
+        @include dimension(165px);
+        top: -4px;
+        right: -33px;
+    }
+    .loginAdd #plane {
+        @include dimension(60px);
+        top: -167px;
+        right: -236px;
+    }
+    }
+
+#notebook {
+    @include dimension(220px);
+    position: relative;
+    top: 53px;
+    right: 1px;
+    background-image: url('../../images/comp.png');
+    z-index: 10;
+}
+
+#plane {
+    @include dimension(80px);
+    position: relative;
+    top: -189px;
+    right: -295px;
+    margin: -(80px / 2) 0 0 0-(80px / 2);
+    background-image: url('../../images/plane.png');
+    z-index: 20;
+}

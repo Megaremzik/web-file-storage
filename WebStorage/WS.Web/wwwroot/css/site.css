@@ -1,8 +1,10 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-left: 50px;
+    padding-right: 40px;
 }
-
+table{
+    font-size:15px;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -25,7 +27,28 @@
 #qrCode {
     margin: 15px;
 }
-
+.fa-folder{
+    color:orange;
+}
+.fa-file-pdf {
+    color: red;
+}
+.fa-file-word {
+    color: #0099FF;
+}
+.fa-file-image {
+    color: brown;
+}
+.fa-file{
+    color: #0099FF;
+}
+.fa-file-archive {
+    color: grey;
+}
+.btn-group-vertical{
+    padding-top: 30px;
+    font-size:18px;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

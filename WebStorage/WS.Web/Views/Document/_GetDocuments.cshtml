@@ -1,17 +1,53 @@
 ﻿@using WS.Business.ViewModels
-@model IEnumerable<DocumentView>
+@model IEnumerable<DocumentViewModel>
+<script src="~/lib/sortable-0.8.0/js/sortable.min.js"></script>
+<link rel="stylesheet" href="~/lib/sortable-0.8.0/css/sortable-theme-bootstrap.css" />
+<link rel="stylesheet" href="~/scss/_sharing-styles.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
 <script>
     SetParentId(@ViewBag.ParentId);
+    $(document).ready(function () {
+        AdddropdownClickEvents()
+    })
 </script>
-    <table class="table filerow" id="filetable">
-        <tr><td>Name</td><td>Extention</td><td>Size</td><td>IsFile</td></tr>
+
+<table class="table filerow sortable-theme-bootstrap" id="filetable" data-sortable>
+    <thead><tr><th>Name</th><th>Size</th><th id="dateTimeColumn">Date of change</th></tr></thead>
+    <tbody>
         @for (int i = 0; i < Model.Count(); i++)
         {
-            <tr class="filerow"id="@Model.ElementAt(i).Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).IsFile),@Model.ElementAt(i).Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Id)">
-                <td>@Model.ElementAt(i).Name</td>
-                <td>@Model.ElementAt(i).Extention</td>
-                <td>@Model.ElementAt(i).Size</td>
-                <td>@Model.ElementAt(i).IsFile</td>
+            <tr class="filerow" id="@Model.ElementAt(i).Document.Id" ondblclick="DoubleClickAction(@Convert.ToInt32(Model.ElementAt(i).Document.IsFile),@Model.ElementAt(i).Document.Id)" onclick="ShowFileOptions(@Model.ElementAt(i).Document.Id)">
+                @*<td><img src=@Model.ElementAt(i).Type width="5" height="5" alt="Type" /></td>*@
+                @if (Model.ElementAt(i).IsShared)
+                {
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name<i class="fa fa-users fa-lg" aria-hidden="true"></i></td>
+                }
+                else
+                {
+                    <td class="table_file_name"><i class="@Model.ElementAt(i).Icon" aria-hidden="true"></i> @Model.ElementAt(i).Document.Name</td>
+                }
+                <td class="table_file_size" data-value="@Model.ElementAt(i).Document.Size">@Model.ElementAt(i).Size</td>
+                <td class="table_file_date_change" data-value="@Model.ElementAt(i).Document.Date_change.Ticks">@Model.ElementAt(i).Document.Date_change</td>
+                @*<td class="table_file_is_file">@Model.ElementAt(i).Document.IsFile</td>*@
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-bars"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a class="dropdownload" href="#">Download</a></li>
+                            <li><a class="dropshare" href="#">Share</a></li>
+                            <li><a class="dropview" href="#">View</a></li>
+                            <li><a class="droprename" href="#">Rename</a></li>
+                            <li><a class="dropcut" href="#">Cut</a></li>
+                            <li><a class="dropcopy" href="#">Copy</a></li>
+                            <li><a class="droppaste" href="#">Paste</a></li>
+                            <li><a class="dropdelete" href="#">Delete</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
         }
-    </table>
+    </tbody>
+</table>

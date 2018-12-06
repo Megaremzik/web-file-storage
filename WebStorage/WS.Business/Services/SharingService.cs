@@ -39,6 +39,34 @@ namespace WS.Business.Services
             }
             return _documentLinkService.Get(documentId);
         }
+        public ICollection<DocumentViewModel> GetSharedDocumentsForUser(ClaimsPrincipal claim)
+        {
+            var userId = _userService.GetUserId(claim);
+            
+            var sharedIds =  _userDocumentService.GetAll()
+                .Where(n => n.GuestEmail == _userService.GetUserById(userId).Email)
+                .Select(n=>n.DocumentId)
+                .ToList();
+            var docs =  _documentService
+                .GetAll(userId)
+                .Where(n => sharedIds.Contains(n.Id))
+                .ToList();
+            for(int i = 0; i < docs.Count(); i++)
+            {
+                docs[i].ParentId = 0;
+            }
+            var docsChildren = new List<DocumentView>();
+            foreach(var p in docs)
+            {
+                if (!p.IsFile)
+                {
+                    docsChildren.AddRange(_documentService.GetAllChildrensForFolder(p.Id));
+                }
+            }
+            docs.AddRange(docsChildren);
+            return _documentService.ConvertToViewModel(docs).ToList();
+        }
+        
         public string OpenPublicAccesToFile(int documentId, bool isEditable, ClaimsPrincipal user)
         {
 
@@ -55,7 +83,7 @@ namespace WS.Business.Services
             DocumentLinkView docLink = _documentLinkService.Get(documentId);
             if (docLink != null)
             {
-                if(docLink.IsEditable==isEditable)
+                if (docLink.IsEditable == isEditable)
                 {
                     return docLink.Link;
                 }
@@ -90,7 +118,7 @@ namespace WS.Business.Services
             {
                 throw new UnauthorizedAccessException("User is not the owner of the file");
             }
-        
+
             DocumentLinkView documentLink = _documentLinkService.Get(documentId);
             if (documentLink != null)
             {
@@ -134,9 +162,10 @@ namespace WS.Business.Services
                 {
                     return userDoc.Link;
                 }
-                userDoc.IsEditable = isEditable;
-                _userDocumentService.Update(userDoc);
-                return userDoc.Link;
+                string createdguid = userDoc.Link;
+                _userDocumentService.Delete(guestEmail, documentId);
+                _userDocumentService.Create(new UserDocumentView { DocumentId = documentId, Link = createdguid, GuestEmail = guestEmail, IsEditable = isEditable });
+                return createdguid;
             }
 
             //If we have already had guid for this document, we use it
@@ -158,6 +187,7 @@ namespace WS.Business.Services
             }
             return guid;
         }
+
         public void RemoveAccessForUser(int documentId, ClaimsPrincipal owner, string guestName)
         {
             if (!_documentService.IsDocumentExist(documentId))
@@ -173,7 +203,6 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(guestName, documentId);
             }
-
         }
         public void CloseLimitedAccesToFileEntire(int documentId, ClaimsPrincipal user)
         {
@@ -188,7 +217,6 @@ namespace WS.Business.Services
             {
                 _userDocumentService.Delete(p.GuestEmail, p.DocumentId);
             }
-            
         }
     }
 }
