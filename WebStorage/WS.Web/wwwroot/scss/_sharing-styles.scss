@@ -204,28 +204,37 @@
         display: none;
     }
 
+    .result {
+        width: 85vw;
+    }
+
     .mobile-menu {
         display: inline-block;
     }
 
     .headerLayout {
         position: absolute;
-        right: 50px;
-        margin: 0 auto 0 auto;
+        right: 15px;
+        top:10px;
+        margin: 0 auto 0 auto;  
     }
-
+    .mobile-dropdawn {
+        margin: 15px 0 0 15px;
+    }
     .main-container {
         padding: 0;
     }
-    .input-group{
-    
+
+    .input-group {
+    }
+    .navbar-nav{
+        margin:0
     }
     .search-bar {
-        margin-top:20px;
+        margin-top: 20px;
         margin-left: 20px;
         width: 90%;
     }
- 
 }
 /* Small Devices, Tablets */
 @media only screen and (max-width : 767px) {

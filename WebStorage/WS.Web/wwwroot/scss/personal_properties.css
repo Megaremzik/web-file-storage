@@ -69,16 +69,6 @@
 footer {
   bottom: 0; }
 
-/* Large Devices, Wide Screens */
-/* Medium Devices, Desktops */
-/* Small Devices, Tablets */
-@media only screen and (max-width: 767px) {
-  .accessRow1 {
-    padding-right: 15px; }
-  .accessRow2 {
-    padding-left: 15px; } }
-
-/* Extra Small Devices, Phones */
 .accessRow1 {
   padding-right: 0; }
 
@@ -237,14 +227,21 @@ footer {
     margin-left: 0; }
   .desktop-menu {
     display: none; }
+  .result {
+    width: 85vw; }
   .mobile-menu {
     display: inline-block; }
   .headerLayout {
     position: absolute;
-    right: 50px;
+    right: 15px;
+    top: 10px;
     margin: 0 auto 0 auto; }
+  .mobile-dropdawn {
+    margin: 15px 0 0 15px; }
   .main-container {
     padding: 0; }
+  .navbar-nav {
+    margin: 0; }
   .search-bar {
     margin-top: 20px;
     margin-left: 20px;
