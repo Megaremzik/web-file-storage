@@ -32,6 +32,16 @@ namespace WS.Data
             return db.Document.Where(d => d.User.Id == id && d.Type_change != "Delete" && d.Type_change != "SaveForFile").ToList();
         }
 
+        public int FindSame(Document document)
+        {
+            var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change != "Delete");
+            if (doc.Count() == 0)
+            {
+                return -1;
+            }
+            return doc.FirstOrDefault().Id;
+        }
+
         public int Create(Document document)
         {
             var doc = db.Document.Where(d => d.Name == document.Name && d.ParentId == document.ParentId && d.UserId == document.UserId && d.Type_change!="Delete");
@@ -41,7 +51,7 @@ namespace WS.Data
                 db.SaveChanges();
                 return finDoc.Entity.Id;
             }
-            return 0;
+            return doc.FirstOrDefault().Id;
         }
         public Document Get(int? id)
         {
